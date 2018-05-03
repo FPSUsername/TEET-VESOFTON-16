@@ -1,0 +1,10 @@
+uart.c:35:6:UART_init	32	static
+uart.c:85:6:UART_putchar	16	static
+uart.c:92:6:UART_puts	24	static
+uart.c:104:6:UART_INT_init	16	static
+uart.c:115:6:USART2_IRQHandler	16	static
+uart.c:151:12:UART_printf	60	dynamic
+uart.c:175:6:UART_putint	16	static
+uart.c:181:6:UART_putnum	40	static
+uart.c:223:6:UART_get	16	static
+uart.c:237:6:UART_gets	16	static
