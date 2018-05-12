@@ -15,7 +15,7 @@
 #include "stm32_ub_vga_screen.h"
 #include <math.h>
 
-char *version = "API UART v0.3";
+char *version = "API UART v0.31";
 
 int main(void)
 {
@@ -39,6 +39,7 @@ int main(void)
 	UB_VGA_SetPixel(10,10,10);
 
 	// LCD Write
+	LCD_clear();
 	LCD_puts("TEET-VESOFTON-16");
 	LCD_XY(0, 1);
 	LCD_puts(version);

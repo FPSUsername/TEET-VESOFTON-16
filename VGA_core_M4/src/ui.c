@@ -26,20 +26,20 @@ char ** UART_tokens()
 	#endif
 
 	// Extract each variable from the input buffer
-	for (char* p = strtok(str, ","); p != NULL; p = strtok(NULL, ","))
-	{
+	for (char* p = strtok(str, ","); p != NULL; p = strtok(NULL, ",")) {
 		// Write to a new buffer
 		// More info at: https://stackoverflow.com/a/1095006
 		array = realloc(array, (i + 1) * sizeof(char*)); // Dynamically increase the size of the array // Doesn't work correctly yet
 		array[i] = (char *) malloc(strlen(p) + 1); // Dynamically allocate buffer size of each string
+		strlwr(p); // Lowercase the string
 		strcpy(array[i], p); // Copy the string to the array
 
 		#ifdef DEBUG
-		UART_putint(i);
+		UART_putint(i); // Array iteration
 		UART_puts("\t");
-		UART_puts(p);
+		UART_puts(p); // Input on UART
 		UART_puts("\t");
-		UART_puts(array[i]);
+		UART_puts(array[i]); // Copy to array
 		UART_puts("\n");
 		#endif
 
@@ -62,4 +62,42 @@ void UART_tokens_clear(char **array)
 	for(unsigned char i = 0; array[i] != NULL; i++)
 	    free(array[i]);
 	free(array);
+}
+
+
+/* UART control
+ * This function will call the functions
+ */
+void UART_control(char **array)
+{
+	if (strcmp(array[0], "lijn") == 0) {
+		// line(array[1], array[2], array[3], array[4], array[5], array[6]);
+	}
+	else if (strcmp(array[0], "arrow") == 0) {
+		// arrow(array[1], array[2], array[3], array[4], array[5], array[6]);
+	}
+	else if (strcmp(array[0], "ellips") == 0) {
+		// ellips(array[1], array[2], array[3], array[4], array[5]);
+	}
+	else if (strcmp(array[0], "rechthoek") == 0) {
+		// rectangular(array[1], array[2], array[3], array[4], array[5]);
+	}
+	else if (strcmp(array[0], "driehoek") == 0) {
+		// triangle(array[1], array[2], array[3], array[4], array[5], array[6], array[7]);
+	}
+	else if (strcmp(array[0], "tekst") == 0) {
+		// text(array[1], array[2], array[3], array[4], array[5]);
+	}
+	else if (strcmp(array[0], "bitmap") == 0) {
+		// bitmap(array[1], array[2], array[3]);
+	}
+	else if (strcmp(array[0], "wacht") == 0) {
+		// delay_ms(array[1]);
+	}
+	else if (strcmp(array[0], "clearscherm") == 0) {
+		// fillscreen(array[1]);
+	}
+	else {
+		UART_puts("Invalid command!\n");
+	}
 }
