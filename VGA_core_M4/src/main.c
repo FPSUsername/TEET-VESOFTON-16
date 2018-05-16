@@ -14,8 +14,9 @@
 #include "include.h"
 #include "stm32_ub_vga_screen.h"
 #include <math.h>
+#include "draw_API.h"
 
-char *version = "API UART v0.31";
+char *version = "API v0.4";
 
 int main(void)
 {
@@ -35,8 +36,11 @@ int main(void)
 	LED_put(0x00);
 
 	// Screen
-	UB_VGA_FillScreen(VGA_COL_GREEN);
-	UB_VGA_SetPixel(10,10,10);
+	UB_VGA_FillScreen(VGA_COL_BLACK);
+	ellipse(100, 100, 50, 50, "rood");
+	line(80,80,120,120,1,"zwart"); //x1 y1 x2 y2
+	line(120,80,80,120,1,"zwart");
+
 
 	// LCD Write
 	LCD_clear();
