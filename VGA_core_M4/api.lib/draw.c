@@ -5,6 +5,8 @@
  *      Author: Bas
  */
 
+#include "draw.h"
+
 uint8 line(uint8 x1,uint8 y1,uint8 x2,uint8 y2,uint8 thickness,char color[16])
 {
 printf("line");
