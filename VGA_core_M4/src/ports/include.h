@@ -15,4 +15,3 @@
 #include "uart.h"
 #include "delay.h"
 #include "lcd.h"
-#include "ui.h"
