@@ -70,34 +70,22 @@ void UART_tokens_clear(char **array)
  */
 void UART_control(char **array)
 {
-	if (strcmp(array[0], "lijn") == 0) {
-		// line(array[1], array[2], array[3], array[4], array[5], array[6]);
-	}
-	else if (strcmp(array[0], "arrow") == 0) {
-		// arrow(array[1], array[2], array[3], array[4], array[5], array[6]);
-	}
-	else if (strcmp(array[0], "ellips") == 0) {
-		// ellips(array[1], array[2], array[3], array[4], array[5]);
-	}
-	else if (strcmp(array[0], "rechthoek") == 0) {
-		// rectangular(array[1], array[2], array[3], array[4], array[5]);
-	}
-	else if (strcmp(array[0], "driehoek") == 0) {
-		// triangle(array[1], array[2], array[3], array[4], array[5], array[6], array[7]);
-	}
-	else if (strcmp(array[0], "tekst") == 0) {
-		// text(array[1], array[2], array[3], array[4], array[5]);
-	}
-	else if (strcmp(array[0], "bitmap") == 0) {
-		// bitmap(array[1], array[2], array[3]);
-	}
-	else if (strcmp(array[0], "wacht") == 0) {
-		// delay_ms(array[1]);
-	}
-	else if (strcmp(array[0], "clearscherm") == 0) {
-		// fillscreen(array[1]);
-	}
-	else {
-		UART_puts("Invalid command!\n");
+	uint8_t err = 0;
+
+	if (strcmp(array[0], "lijn") == 0)				err = line(array[1], array[2], array[3], array[4], array[5], array[6]);
+	else if (strcmp(array[0], "arrow") == 0)		err = arrow(array[1], array[2], array[3], array[4], array[5], array[6]);
+	else if (strcmp(array[0], "ellips") == 0)		err = ellips(array[1], array[2], array[3], array[4], array[5]);
+	else if (strcmp(array[0], "rechthoek") == 0)	err = rectangular(array[1], array[2], array[3], array[4], array[5]);
+	else if (strcmp(array[0], "driehoek") == 0)		err = triangle(array[1], array[2], array[3], array[4], array[5], array[6], array[7]);
+	else if (strcmp(array[0], "tekst") == 0)		err = text(array[1], array[2], array[3], array[4], array[5]);
+	else if (strcmp(array[0], "bitmap") == 0)		err = bitmap(array[1], array[2], array[3]);
+	else if (strcmp(array[0], "wacht") == 0)		err = delay_ms(array[1]);
+	else if (strcmp(array[0], "clearscherm") == 0)	err = fill_screen(array[1]);
+	else UART_puts("Invalid command!\n");
+
+	if (err != 0){
+		UART_puts("Error code: ");
+		UART_putint(err);
+		UART_puts("\n");
 	}
 }

@@ -55,11 +55,13 @@ int main(void)
 		char **arguments = UART_tokens();
 
 		// Iterate through the arguments and print them (Example code)
-		for(unsigned char i = 0; arguments[i] != NULL; i++)
-		{
-			UART_puts(arguments[i]);
-			UART_puts("\n");
-		}
+//		for(unsigned char i = 0; arguments[i] != NULL; i++)
+//		{
+//			UART_puts(arguments[i]);
+//			UART_puts("\n");
+//		}
+
+		UART_control(arguments);
 
 		// ALWAYS clear AFTER you are done with your arguments to prevent memory leaks!
 		UART_tokens_clear(arguments);
