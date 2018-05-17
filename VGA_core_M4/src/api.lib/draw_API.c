@@ -78,7 +78,7 @@ uint8_t line(uint8_t x1,uint8_t y1,uint8_t x2,uint8_t y2,uint8_t thickness,char 
 	int err = dx + dy, e2; /* error value e_xy */
 
 	float rc, x_rc, y_rc;
-	int x_thick1, y_thick1, x_thick2, y_thick2;
+	int x_thick1, y_thick1, x_thick2, y_thick2, dikke;
 	x_rc = x2-x1;
 	y_rc = y2-y1;
 	x_rc = y_rc *-1; //door onderstaande berekening ontstaat er een lijn die 90graden op de te tekenen lijn achterloopt
@@ -88,7 +88,7 @@ uint8_t line(uint8_t x1,uint8_t y1,uint8_t x2,uint8_t y2,uint8_t thickness,char 
 	y_thick1= (rc/thickness)*y_rc;
 	x_thick2= x_thick1+dx;
 	y_thick2= y_thick1+dy;
-
+	dikke= thickness;
 	while(1){  /* loop */
 		UB_VGA_SetPixel(x1,y1,col);
 	  if (x1 == x2 && y1 == y2) break;
@@ -103,12 +103,14 @@ uint8_t line(uint8_t x1,uint8_t y1,uint8_t x2,uint8_t y2,uint8_t thickness,char 
 		  if (e2 <= dx) { err += dx; y_thick1 += sy; } /* e_xy+e_y < 0 */
 
 		if (x_thick1 == x_thick2 && y_thick1 == y_thick2){
-			thickness++;
-			x_thick1= (rc/thickness)*x_rc; // casten misschien?
-			y_thick1= (rc/thickness)*y_rc;
+			dikke++;
+			x_thick1= (rc/dikke)*x_rc; // casten misschien?
+			y_thick1= (rc/dikke)*y_rc;
 			x_thick2= x_thick1+dx;
 			y_thick2= y_thick1+dy;
+			if(dikke==thickness)break;
 		}
+
 	}
 	return 1;
 };
