@@ -37,9 +37,16 @@ int main(void)
 
 	// Screen
 	UB_VGA_FillScreen(VGA_COL_BLACK);
-	ellipse(100, 100, 50, 50, "rood");
-	line(80,80,120,120,1,"zwart"); //x1 y1 x2 y2
-	line(120,80,80,120,1,"zwart");
+	bitmap(0, 10, 10);
+	bitmap(1, 116, 10);
+	bitmap(2, 222, 10);
+	ellipse_filled(42, 175, 10, 30, "rood");
+//	ellipse_filled(300,300,40,30,"lichtrood");
+//	line(80,80,120,120,30,"wit"); //x1 y1 x2 y2
+//	line(120,80,80,120,9,"groen");
+	rectangular(75,150,50,75,"blauw");
+	rectangular_thick(150,150,75,50,5,5,"groen");
+	rectangular_filled(230,150,75,75,"geel");
 
 
 	// LCD Write

@@ -8,6 +8,7 @@
 #include <draw_API.h>
 #include "stm32_ub_vga_screen.h"
 #include "include.h"
+#include "bitmap_1.h"
 
 int change_col(char color[16]){
 	int col;
@@ -69,14 +70,32 @@ int change_col(char color[16]){
 	return col;
 }
 
-uint8_t line(uint8_t x1,uint8_t y1,uint8_t x2,uint8_t y2,uint8_t thickness,char color[16])
+uint8_t line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t thickness, char color[16])
 {
 	int col = change_col(color);
-
 	int dx =  abs (x2 - x1), sx = x1 < x2 ? 1 : -1;
-	int dy = -abs (y2 - y1), sy = y1 < y2 ? 1 : -1;
+	int dy =  ((-1) * abs (y2 - y1)), sy = y1 < y2 ? 1 : -1;
+	UART_puts("DX: ");
+	UART_putint(dx);
+	UART_puts("\nDY: ");
+	UART_putint(dy);
 	int err = dx + dy, e2; /* error value e_xy */
 
+	float rc, x_rc, y_rc;
+	int x_thick1, y_thick1, x_thick2, y_thick2, dikke, x_dx, y_dy;
+	x_dx = x2-x1;
+	y_dy = y2-y1;
+
+	x_rc = x2-x1;
+	y_rc = y2-y1;
+	x_rc = y_rc *-1; //door onderstaande berekening ontstaat er een lijn die 90graden op de te tekenen lijn achterloopt
+	y_rc = x_rc;
+	rc= sqrt((x_rc*x_rc)+(y_rc*y_rc));
+	x_thick1= (rc/thickness)*x_rc; // casten misschien?
+	y_thick1= (rc/thickness)*y_rc;
+	x_thick2= x_thick1+x_dx;
+	y_thick2= y_thick1+y_dy;
+	dikke= 0;
 	while(1){  /* loop */
 		UB_VGA_SetPixel(x1,y1,col);
 	  if (x1 == x2 && y1 == y2) break;
@@ -84,62 +103,151 @@ uint8_t line(uint8_t x1,uint8_t y1,uint8_t x2,uint8_t y2,uint8_t thickness,char 
 	  if (e2 >= dy) { err += dy; x1 += sx; } /* e_xy+e_x > 0 */
 	  if (e2 <= dx) { err += dx; y1 += sy; } /* e_xy+e_y < 0 */
 	}
+	while(1){
+		UB_VGA_SetPixel(x_thick1,y_thick1,col);
+		  e2 = 2 * err;
+		  if (e2 >= dy) { err += dy; x_thick1 += sx; } /* e_xy+e_x > 0 */
+		  if (e2 <= dx) { err += dx; y_thick1 += sy; } /* e_xy+e_y < 0 */
+
+		if (x_thick1 == x_thick2 && y_thick1 == y_thick2){
+			dikke++;
+			x_thick1= (rc/dikke)*x_rc; // casten misschien?
+			y_thick1= (rc/dikke)*y_rc;
+			x_thick2= x_thick1+dx;
+			y_thick2= y_thick1+dy;
+			if(dikke==thickness)break;
+		}
+
+	}
+//	int dx =  abs (x2 - x1), sx = x1 < x2 ? 1 :  - 1;
+//	int dy =  - abs (y2 - y1), sy = y1 < y2 ? 1 :  - 1;
+//	int err = dx + dy, e2; /* error value e_xy */
+//
+//	while(1){  /* loop */
+//		UB_VGA_SetPixel(x1, y1, col);
+//	  if (x1 == x2 && y1 == y2) break;
+//	  e2 = 2 * err;
+//	  if (e2 >= dy) { err += dy; x1 += sx; } /* e_xy + e_x > 0 */
+//	  if (e2 <= dx) { err += dx; y1 += sy; } /* e_xy + e_y < 0 */
+//	}
 	return 1;
 };
-uint8_t arrow(uint8_t x1,uint8_t y1,uint8_t x2,uint8_t y2,uint8_t thickness,char color[16])
+
+uint8_t arrow(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t thickness, char color[16])
 {
 	int col = change_col(color);
+
 	return 2;
 };
-uint8_t ellipse(uint8_t x1,uint8_t y1,uint8_t xradius,uint8_t yradius,char color[16])
+
+uint8_t ellipse(uint8_t x1, uint8_t y1, uint8_t xradius, uint8_t yradius, char color[16])
 {
 	int col = change_col(color);
 
-	for(int y=-yradius; y<=yradius; y++) {
-	    for(int x=-xradius; x<=xradius; x++) {
-	        double dx = (double)x / (double)xradius;
-	        double dy = (double)y / (double)yradius;
-	        if(dx*dx+dy*dy <= 1)
-	        	UB_VGA_SetPixel(x+x1,y+y1,col);
-	    }
-	}
+
 	return 3;
 };
-uint8_t rectangular(uint8_t x1,uint8_t y1,uint8_t xlength,uint8_t ylength,char color[16])//als er 6argumenten worden gegeven word de dikte meegerekend
-{
-	char col = change_col(color);
 
-	unsigned char x, y;
-	for (y = y1; y < y1 + ylength; y++){
-		for (x = x1; x < x1 + xlength; x++){
-			UB_VGA_SetPixel(x,y,col);
-		}
+uint8_t ellipse_filled(uint8_t x1, uint8_t y1, uint8_t xradius, uint8_t yradius, char color[16])
+{
+	int col = change_col(color);
+
+	for(int y= -yradius; y<=yradius; y++) {
+	    for(int x= -xradius; x<=xradius; x++) {
+	        double dx = (double)x / (double)xradius;
+	        double dy = (double)y / (double)yradius;
+	        if(dx*dx + dy*dy <= 1)
+	        	UB_VGA_SetPixel(x + x1, y + y1, col);
+	    }
 	}
 	return 4;
 };
-uint8_t triangle(uint8_t x1,uint8_t y1,uint8_t x2,uint8_t y2,uint8_t x3,uint8_t y3,char color[16])
+
+uint8_t rectangular(uint8_t x1, uint8_t y1, uint8_t xlength, uint8_t ylength, char color[16])//als er 6argumenten worden gegeven word de dikte meegerekend
 {
-	int col = change_col(color);
+	char col = change_col(color);
+
+	int16_t i;
+	for (i=x1; i<x1 + xlength; i++) {
+		UB_VGA_SetPixel(i, y1, col);
+		UB_VGA_SetPixel(i , y1 + ylength - 1, col);
+	}
+	for (i=y1; i<y1 + ylength; i++) {
+		UB_VGA_SetPixel(x1, i, col);
+		UB_VGA_SetPixel(x1 + xlength - 1, i, col);
+	}
+
 	return 5;
 };
-uint8_t text(uint8_t x1,uint8_t y1,char str[255],char color[16],char font[16])
+
+uint8_t rectangular_thick(uint8_t x1, uint8_t y1, uint8_t xlength, uint8_t ylength, uint8_t tx, uint8_t ty, char color[16])//als er 6argumenten worden gegeven word de dikte meegerekend
 {
-	int col = change_col(color);
+	char col = change_col(color);
+    int16_t i, t;
+
+	if (tx == 0) tx = 1;
+	if (ty == 0) ty = 1;
+
+	for (i=x1; i<x1 + xlength; i++) {
+		for (t=0; t<(ty); t++) {
+			UB_VGA_SetPixel(i, y1 + t, col);
+			UB_VGA_SetPixel(i , y1 + ylength - t, col);
+		}
+	}
+	for (i=y1; i<y1 + ylength; i++) {
+		for (t=0; t<(tx); t++) {
+			UB_VGA_SetPixel(x1 + t, i, col);
+			UB_VGA_SetPixel(x1 + xlength - t, i, col);
+		}
+	}
+
+	return 5;
+};
+
+uint8_t rectangular_filled(uint8_t x1, uint8_t y1, uint8_t xlength, uint8_t ylength, char color[16])//als er 6argumenten worden gegeven word de dikte meegerekend
+{
+	char col = change_col(color);
+
+	int16_t i, j;
+		for (i=x1; i<x1 + xlength; i++) {
+			for (j=y1; j<y1 + ylength; j++) {
+				UB_VGA_SetPixel(i, j, col);
+		}
+	}
+
 	return 6;
 };
-uint8_t bitmap(uint8_t bitmap,uint8_t x1,uint8_t y1)
+
+uint8_t triangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t x3, uint8_t y3, char color[16])
 {
+	int col = change_col(color);
 	return 7;
 };
-//uint8_t delay_ms(uint16_t time)
-//{
-//	UART_puts("wait");
-//	return 8;
-//};
+
+uint8_t text(uint8_t x1, uint8_t y1, char str[255], char color[16], char font[16])
+{
+	int col = change_col(color);
+
+	return 8;
+};
+
+uint8_t bitmap(uint8_t bitmap, uint8_t x1, uint8_t y1)
+{
+	int16_t i, j;
+	int16_t k = 4095;
+	for (i=x1; i<64 + x1; i++) {
+		for (j=y1; j<64 + y1; j++) {
+			if (bitmaps[bitmap][k] != 0) UB_VGA_SetPixel(i, j, bitmaps[bitmap][k]);
+			k--;
+		}
+	}
+	return 9;
+};
+
 uint8_t fill_screen(char color[16])
 {
 	int col = change_col(color);
 
 	UB_VGA_FillScreen(col);
-	return 9;
+	return 10;
 };
