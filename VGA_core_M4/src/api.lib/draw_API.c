@@ -9,6 +9,7 @@
 #include "stm32_ub_vga_screen.h"
 #include "include.h"
 #include "bitmap_1.h"
+#include "font.h"
 
 int change_col(char color[16]){
 	int col;
@@ -168,13 +169,13 @@ uint8_t rectangular(uint8_t x1, uint8_t y1, uint8_t xlength, uint8_t ylength, ch
 	char col = change_col(color);
 
 	int16_t i;
-	for (i=x1; i<x1 + xlength; i++) {
-		UB_VGA_SetPixel(i, y1, col);
-		UB_VGA_SetPixel(i , y1 + ylength - 1, col);
+	for (i=x1; i<x1; i++) {
+		UB_VGA_SetPixel(i + xlength, y1, col);
+		UB_VGA_SetPixel(i + xlength, y1 + ylength - 1, col);
 	}
-	for (i=y1; i<y1 + ylength; i++) {
-		UB_VGA_SetPixel(x1, i, col);
-		UB_VGA_SetPixel(x1 + xlength - 1, i, col);
+	for (i=y1; i<y1; i++) {
+		UB_VGA_SetPixel(x1, i + ylength, col);
+		UB_VGA_SetPixel(x1 + xlength - 1, i + ylength, col);
 	}
 
 	return 5;
@@ -185,19 +186,19 @@ uint8_t rectangular_thick(uint8_t x1, uint8_t y1, uint8_t xlength, uint8_t yleng
 	char col = change_col(color);
     int16_t i, t;
 
-	if (tx == 0) tx = 1;
-	if (ty == 0) ty = 1;
+	if (tx <= 0) tx = 1;
+	if (ty <= 0) ty = 1;
 
-	for (i=x1; i<x1 + xlength; i++) {
+	for (i=x1; i<x1; i++) {
 		for (t=0; t<(ty); t++) {
-			UB_VGA_SetPixel(i, y1 + t, col);
-			UB_VGA_SetPixel(i , y1 + ylength - t, col);
+			UB_VGA_SetPixel(i + xlength, y1 + t, col);
+			UB_VGA_SetPixel(i + xlength, y1 + ylength - t, col);
 		}
 	}
-	for (i=y1; i<y1 + ylength; i++) {
+	for (i=y1; i<y1; i++) {
 		for (t=0; t<(tx); t++) {
-			UB_VGA_SetPixel(x1 + t, i, col);
-			UB_VGA_SetPixel(x1 + xlength - t, i, col);
+			UB_VGA_SetPixel(x1 + t, i + ylength, col);
+			UB_VGA_SetPixel(x1 + xlength - t, i + ylength, col);
 		}
 	}
 
@@ -209,9 +210,9 @@ uint8_t rectangular_filled(uint8_t x1, uint8_t y1, uint8_t xlength, uint8_t ylen
 	char col = change_col(color);
 
 	int16_t i, j;
-		for (i=x1; i<x1 + xlength; i++) {
-			for (j=y1; j<y1 + ylength; j++) {
-				UB_VGA_SetPixel(i, j, col);
+		for (i=x1; i<x1; i++) {
+			for (j=y1; j<y1; j++) {
+				UB_VGA_SetPixel(i + xlength, j + ylength, col);
 		}
 	}
 
@@ -224,24 +225,59 @@ uint8_t triangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t x3, uin
 	return 7;
 };
 
-uint8_t text(uint8_t x1, uint8_t y1, char str[255], char color[16], char font[16])
+
+uint8_t print_char(uint8_t x1, uint8_t y1, char str, char color[16], char font[16])
 {
 	int col = change_col(color);
+	int16_t i, j;
+
+	// Iterate through the 13 rows
+	for (j=0; j<13;j++) {
+
+		for (i =0; i<7; i++) {
+			if ( ( font[str][j] & (1 << i ) ) != 0 )
+				setpixel(i + x1, j + y1, col); // Set the pixels
+		}
+	}
 
 	return 8;
 };
 
+uint8_t print_text(uint8_t x1, uint8_t y1, char str[255], char color[16], char font[16])
+{
+	char ch;
+	int i, x, y = 0;
+
+	if (x1 < 0) x1 = 0;
+	if (y1 < 0) y1 = 0;
+
+	while (ch[i] != '\0') {
+		print_char(x1 + x, y1 + y, ch[i], col, font);
+		if (x < 320 - 9)
+			x += 9; // 9 collums, 2 pixels spacing
+		else {
+			x = 0; // cursor position;
+			y += 15; // 13 rows, 2 pixels spacing
+		}
+		i++;
+	}
+	return 9;
+};
+
 uint8_t bitmap(uint8_t bitmap, uint8_t x1, uint8_t y1)
 {
-	int16_t i, j;
-	int16_t k = 4095;
-	for (i=x1; i<64 + x1; i++) {
-		for (j=y1; j<64 + y1; j++) {
-			if (bitmaps[bitmap][k] != 0) UB_VGA_SetPixel(i, j, bitmaps[bitmap][k]);
+	int16_t x, y;
+	int16_t k = 4096;
+	int16_t size = sizeof(bitmaps[bitmap]) / sizeof(bitmaps[bitmap][0]); // Amount of pixels
+	int16_t x_p, y_p = sqrt(size);
+
+	for (x=x1; x<64 + x1; x++) { // x_p
+		for (y=y1; y<64 + y1; y++) { // y_p
+			if (bitmaps[bitmap][k] != 0) UB_VGA_SetPixel(x, y, bitmaps[bitmap][k]);
 			k--;
 		}
 	}
-	return 9;
+	return 10;
 };
 
 uint8_t fill_screen(char color[16])
@@ -249,5 +285,5 @@ uint8_t fill_screen(char color[16])
 	int col = change_col(color);
 
 	UB_VGA_FillScreen(col);
-	return 10;
+	return 11;
 };

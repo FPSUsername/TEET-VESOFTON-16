@@ -81,7 +81,8 @@ void UART_control(char **array)
 	else if (strcmp(array[0], "rechthoek_dik") == 0)	err = rectangular_thick((int) array[1], (int) array[2], (int) array[3], (int) array[4], (int) array[5], (int) array[6], array[7]);
 	else if (strcmp(array[0], "rechthoek_gevuld") == 0)	err = rectangular_filled((int) array[1], (int) array[2], (int) array[3], (int) array[4], array[5]);
 	else if (strcmp(array[0], "driehoek") == 0)			err = triangle((int) array[1], (int) array[2], (int) array[3], (int) array[4], (int) array[5], (int) array[6], array[7]);
-	else if (strcmp(array[0], "tekst") == 0)			err = text((int) array[1], (int) array[2], array[3], array[4], array[5]);
+	else if (strcmp(array[0], "letter") == 0)			err = print_char((int) array[1], (int) array[2], array[3], array[4], array[5]);
+	else if (strcmp(array[0], "tekst") == 0)			err = print_text((int) array[1], (int) array[2], array[3], array[4], array[5]);
 	else if (strcmp(array[0], "bitmap") == 0)			err = bitmap((int) array[1], (int) array[2], (int) array[3]);
 	else if (strcmp(array[0], "wacht") == 0)			DELAY_ms((int) array[1]);
 	else if (strcmp(array[0], "clearscherm") == 0)		err = fill_screen(array[1]);
