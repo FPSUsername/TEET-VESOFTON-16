@@ -1,10 +1,24 @@
-/*
- * IO.c
- *
- *  Created on: 3 mei 2018
- *      Author: Bas
- */
+//--------------------------------------------------------------
+// File     : stm32_ub_vga_320x240.c
+// CPU      : STM32F4
+// IDE      : CooCox CoIDE 1.7.0
+// Module   : GPIO, TIM, MISC, DMA
+// Function : VGA out by GPIO (320x240 Pixel, 8bit color)
+//
+// signals  : PB11      = HSync-Signal
+//            PB12      = VSync-Signal
+//            PE8+PE9   = color Blue
+//            PE10-PE12 = color Green
+//            PE13-PE15 = color red
+//
+// uses     : TIM1, TIM2
+//            DMA2, Channel6, Stream5
+//--------------------------------------------------------------
 
+
+//--------------------------------------------------------------
+// Includes
+//--------------------------------------------------------------
 #include "stm32_ub_vga_screen.h"
 
 
@@ -95,7 +109,7 @@ void P_VGA_InitIO(void)
   // init RGB-Pins (PE8 - PE15)
   // as normal GPIOs
   //---------------------------------------------
-
+ 
   // Clock Enable
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
 

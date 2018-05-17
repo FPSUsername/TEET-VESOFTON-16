@@ -1,7 +1,11 @@
+// Debugging
+//#define DEBUG
+
 // Standard
 #include  <stdarg.h>
 #include  <stdio.h>
 #include  <stdlib.h>
+#include  <string.h>
 #include  <math.h>
 
 // OS
@@ -15,3 +19,5 @@
 #include "uart.h"
 #include "delay.h"
 #include "lcd.h"
+#include "leds.h"
+#include "ui.h"

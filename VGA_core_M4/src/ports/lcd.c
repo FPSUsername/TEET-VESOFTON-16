@@ -155,7 +155,6 @@ void LCD_put(char *string)
 
 void LCD_puts(char *c)
 {
-    LCD_clear();
     LCD_put(c);
 }
 

@@ -1,1 +1,3 @@
-ui.c:11:6:print_error	16	static
+ui.c:16:9:UART_tokens	32	static
+ui.c:61:6:UART_tokens_clear	24	static
+ui.c:72:6:UART_control	56	static
