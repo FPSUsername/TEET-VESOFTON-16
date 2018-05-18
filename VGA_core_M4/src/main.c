@@ -16,7 +16,7 @@
 #include <math.h>
 #include "draw_API.h"
 
-char *version = "API v0.4";
+char *version = "API v0.41";
 
 int main(void)
 {
@@ -47,7 +47,7 @@ int main(void)
 	rectangular(75,150,50,75,"blauw");
 	rectangular_thick(150,150,75,50,5,5,"groen");
 	rectangular_filled(230,150,75,75,"geel");
-
+	print_text(20, 80, "HOGESCHOOL UTRECHT, Even kijken of we verder kunnen", "blauw", "niks");
 
 	// LCD Write
 	LCD_clear();

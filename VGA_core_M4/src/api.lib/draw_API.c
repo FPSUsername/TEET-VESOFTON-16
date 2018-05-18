@@ -9,67 +9,50 @@
 #include "stm32_ub_vga_screen.h"
 #include "include.h"
 #include "bitmap_1.h"
-#include "font.h"
+#include "font8x8_basic.h"
+#include "font8x8_greek.h"
 
 int change_col(char color[16]){
 	int col;
-	if 		(strcmp(color, "wit") == 0) {
-		col = VGA_COL_WHITE;
-	}
-	else if (strcmp(color, "grijs") == 0) {
-		col = VGA_COL_GRAY;
-	}
-	else if (strcmp(color, "zwart") == 0) {
-		col = VGA_COL_BLACK;
-	}
-	else if (strcmp(color, "bruin") == 0) {
-		col = VGA_COL_BROWN;
-	}
-	else if (strcmp(color, "blauw") == 0) {
-		col = VGA_COL_BLUE;
-	}
-	else if (strcmp(color, "lichtblauw") == 0) {
-		col = VGA_COL_LIGHT_BLUE;
-	}
-	else if (strcmp(color, "groen") == 0) {
-		col = VGA_COL_GREEN;
-	}
-	else if (strcmp(color, "lichtgroen") == 0) {
-		col = VGA_COL_LIGHT_GREEN;
-	}
-	else if (strcmp(color, "rood") == 0) {
-		col = VGA_COL_RED;
-	}
-	else if (strcmp(color, "lichtrood") == 0) {
-		col = VGA_COL_LIGHT_RED;
-	}
-	else if (strcmp(color, "cyan") == 0) {
-		col = VGA_COL_CYAN;
-	}
-	else if (strcmp(color, "lichtcyan") == 0) {
-		col = VGA_COL_LIGHT_CYAN;
-	}
-	else if (strcmp(color, "magenta") == 0) {
-		col = VGA_COL_MAGENTA;
-	}
-	else if (strcmp(color, "lichtmagenta") == 0) {
-		col = VGA_COL_LIGHT_MAGENTA;
-	}
-	else if (strcmp(color, "geel") == 0) {
-		col = VGA_COL_YELLOW;
-	}
-	else if (strcmp(color, "roze") == 0) {
-		col = VGA_COL_PINK;
-	}
-	else if (strcmp(color, "paars") == 0) {
-		col = VGA_COL_PURPLE;
-	}
-	else {
-		col = VGA_COL_WHITE;
-	}//enum
+	if 		(strcmp(color, "wit") == 0) 			col = VGA_COL_WHITE;
+	else if (strcmp(color, "grijs") == 0)			col = VGA_COL_GRAY;
+	else if (strcmp(color, "zwart") == 0)			col = VGA_COL_BLACK;
+	else if (strcmp(color, "bruin") == 0)			col = VGA_COL_BROWN;
+	else if (strcmp(color, "blauw") == 0) 			col = VGA_COL_BLUE;
+	else if (strcmp(color, "lichtblauw") == 0)		col = VGA_COL_LIGHT_BLUE;
+	else if (strcmp(color, "groen") == 0)			col = VGA_COL_GREEN;
+	else if (strcmp(color, "lichtgroen") == 0)		col = VGA_COL_LIGHT_GREEN;
+	else if (strcmp(color, "rood") == 0)			col = VGA_COL_RED;
+	else if (strcmp(color, "lichtrood") == 0)		col = VGA_COL_LIGHT_RED;
+	else if (strcmp(color, "cyan") == 0)			col = VGA_COL_CYAN;
+	else if (strcmp(color, "lichtcyan") == 0)		col = VGA_COL_LIGHT_CYAN;
+	else if (strcmp(color, "magenta") == 0)			col = VGA_COL_MAGENTA;
+	else if (strcmp(color, "lichtmagenta") == 0)	col = VGA_COL_LIGHT_MAGENTA;
+	else if (strcmp(color, "geel") == 0)			col = VGA_COL_YELLOW;
+	else if (strcmp(color, "roze") == 0)			col = VGA_COL_PINK;
+	else if (strcmp(color, "paars") == 0)			col = VGA_COL_PURPLE;
+	else 											col = VGA_COL_WHITE; // Error?
+	//enum
 
 	return col;
-}
+};
+
+//char hex2bin( const char input[] )
+//{
+//	char res[9]; // the length of the output string has to be n+1 where n is the number of binary digits to show, in this case 8
+//	res[8] = '\0';
+//	int t = 128; // set this to s^(n-1) where n is the number of binary digits to show, in this case 8
+//	int v = strtol(input, 0, 16); // convert the hex value to a number
+//
+//	while(t) // loop till we're done
+//	{
+//		strcat(res, t < v ? "1" : "0");
+//		if(t < v)
+//			v -= t;
+//		t /= 2;
+//	}
+//    return (int) res;
+//};
 
 uint8_t line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t thickness, char color[16])
 {
@@ -136,14 +119,14 @@ uint8_t line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t thickness, 
 
 uint8_t arrow(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t thickness, char color[16])
 {
-	int col = change_col(color);
+//	int col = change_col(color);
 
 	return 2;
 };
 
 uint8_t ellipse(uint8_t x1, uint8_t y1, uint8_t xradius, uint8_t yradius, char color[16])
 {
-	int col = change_col(color);
+//	int col = change_col(color);
 
 
 	return 3;
@@ -169,13 +152,13 @@ uint8_t rectangular(uint8_t x1, uint8_t y1, uint8_t xlength, uint8_t ylength, ch
 	char col = change_col(color);
 
 	int16_t i;
-	for (i=x1; i<x1; i++) {
-		UB_VGA_SetPixel(i + xlength, y1, col);
-		UB_VGA_SetPixel(i + xlength, y1 + ylength - 1, col);
+	for (i=x1; i<x1 + xlength; i++) {
+		UB_VGA_SetPixel(i, y1, col);
+		UB_VGA_SetPixel(i , y1 + ylength - 1, col);
 	}
-	for (i=y1; i<y1; i++) {
-		UB_VGA_SetPixel(x1, i + ylength, col);
-		UB_VGA_SetPixel(x1 + xlength - 1, i + ylength, col);
+	for (i=y1; i<y1 + ylength; i++) {
+		UB_VGA_SetPixel(x1, i, col);
+		UB_VGA_SetPixel(x1 + xlength - 1, i, col);
 	}
 
 	return 5;
@@ -186,19 +169,19 @@ uint8_t rectangular_thick(uint8_t x1, uint8_t y1, uint8_t xlength, uint8_t yleng
 	char col = change_col(color);
     int16_t i, t;
 
-	if (tx <= 0) tx = 1;
-	if (ty <= 0) ty = 1;
+	if (tx == 0) tx = 1;
+	if (ty == 0) ty = 1;
 
-	for (i=x1; i<x1; i++) {
+	for (i=x1; i<x1 + xlength; i++) {
 		for (t=0; t<(ty); t++) {
-			UB_VGA_SetPixel(i + xlength, y1 + t, col);
-			UB_VGA_SetPixel(i + xlength, y1 + ylength - t, col);
+			UB_VGA_SetPixel(i, y1 + t, col);
+			UB_VGA_SetPixel(i , y1 + ylength - t, col);
 		}
 	}
-	for (i=y1; i<y1; i++) {
+	for (i=y1; i<y1 + ylength; i++) {
 		for (t=0; t<(tx); t++) {
-			UB_VGA_SetPixel(x1 + t, i + ylength, col);
-			UB_VGA_SetPixel(x1 + xlength - t, i + ylength, col);
+			UB_VGA_SetPixel(x1 + t, i, col);
+			UB_VGA_SetPixel(x1 + xlength - t, i, col);
 		}
 	}
 
@@ -209,10 +192,10 @@ uint8_t rectangular_filled(uint8_t x1, uint8_t y1, uint8_t xlength, uint8_t ylen
 {
 	char col = change_col(color);
 
-	int16_t i, j;
-		for (i=x1; i<x1; i++) {
-			for (j=y1; j<y1; j++) {
-				UB_VGA_SetPixel(i + xlength, j + ylength, col);
+	int16_t x, y;
+		for (x=x1; x<x1 + xlength; x++) {
+			for (y=y1; y<y1 + ylength; y++) {
+				UB_VGA_SetPixel(x, y, col);
 		}
 	}
 
@@ -221,43 +204,68 @@ uint8_t rectangular_filled(uint8_t x1, uint8_t y1, uint8_t xlength, uint8_t ylen
 
 uint8_t triangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t x3, uint8_t y3, char color[16])
 {
-	int col = change_col(color);
+//	int col = change_col(color);
 	return 7;
 };
 
-
-uint8_t print_char(uint8_t x1, uint8_t y1, char str, char color[16], char font[16])
+uint8_t print_char(uint8_t x1, uint8_t y1, char chr, char color[16], char font[16])
 {
 	int col = change_col(color);
-	int16_t i, j;
+	int x, y;
+	int set;
 
-	// Iterate through the 13 rows
-	for (j=0; j<13;j++) {
+	// Offscreen
+	if (x1 < 0 || x1 > (320 - 8)) return 81;
+	if (y1 < 0 || y1 > (240 - 8)) return 82;
 
-		for (i =0; i<7; i++) {
-			if ( ( font[str][j] & (1 << i ) ) != 0 )
-				setpixel(i + x1, j + y1, col); // Set the pixels
+	for (x = 0; x < 8; x++) { // Horizontal
+		for (y = 0; y < 8; y++) { // Vertical
+			if (strcmp(font, "greek") == 0)
+				set = font8x8_greek[chr][x] & 1 << y;
+			else
+				set = font8x8_basic[chr][x] & 1 << y;
+			if (set)
+				UB_VGA_SetPixel(x1 + x, y1 + y, col);
 		}
 	}
+
+//	for (y = 0; y < 13; y++) {
+//		// Convert hex to binary
+////		res = hex2bin(letters[chr][y]);
+//		char temp[4];
+//		sprintf(temp, "%x", letters[chr][y]);
+//		const char input[] = temp; // the value to be converted
+//
+//		int t = 128; // set this to s^(n-1) where n is the number of binary digits to show, in this case 8
+//		int v = strtol(input, 0, 16); // convert the hex value to a number
+//
+//		while(t) // loop till we're done
+//		{
+//			if (t < v)
+//				UB_VGA_SetPixel(x1 + x, y1 + y, col);
+//			x++;
+//		}
+//		x = 0;
+//	}
 
 	return 8;
 };
 
-uint8_t print_text(uint8_t x1, uint8_t y1, char str[255], char color[16], char font[16])
+uint8_t print_text(uint8_t x1, uint8_t y1, char str[], char color[16], char font[16])
 {
-	char ch;
 	int i, x, y = 0;
 
-	if (x1 < 0) x1 = 0;
-	if (y1 < 0) y1 = 0;
+	// Offscreen
+	if (x1 < 0 || x1 > (320 - 8)) return 91;
+	if (y1 < 0 || y1 > (240 - 8)) return 92;
 
-	while (ch[i] != '\0') {
-		print_char(x1 + x, y1 + y, ch[i], col, font);
-		if (x < 320 - 9)
-			x += 9; // 9 collums, 2 pixels spacing
+	while (str[i] != '\0') {
+		print_char(x1 + x, y1 + y, str[i], color, font);
+		if (x < 210 - 10) // 220 is a bug
+			x += 10; // 8 collums, 2 pixels spacing
 		else {
 			x = 0; // cursor position;
-			y += 15; // 13 rows, 2 pixels spacing
+			y += 10; // 8 rows, 2 pixels spacing
 		}
 		i++;
 	}
@@ -268,8 +276,8 @@ uint8_t bitmap(uint8_t bitmap, uint8_t x1, uint8_t y1)
 {
 	int16_t x, y;
 	int16_t k = 4096;
-	int16_t size = sizeof(bitmaps[bitmap]) / sizeof(bitmaps[bitmap][0]); // Amount of pixels
-	int16_t x_p, y_p = sqrt(size);
+//	int16_t size = sizeof(bitmaps[bitmap]) / sizeof(bitmaps[bitmap][0]); // Amount of pixels
+//	int16_t x_p, y_p = sqrt(size);
 
 	for (x=x1; x<64 + x1; x++) { // x_p
 		for (y=y1; y<64 + y1; y++) { // y_p
