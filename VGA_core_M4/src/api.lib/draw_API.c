@@ -12,8 +12,8 @@
 #include "font8x8_basic.h"
 #include "font8x8_greek.h"
 
-int change_col(char color[16]){
-	int col;
+uint8_t change_col(char color[16]){
+	uint8_t col;
 	if 		(strcmp(color, "wit") == 0) 			col = VGA_COL_WHITE;
 	else if (strcmp(color, "grijs") == 0)			col = VGA_COL_GRAY;
 	else if (strcmp(color, "zwart") == 0)			col = VGA_COL_BLACK;
@@ -24,7 +24,7 @@ int change_col(char color[16]){
 	else if (strcmp(color, "lichtgroen") == 0)		col = VGA_COL_LIGHT_GREEN;
 	else if (strcmp(color, "rood") == 0)			col = VGA_COL_RED;
 	else if (strcmp(color, "lichtrood") == 0)		col = VGA_COL_LIGHT_RED;
-	else if (strcmp(color, "cyan") == 0)			col = VGA_COL_CYAN;
+	else if (strcmp(color, "cyaan") == 0)			col = VGA_COL_CYAN;
 	else if (strcmp(color, "lichtcyan") == 0)		col = VGA_COL_LIGHT_CYAN;
 	else if (strcmp(color, "magenta") == 0)			col = VGA_COL_MAGENTA;
 	else if (strcmp(color, "lichtmagenta") == 0)	col = VGA_COL_LIGHT_MAGENTA;
@@ -37,26 +37,25 @@ int change_col(char color[16]){
 	return col;
 };
 
-//char hex2bin( const char input[] )
-//{
-//	char res[9]; // the length of the output string has to be n+1 where n is the number of binary digits to show, in this case 8
-//	res[8] = '\0';
-//	int t = 128; // set this to s^(n-1) where n is the number of binary digits to show, in this case 8
-//	int v = strtol(input, 0, 16); // convert the hex value to a number
-//
-//	while(t) // loop till we're done
-//	{
-//		strcat(res, t < v ? "1" : "0");
-//		if(t < v)
-//			v -= t;
-//		t /= 2;
-//	}
-//    return (int) res;
-//};
-
-uint8_t line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t thickness, char color[16])
+uint8_t line(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t thickness, char color[16])
 {
-	int col = change_col(color);
+	#ifdef DEBUG
+	UART_puts("\nLine\nX1\tY1\tX2\tY2\tThick\tColor\n");
+	UART_putint(x1);
+	UART_puts("\t");
+	UART_putint(y1);
+	UART_puts("\t");
+	UART_putint(x2);
+	UART_puts("\t");
+	UART_putint(y2);
+	UART_puts("\t");
+	UART_putint(thickness);
+	UART_puts("\t");
+	UART_puts(color);
+	UART_puts("\n");
+	#endif
+
+	uint8_t col = change_col(color);
 	int dx =  abs (x2 - x1), sx = x1 < x2 ? 1 : -1;
 	int dy =  ((-1) * abs (y2 - y1)), sy = y1 < y2 ? 1 : -1;
 	UART_puts("DX: ");
@@ -117,24 +116,51 @@ uint8_t line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t thickness, 
 	return 1;
 };
 
-uint8_t arrow(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t thickness, char color[16])
+uint8_t arrow(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t thickness, char color[16])
 {
-//	int col = change_col(color);
+//	uint8_t col = change_col(color);
 
 	return 2;
 };
 
-uint8_t ellipse(uint8_t x1, uint8_t y1, uint8_t xradius, uint8_t yradius, char color[16])
+uint8_t ellipse(int16_t x1, int16_t y1, int16_t xradius, int16_t yradius, char color[16])
 {
-//	int col = change_col(color);
+	#ifdef DEBUG
+	UART_puts("\nEllipse\nX1\tY1\txRadius\tyRadius\tColor\n");
+	UART_putint(x1);
+	UART_puts("\t");
+	UART_putint(y1);
+	UART_puts("\t");
+	UART_putint(xradius);
+	UART_puts("\t");
+	UART_putint(yradius);
+	UART_puts("\t");
+	UART_puts(color);
+	UART_puts("\n");
+	#endif
 
+//	uint8_t col = change_col(color);
 
 	return 3;
 };
 
-uint8_t ellipse_filled(uint8_t x1, uint8_t y1, uint8_t xradius, uint8_t yradius, char color[16])
+uint8_t ellipse_filled(int16_t x1, int16_t y1, int16_t xradius, int16_t yradius, char color[16])
 {
-	int col = change_col(color);
+	#ifdef DEBUG
+	UART_puts("\nEllipse_filled\nX1\tY1\txRadius\tyRadius\tColor\n");
+	UART_putint(x1);
+	UART_puts("\t");
+	UART_putint(y1);
+	UART_puts("\t");
+	UART_putint(xradius);
+	UART_puts("\t");
+	UART_putint(yradius);
+	UART_puts("\t");
+	UART_puts(color);
+	UART_puts("\n");
+	#endif
+
+	uint8_t col = change_col(color);
 
 	for(int y= -yradius; y<=yradius; y++) {
 	    for(int x= -xradius; x<=xradius; x++) {
@@ -147,11 +173,29 @@ uint8_t ellipse_filled(uint8_t x1, uint8_t y1, uint8_t xradius, uint8_t yradius,
 	return 4;
 };
 
-uint8_t rectangular(uint8_t x1, uint8_t y1, uint8_t xlength, uint8_t ylength, char color[16])//als er 6argumenten worden gegeven word de dikte meegerekend
+uint8_t rectangular(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, char color[16])
 {
-	char col = change_col(color);
+	#ifdef DEBUG
+	UART_puts("\nRectangular\nX1\tY1\txLength\tyLength\tColor\n");
+	UART_putint(x1);
+	UART_puts("\t");
+	UART_putint(y1);
+	UART_puts("\t");
+	UART_putint(xlength);
+	UART_puts("\t");
+	UART_putint(ylength);
+	UART_puts("\t");
+	UART_puts(color);
+	UART_puts("\n");
+	#endif
 
-	int16_t i;
+	uint8_t col = change_col(color);
+	uint16_t i;
+
+	// Out of screen
+	if (x1 + xlength > VGA_DISPLAY_X)	xlength = -x1 - VGA_DISPLAY_X;
+	if (y1 + ylength > VGA_DISPLAY_Y)	ylength = -y1 - VGA_DISPLAY_Y;
+
 	for (i=x1; i<x1 + xlength; i++) {
 		UB_VGA_SetPixel(i, y1, col);
 		UB_VGA_SetPixel(i , y1 + ylength - 1, col);
@@ -164,10 +208,32 @@ uint8_t rectangular(uint8_t x1, uint8_t y1, uint8_t xlength, uint8_t ylength, ch
 	return 5;
 };
 
-uint8_t rectangular_thick(uint8_t x1, uint8_t y1, uint8_t xlength, uint8_t ylength, uint8_t tx, uint8_t ty, char color[16])//als er 6argumenten worden gegeven word de dikte meegerekend
+uint8_t rectangular_thick(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, uint8_t tx, uint8_t ty, char color[16])
 {
-	char col = change_col(color);
-    int16_t i, t;
+	#ifdef DEBUG
+	UART_puts("\nRectangular_thick\nX1\tY1\txLength\tyLength\tX_thick\tY_thick\tColor\n");
+	UART_putint(x1);
+	UART_puts("\t");
+	UART_putint(y1);
+	UART_puts("\t");
+	UART_putint(xlength);
+	UART_puts("\t");
+	UART_putint(ylength);
+	UART_puts("\t");
+	UART_puts(tx);
+	UART_puts("\t");
+	UART_puts(ty);
+	UART_puts("\t");
+	UART_puts(color);
+	UART_puts("\n");
+	#endif
+
+	uint8_t col = change_col(color);
+    uint16_t i, t;
+
+	// Out of screen
+	if (x1 + xlength > VGA_DISPLAY_X)	xlength = -x1 - VGA_DISPLAY_X;
+	if (y1 + ylength > VGA_DISPLAY_Y)	ylength = -y1 - VGA_DISPLAY_Y;
 
 	if (tx == 0) tx = 1;
 	if (ty == 0) ty = 1;
@@ -188,9 +254,26 @@ uint8_t rectangular_thick(uint8_t x1, uint8_t y1, uint8_t xlength, uint8_t yleng
 	return 5;
 };
 
-uint8_t rectangular_filled(uint8_t x1, uint8_t y1, uint8_t xlength, uint8_t ylength, char color[16])//als er 6argumenten worden gegeven word de dikte meegerekend
+uint8_t rectangular_filled(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, char color[16])
 {
-	char col = change_col(color);
+	#ifdef DEBUG
+	UART_puts("\nRectangular_filled\nX1\tY1\txLength\tyLength\tColor\n");
+	UART_putint(x1);
+	UART_puts("\t");
+	UART_putint(y1);
+	UART_puts("\t");
+	UART_putint(xlength);
+	UART_puts("\t");
+	UART_putint(ylength);
+	UART_puts("\t");
+	UART_puts(color);
+	UART_puts("\n");
+	#endif
+	uint8_t col = change_col(color);
+
+	// Out of screen
+	if (x1 + xlength > VGA_DISPLAY_X)	xlength = -x1 - VGA_DISPLAY_X;
+	if (y1 + ylength > VGA_DISPLAY_Y)	ylength = -y1 - VGA_DISPLAY_Y;
 
 	int16_t x, y;
 		for (x=x1; x<x1 + xlength; x++) {
@@ -202,96 +285,151 @@ uint8_t rectangular_filled(uint8_t x1, uint8_t y1, uint8_t xlength, uint8_t ylen
 	return 6;
 };
 
-uint8_t triangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t x3, uint8_t y3, char color[16])
+uint8_t triangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int16_t y3, char color[16])
 {
-//	int col = change_col(color);
+//	int8_t col = change_col(color);
+
 	return 7;
 };
 
-uint8_t print_char(uint8_t x1, uint8_t y1, char chr, char color[16], char font[16])
+uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char font[16])
 {
-	int col = change_col(color);
-	int x, y;
-	int set;
+	#ifdef DEBUG
+	UART_puts("\nPrint_char\nX1\tY1\tChar\tColor\tFont\n");
+	UART_putint(x1);
+	UART_puts("\t");
+	UART_putint(y1);
+	UART_puts("\t");
+	UART_putchar(chr);
+	UART_puts("\t");
+	UART_puts(color);
+	UART_puts("\t");
+	UART_puts(font);
+	UART_puts("\n");
+	#endif
+	uint8_t col = change_col(color);
+	uint8_t set;
+	uint8_t size = 8; // font size (h and v)
+	uint16_t x, y;
 
 	// Offscreen
-	if (x1 < 0 || x1 > (320 - 8)) return 81;
-	if (y1 < 0 || y1 > (240 - 8)) return 82;
+	if (x1 < 0 || x1 > (VGA_DISPLAY_X - size)) return 81;
+	if (y1 < 0 || y1 > (VGA_DISPLAY_Y - size)) return 82;
+	y = 0;
 
-	for (x = 0; x < 8; x++) { // Horizontal
-		for (y = 0; y < 8; y++) { // Vertical
+	for (x = 0; x < size; x++) { // Horizontal, x-- results into flipping
+		for (y = 0; y < size; y++) { // Vertical
 			if (strcmp(font, "greek") == 0)
 				set = font8x8_greek[chr][x] & 1 << y;
 			else
 				set = font8x8_basic[chr][x] & 1 << y;
 			if (set)
-				UB_VGA_SetPixel(x1 + x, y1 + y, col);
+				UB_VGA_SetPixel(x1 + y, y1 + x, col);
 		}
 	}
-
-//	for (y = 0; y < 13; y++) {
-//		// Convert hex to binary
-////		res = hex2bin(letters[chr][y]);
-//		char temp[4];
-//		sprintf(temp, "%x", letters[chr][y]);
-//		const char input[] = temp; // the value to be converted
-//
-//		int t = 128; // set this to s^(n-1) where n is the number of binary digits to show, in this case 8
-//		int v = strtol(input, 0, 16); // convert the hex value to a number
-//
-//		while(t) // loop till we're done
-//		{
-//			if (t < v)
-//				UB_VGA_SetPixel(x1 + x, y1 + y, col);
-//			x++;
-//		}
-//		x = 0;
-//	}
 
 	return 8;
 };
 
-uint8_t print_text(uint8_t x1, uint8_t y1, char str[], char color[16], char font[16])
+uint8_t print_text(int16_t x1, int16_t y1, char str[], char color[16], char font[16])
 {
-	int i, x, y = 0;
+	#ifdef DEBUG
+	UART_puts("\nPrint_text\nX1\tY1\tString\n");
+	UART_putint(x1);
+	UART_puts("\t");
+	UART_putint(y1);
+	UART_puts("\t");
+	UART_puts(str);
+	UART_puts("\nColor\tFont\n");
+	UART_puts(color);
+	UART_puts("\t");
+	UART_puts(font);
+	UART_puts("\n");
+	#endif
+
+	uint8_t margin = 8;
+	uint16_t x = 0;
+	uint16_t y = 0;
+	size_t len = strlen(str);
+
+	if (x1 < margin) x1 = margin;
+	if (y1 < margin) y1 = margin;
 
 	// Offscreen
-	if (x1 < 0 || x1 > (320 - 8)) return 91;
-	if (y1 < 0 || y1 > (240 - 8)) return 92;
+	if (x1 > (VGA_DISPLAY_X - 8 - margin)) return 91;
+	if (y1 > (VGA_DISPLAY_Y - 8 - margin)) return 92;
 
-	while (str[i] != '\0') {
+	for(int i = 0; i < len; i++) {
 		print_char(x1 + x, y1 + y, str[i], color, font);
-		if (x < 210 - 10) // 220 is a bug
-			x += 10; // 8 collums, 2 pixels spacing
+		if ((x + x1) < (VGA_DISPLAY_X - 8 - margin))
+			x += 8; // No spacing needed
 		else {
 			x = 0; // cursor position;
-			y += 10; // 8 rows, 2 pixels spacing
+			if ((y + y1) < (VGA_DISPLAY_Y - 8 - margin))
+				y += 9; // 8 rows, 1 pixel spacing
+			else
+				y = 0; // Error, off screen!
 		}
-		i++;
 	}
 	return 9;
 };
 
-uint8_t bitmap(uint8_t bitmap, uint8_t x1, uint8_t y1)
+uint8_t bitmap(uint8_t bitmap, int16_t x1, int16_t y1, uint8_t trans)
 {
-	int16_t x, y;
-	int16_t k = 4096;
-//	int16_t size = sizeof(bitmaps[bitmap]) / sizeof(bitmaps[bitmap][0]); // Amount of pixels
-//	int16_t x_p, y_p = sqrt(size);
+	#ifdef DEBUG
+	UART_puts("\nBitmap\nNr\tX1\tY1\tTransparency\n");
+	UART_putint(bitmap);
+	UART_puts("\t");
+	UART_putint(x1);
+	UART_puts("\t");
+	UART_putint(y1);
+	UART_puts("\t");
+	UART_putint(trans);
+	UART_puts("\n");
+	#endif
+	// This version can only print bitmaps that are squared
+	uint16_t x, y;
+	uint16_t size = sizeof(bitmaps[bitmap]) / sizeof(bitmaps[bitmap][0]); // Amount of pixels
+	uint16_t x_p = sqrt(size); // Amount of pixels on the x-axis
+	uint16_t y_p = x_p; // Amount of pixels on the y-axis
 
-	for (x=x1; x<64 + x1; x++) { // x_p
-		for (y=y1; y<64 + y1; y++) { // y_p
-			if (bitmaps[bitmap][k] != 0) UB_VGA_SetPixel(x, y, bitmaps[bitmap][k]);
-			k--;
+	for (x = 0; x < x_p; x++) {
+		for (y = 0; y < y_p; y++) {
+			if (trans == 1) {
+				if (bitmaps[bitmap][size] != 0) // 0 == 0x00, black screen
+					UB_VGA_SetPixel(x1 + y_p - y, y1 + x_p - x, bitmaps[bitmap][size]);
+			}
+			else
+				UB_VGA_SetPixel(x1 + y_p - y, y1 + x_p - x, bitmaps[bitmap][size]);
+			size--;
 		}
 	}
+
 	return 10;
+};
+
+uint8_t DELAY(uint16_t time)
+{
+	#ifdef DEBUG
+	UART_puts("\nDelay\nMilliseconds: ");
+	UART_putint(time);
+	UART_puts("\n");
+	#endif
+
+	DELAY_ms(time);
+	return 11;
 };
 
 uint8_t fill_screen(char color[16])
 {
-	int col = change_col(color);
+	#ifdef DEBUG
+	UART_puts("\nFill_screen\nColor: ");
+	UART_puts(color);
+	UART_puts("\n");
+	#endif
+
+	uint8_t col = change_col(color);
 
 	UB_VGA_FillScreen(col);
-	return 11;
+	return 12;
 };

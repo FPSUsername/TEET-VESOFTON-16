@@ -73,23 +73,26 @@ void UART_control(char **array)
 {
 	uint8_t err = 0;
 
-	if 		(strcmp(array[0], "lijn") == 0)				err = line((int) array[1], (int) array[2], (int) array[3], (int) array[4], (int) array[5], array[6]);
-	else if (strcmp(array[0], "arrow") == 0)			err = arrow((int) array[1], (int) array[2], (int) array[3], (int) array[4], (int) array[5], array[6]);
-	else if (strcmp(array[0], "ellips") == 0)			err = ellipse((int) array[1], (int) array[2], (int) array[3], (int) array[4], array[5]);
-	else if (strcmp(array[0], "ellips_gevuld") == 0)	err = ellipse_filled((int) array[1], (int) array[2], (int) array[3], (int) array[4], array[5]);
-	else if (strcmp(array[0], "rechthoek") == 0)		err = rectangular((int) array[1], (int) array[2], (int) array[3], (int) array[4], array[5]);
-	else if (strcmp(array[0], "rechthoek_dik") == 0)	err = rectangular_thick((int) array[1], (int) array[2], (int) array[3], (int) array[4], (int) array[5], (int) array[6], array[7]);
-	else if (strcmp(array[0], "rechthoek_gevuld") == 0)	err = rectangular_filled((int) array[1], (int) array[2], (int) array[3], (int) array[4], array[5]);
-	else if (strcmp(array[0], "driehoek") == 0)			err = triangle((int) array[1], (int) array[2], (int) array[3], (int) array[4], (int) array[5], (int) array[6], array[7]);
-	else if (strcmp(array[0], "letter") == 0)			err = print_char((int) array[1], (int) array[2], (int) array[3], array[4], array[5]);
-	else if (strcmp(array[0], "tekst") == 0)			err = print_text((int) array[1], (int) array[2], array[3], array[4], array[5]);
-	else if (strcmp(array[0], "bitmap") == 0)			err = bitmap((int) array[1], (int) array[2], (int) array[3]);
-	else if (strcmp(array[0], "wacht") == 0)			DELAY_ms((int) array[1]);
+//	if 		(strcmp(array[0], "lijn") == 0)				err = line(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), atoi(array[5]), array[6]);
+	if (strcmp(array[0], "arrow") == 0)			err = arrow(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), atoi(array[5]), array[6]);
+	else if (strcmp(array[0], "ellips") == 0)			err = ellipse_filled(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), array[5]);
+	else if (strcmp(array[0], "ellips_gevuld") == 0)	err = ellipse_filled(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), array[5]);
+	else if (strcmp(array[0], "rechthoek") == 0)		err = rectangular(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), array[5]);
+	else if (strcmp(array[0], "rechthoek_dik") == 0)	err = rectangular_thick(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), atoi(array[5]), atoi(array[6]), array[7]);
+	else if (strcmp(array[0], "rechthoek_gevuld") == 0)	err = rectangular_filled(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), array[5]);
+	else if (strcmp(array[0], "driehoek") == 0)			err = triangle(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), atoi(array[5]), atoi(array[6]), array[7]);
+	else if (strcmp(array[0], "letter") == 0)			err = print_char(atoi(array[1]), atoi(array[2]), atoi(array[3]), array[4], array[5]);
+	else if (strcmp(array[0], "tekst") == 0)			err = print_text(atoi(array[1]), atoi(array[2]), array[3], array[4], array[5]);
+	else if (strcmp(array[0], "bitmap") == 0) {
+		if (array[4] == NULL) array[4] = 0; // Disable transparency if not defined
+		err = bitmap(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]));
+	}
+	else if (strcmp(array[0], "wacht") == 0)			err = DELAY(atoi(array[1]));
 	else if (strcmp(array[0], "clearscherm") == 0)		err = fill_screen(array[1]);
 	else UART_puts("Invalid command!\n");
 
 	if (err != 0){
-		UART_puts("\nError code: ");
+		UART_puts("\nReturn code: ");
 		UART_putint(err);
 		UART_puts("\n");
 	}
