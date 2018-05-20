@@ -40,19 +40,10 @@ uint8_t change_col(char color[16]){
 uint8_t line(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t thickness, char color[16])
 {
 	#ifdef DEBUG
-	UART_puts("\nLine\nX1\tY1\tX2\tY2\tThick\tColor\n");
-	UART_putint(x1);
-	UART_puts("\t");
-	UART_putint(y1);
-	UART_puts("\t");
-	UART_putint(x2);
-	UART_puts("\t");
-	UART_putint(y2);
-	UART_puts("\t");
-	UART_putint(thickness);
-	UART_puts("\t");
-	UART_puts(color);
-	UART_puts("\n");
+	size_t len;
+	UART_puts("\nLine\nX1\tY1\tX2\tY2\tThick\tColor");
+	len = sizeof(x1) + sizeof(y1) + sizeof(x2) + sizeof(y2) + sizeof(thickness) + strlen(color) + 1;
+	UART_printf(len + 6, "\n%d\t%d\t%d\t%d\t%d\t%s", x1, y1, x2, y2, thickness, color);
 	#endif
 
 	uint8_t col = change_col(color);
@@ -118,6 +109,12 @@ uint8_t line(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t thickness, 
 
 uint8_t arrow(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t thickness, char color[16])
 {
+	#ifdef DEBUG
+	size_t len;
+	UART_puts("\nArrow\nX1\tY1\tX2\tY2\tThick\tColor");
+	len = sizeof(x1) + sizeof(y1) + sizeof(x2) + sizeof(y2) + sizeof(thickness) + strlen(color) + 1;
+	UART_printf(len + 6, "\n%d\t%d\t%d\t%d\t%d\t%s", x1, y1, x2, y2, thickness, color);
+	#endif
 //	uint8_t col = change_col(color);
 
 	return 2;
@@ -126,17 +123,10 @@ uint8_t arrow(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t thickness,
 uint8_t ellipse(int16_t x1, int16_t y1, int16_t xradius, int16_t yradius, char color[16])
 {
 	#ifdef DEBUG
-	UART_puts("\nEllipse\nX1\tY1\txRadius\tyRadius\tColor\n");
-	UART_putint(x1);
-	UART_puts("\t");
-	UART_putint(y1);
-	UART_puts("\t");
-	UART_putint(xradius);
-	UART_puts("\t");
-	UART_putint(yradius);
-	UART_puts("\t");
-	UART_puts(color);
-	UART_puts("\n");
+	size_t len;
+	UART_puts("\nEllipse\nX1\tY1\txRadius\tyRadius\tColor");
+	len = sizeof(x1) + sizeof(y1) + sizeof(xRadius) + sizeof(yRadius) + strlen(color) + 1;
+	UART_printf(len + 5, "\n%d\t%d\t%d\t%d\t%s", x1, y1, xRadius, yRadius, color);
 	#endif
 
 //	uint8_t col = change_col(color);
@@ -147,17 +137,10 @@ uint8_t ellipse(int16_t x1, int16_t y1, int16_t xradius, int16_t yradius, char c
 uint8_t ellipse_filled(int16_t x1, int16_t y1, int16_t xradius, int16_t yradius, char color[16])
 {
 	#ifdef DEBUG
-	UART_puts("\nEllipse_filled\nX1\tY1\txRadius\tyRadius\tColor\n");
-	UART_putint(x1);
-	UART_puts("\t");
-	UART_putint(y1);
-	UART_puts("\t");
-	UART_putint(xradius);
-	UART_puts("\t");
-	UART_putint(yradius);
-	UART_puts("\t");
-	UART_puts(color);
-	UART_puts("\n");
+	size_t len;
+	UART_puts("\nEllipse_filled\nX1\tY1\txRadius\tyRadius\tColor");
+	len = sizeof(x1) + sizeof(y1) + sizeof(xRadius) + sizeof(yRadius) + strlen(color) + 1;
+	UART_printf(len + 5, "\n%d\t%d\t%d\t%d\t%s", x1, y1, xRadius, yRadius, color);
 	#endif
 
 	uint8_t col = change_col(color);
@@ -176,17 +159,10 @@ uint8_t ellipse_filled(int16_t x1, int16_t y1, int16_t xradius, int16_t yradius,
 uint8_t rectangular(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, char color[16])
 {
 	#ifdef DEBUG
-	UART_puts("\nRectangular\nX1\tY1\txLength\tyLength\tColor\n");
-	UART_putint(x1);
-	UART_puts("\t");
-	UART_putint(y1);
-	UART_puts("\t");
-	UART_putint(xlength);
-	UART_puts("\t");
-	UART_putint(ylength);
-	UART_puts("\t");
-	UART_puts(color);
-	UART_puts("\n");
+	size_t len;
+	UART_puts("\nRectangular\nX1\tY1\txLength\tyLength\tColor");
+	len = sizeof(x1) + sizeof(y1) + sizeof(xlength) + sizeof(ylength) + strlen(color) + 1;
+	UART_printf(len + 5, "\n%d\t%d\t%d\t%d\t%s", x1, y1, xlength, ylength, color);
 	#endif
 
 	uint8_t col = change_col(color);
@@ -211,21 +187,10 @@ uint8_t rectangular(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength
 uint8_t rectangular_thick(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, uint8_t tx, uint8_t ty, char color[16])
 {
 	#ifdef DEBUG
-	UART_puts("\nRectangular_thick\nX1\tY1\txLength\tyLength\tX_thick\tY_thick\tColor\n");
-	UART_putint(x1);
-	UART_puts("\t");
-	UART_putint(y1);
-	UART_puts("\t");
-	UART_putint(xlength);
-	UART_puts("\t");
-	UART_putint(ylength);
-	UART_puts("\t");
-	UART_puts(tx);
-	UART_puts("\t");
-	UART_puts(ty);
-	UART_puts("\t");
-	UART_puts(color);
-	UART_puts("\n");
+	size_t len;
+	UART_puts("\nRectangular_thick\nX1\tY1\txLength\tyLength\tX_thick\tY_thick\tColor");
+	len = sizeof(x1) + sizeof(y1) + sizeof(xlength) + sizeof(ylength) + sizeof(tx) + sizeof(ty) + strlen(color) + 1;
+	UART_printf(len + 7, "\n%d\t%d\t%d\t%d\t%d\t%d\t%s", x1, y1, xlength, ylength, tx, ty, color);
 	#endif
 
 	uint8_t col = change_col(color);
@@ -257,18 +222,12 @@ uint8_t rectangular_thick(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t y
 uint8_t rectangular_filled(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, char color[16])
 {
 	#ifdef DEBUG
-	UART_puts("\nRectangular_filled\nX1\tY1\txLength\tyLength\tColor\n");
-	UART_putint(x1);
-	UART_puts("\t");
-	UART_putint(y1);
-	UART_puts("\t");
-	UART_putint(xlength);
-	UART_puts("\t");
-	UART_putint(ylength);
-	UART_puts("\t");
-	UART_puts(color);
-	UART_puts("\n");
+	size_t len;
+	UART_puts("\nRectangular_filled\nX1\tY1\txLength\tyLength\tColor");
+	len = sizeof(x1) + sizeof(y1) + sizeof(xlength) + sizeof(ylength) + strlen(color) + 1;
+	UART_printf(len + 5, "\n%d\t%d\t%d\t%d\t%s", x1, y1, xlength, ylength, color);
 	#endif
+
 	uint8_t col = change_col(color);
 
 	// Out of screen
@@ -295,17 +254,10 @@ uint8_t triangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int
 uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char font[16])
 {
 	#ifdef DEBUG
-	UART_puts("\nPrint_char\nX1\tY1\tChar\tColor\tFont\n");
-	UART_putint(x1);
-	UART_puts("\t");
-	UART_putint(y1);
-	UART_puts("\t");
-	UART_putchar(chr);
-	UART_puts("\t");
-	UART_puts(color);
-	UART_puts("\t");
-	UART_puts(font);
-	UART_puts("\n");
+	size_t len;
+	UART_puts("\nPrint_char\nX1\tY1\tChar\tColor\tFont");
+	len = sizeof(x1) + sizeof(y1) + 1 + strlen(color) + strlen(font) + 1;
+	UART_printf(len + 5, "\n%d\t%d\t%c\t%s\t%s", x1, y1, chr, color, font);
 	#endif
 	uint8_t col = change_col(color);
 	uint8_t set;
@@ -334,23 +286,20 @@ uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char fon
 uint8_t print_text(int16_t x1, int16_t y1, char str[], char color[16], char font[16])
 {
 	#ifdef DEBUG
-	UART_puts("\nPrint_text\nX1\tY1\tString\n");
-	UART_putint(x1);
-	UART_puts("\t");
-	UART_putint(y1);
-	UART_puts("\t");
-	UART_puts(str);
-	UART_puts("\nColor\tFont\n");
-	UART_puts(color);
-	UART_puts("\t");
-	UART_puts(font);
-	UART_puts("\n");
+	size_t len;
+	UART_puts("\nPrint_text\nX1\tY1\tString");
+	len = sizeof(x1) + sizeof(y1) + strlen(str) + 1;
+	UART_printf(len + 3, "\n%d\t%d\t%s", x1, y1, str);
+	UART_puts("\nColor\tFont");
+	len = strlen(color) + strlen(font) +1;
+	UART_printf(len + 2, "\n%s\t%s", color, font);
 	#endif
 
-	uint8_t margin = 8;
+	uint8_t margin = 8; // Display margin
 	uint16_t x = 0;
 	uint16_t y = 0;
-	size_t len = strlen(str);
+	char *p = str;
+	unsigned char current_char;
 
 	if (x1 < margin) x1 = margin;
 	if (y1 < margin) y1 = margin;
@@ -359,9 +308,12 @@ uint8_t print_text(int16_t x1, int16_t y1, char str[], char color[16], char font
 	if (x1 > (VGA_DISPLAY_X - 8 - margin)) return 91;
 	if (y1 > (VGA_DISPLAY_Y - 8 - margin)) return 92;
 
-	for(int i = 0; i < len; i++) {
-		print_char(x1 + x, y1 + y, str[i], color, font);
-		if ((x + x1) < (VGA_DISPLAY_X - 8 - margin))
+	while (*p) {
+		current_char = *p++; // Take current char and increment it for the next char
+		print_char(x1 + x, y1 + y, current_char, color, font);
+
+		// Next character and next line
+		if ((x + x1) < (VGA_DISPLAY_X - 8 - margin)) // 8 because the font size is 8 wide
 			x += 8; // No spacing needed
 		else {
 			x = 0; // cursor position;
