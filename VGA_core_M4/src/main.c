@@ -47,9 +47,9 @@ int main(void)
 	rectangular(75,160,50,75,"blauw");
 	rectangular_thick(150,160,75,50,5,5,"groen");
 	rectangular_filled(230,160,75,75,"geel");
-	print_text(0, 80, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "blauw", "niks");
-	print_text(0, 90, "abcdefghijklmnopqrstuvwxyz", "groen", "niks");
-	print_text(0, 100, "~`!@#$%^&*()-_=+{}[]:;',.<>/?|", "cyaan", "niks");
+	print_text(0, 80, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "blauw", "norm");
+	print_text(0, 90, "abcdefghijklmnopqrstuvwxyz", "groen", "cursief");
+	print_text(0, 100, "~`!@#$%^&*()-_=+{}[]:;',.<>/?|", "cyaan", "vet");
 	print_text(0, 110, "1234567890", "rood", "niks");
 	print_text(0, 120, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "paars", "niks");
 	// Greek

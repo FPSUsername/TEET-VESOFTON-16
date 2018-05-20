@@ -11,6 +11,9 @@
 #include "bitmap_1.h"
 #include "font8x8_basic.h"
 #include "font8x8_greek.h"
+#include "arial8x8_black.h"
+#include "arial8x8_italic.h"
+#include "arial8x8_regular.h"
 
 uint8_t change_col(char color[16]){
 	uint8_t col;
@@ -273,8 +276,12 @@ uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char fon
 		for (y = 0; y < size; y++) { // Vertical
 			if (strcmp(font, "greek") == 0)
 				set = font8x8_greek[chr][x] & 1 << y;
-			else
-				set = font8x8_basic[chr][x] & 1 << y;
+			else if (strcmp(font, "cursief") == 0)
+				set = arial8x8_italic[chr][x] & 1 << y;
+			else if (strcmp(font, "vet") == 0)
+				set = arial8x8_black[chr][x] & 1 << y;
+			else // Normal font
+				set = arial8x8_regular[chr][x] & 1 << y;
 			if (set)
 				UB_VGA_SetPixel(x1 + y, y1 + x, col);
 		}

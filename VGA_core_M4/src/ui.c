@@ -8,6 +8,7 @@
 #include "ui.h"
 #include "include.h"
 #include "draw_API.h"
+#include <ctype.h>
 
 
 /* Get input commands, split them and return them
