@@ -29,11 +29,8 @@ char ** UART_tokens()
 	// Extract each variable from the input buffer
 	for (char* p = strtok(str, ","); p != NULL; p = strtok(NULL, ",")) {
 		// Write to a new buffer
-		// More info at: https://stackoverflow.com/a/1095006
-		array = realloc(array, (i + 1) * sizeof(char*)); // Dynamically increase the size of the array // Doesn't work correctly yet
-		array[i] = (char *) malloc(strlen(p) + 1); // Dynamically allocate buffer size of each string
-		strlwr(p); // Lowercase the string
-		strcpy(array[i], p); // Copy the string to the array
+		array = realloc(array, (i + 1) * sizeof(char*)); // Dynamically increase the size of the array
+		array[i] = strlwr(strdup(p)); // Lowercase the string and copy it
 
 		#ifdef DEBUG
 		UART_putint(i); // Array iteration
