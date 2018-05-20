@@ -19,6 +19,7 @@ VGA output API
 
 ## **Usage:**
 Terminal baud rate: `115200`
+
 Data string format: `function, param1, param2, paramN`
 
 ## **Example:**
