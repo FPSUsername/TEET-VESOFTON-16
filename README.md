@@ -30,7 +30,7 @@ lijn, 1, 1, 100, 100, rood
 ```
 
 ## **Todo:**
-- [] Line
-- [] Arrow
-- [] Triangle
-- [] Font styles
+- [ ] Line
+- [ ] Arrow
+- [ ] Triangle
+- [ ] Font styles
