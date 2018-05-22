@@ -71,8 +71,8 @@ void UART_control(char **array)
 {
 	uint8_t err = 0;
 
-//	if 		(strcmp(array[0], "lijn") == 0)				err = line(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), atoi(array[5]), array[6]);
-	if (strcmp(array[0], "arrow") == 0)			err = arrow(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), atoi(array[5]), array[6]);
+	if 		(strcmp(array[0], "lijn") == 0)				err = line(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), atoi(array[5]), array[6]);
+	else if (strcmp(array[0], "arrow") == 0)			err = arrow(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), atoi(array[5]), array[6]);
 	else if (strcmp(array[0], "ellips") == 0)			err = ellipse_filled(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), array[5]);
 	else if (strcmp(array[0], "ellips_gevuld") == 0)	err = ellipse_filled(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), array[5]);
 	else if (strcmp(array[0], "rechthoek") == 0)		err = rectangular(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), array[5]);

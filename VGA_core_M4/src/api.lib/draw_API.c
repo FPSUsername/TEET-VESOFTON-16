@@ -14,6 +14,7 @@
 #include "arial8x8_black.h"
 #include "arial8x8_italic.h"
 #include "arial8x8_regular.h"
+#include "verdana8x8_basic.h"
 
 uint8_t change_col(char color[16]){
 	uint8_t col;
@@ -50,63 +51,63 @@ uint8_t line(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t thickness, 
 	#endif
 
 	uint8_t col = change_col(color);
-	int dx =  abs (x2 - x1), sx = x1 < x2 ? 1 : -1;
-	int dy =  ((-1) * abs (y2 - y1)), sy = y1 < y2 ? 1 : -1;
-	UART_puts("DX: ");
-	UART_putint(dx);
-	UART_puts("\nDY: ");
-	UART_putint(dy);
-	int err = dx + dy, e2; /* error value e_xy */
-
-	float rc, x_rc, y_rc;
-	int x_thick1, y_thick1, x_thick2, y_thick2, dikke, x_dx, y_dy;
-	x_dx = x2-x1;
-	y_dy = y2-y1;
-
-	x_rc = x2-x1;
-	y_rc = y2-y1;
-	x_rc = y_rc *-1; //door onderstaande berekening ontstaat er een lijn die 90graden op de te tekenen lijn achterloopt
-	y_rc = x_rc;
-	rc= sqrt((x_rc*x_rc)+(y_rc*y_rc));
-	x_thick1= (rc/thickness)*x_rc; // casten misschien?
-	y_thick1= (rc/thickness)*y_rc;
-	x_thick2= x_thick1+x_dx;
-	y_thick2= y_thick1+y_dy;
-	dikke= 0;
-	while(1){  /* loop */
-		UB_VGA_SetPixel(x1,y1,col);
-	  if (x1 == x2 && y1 == y2) break;
-	  e2 = 2 * err;
-	  if (e2 >= dy) { err += dy; x1 += sx; } /* e_xy+e_x > 0 */
-	  if (e2 <= dx) { err += dx; y1 += sy; } /* e_xy+e_y < 0 */
-	}
-	while(1){
-		UB_VGA_SetPixel(x_thick1,y_thick1,col);
-		  e2 = 2 * err;
-		  if (e2 >= dy) { err += dy; x_thick1 += sx; } /* e_xy+e_x > 0 */
-		  if (e2 <= dx) { err += dx; y_thick1 += sy; } /* e_xy+e_y < 0 */
-
-		if (x_thick1 == x_thick2 && y_thick1 == y_thick2){
-			dikke++;
-			x_thick1= (rc/dikke)*x_rc; // casten misschien?
-			y_thick1= (rc/dikke)*y_rc;
-			x_thick2= x_thick1+dx;
-			y_thick2= y_thick1+dy;
-			if(dikke==thickness)break;
-		}
-
-	}
-//	int dx =  abs (x2 - x1), sx = x1 < x2 ? 1 :  - 1;
-//	int dy =  - abs (y2 - y1), sy = y1 < y2 ? 1 :  - 1;
+//	int dx =  abs (x2 - x1), sx = x1 < x2 ? 1 : -1;
+//	int dy =  ((-1) * abs (y2 - y1)), sy = y1 < y2 ? 1 : -1;
+//	UART_puts("DX: ");
+//	UART_putint(dx);
+//	UART_puts("\nDY: ");
+//	UART_putint(dy);
 //	int err = dx + dy, e2; /* error value e_xy */
 //
+//	float rc, x_rc, y_rc;
+//	int x_thick1, y_thick1, x_thick2, y_thick2, dikke, x_dx, y_dy;
+//	x_dx = x2-x1;
+//	y_dy = y2-y1;
+//
+//	x_rc = x2-x1;
+//	y_rc = y2-y1;
+//	x_rc = y_rc *-1; //door onderstaande berekening ontstaat er een lijn die 90graden op de te tekenen lijn achterloopt
+//	y_rc = x_rc;
+//	rc= sqrt((x_rc*x_rc)+(y_rc*y_rc));
+//	x_thick1= (rc/thickness)*x_rc; // casten misschien?
+//	y_thick1= (rc/thickness)*y_rc;
+//	x_thick2= x_thick1+x_dx;
+//	y_thick2= y_thick1+y_dy;
+//	dikke= 0;
 //	while(1){  /* loop */
-//		UB_VGA_SetPixel(x1, y1, col);
+//		UB_VGA_SetPixel(x1,y1,col);
 //	  if (x1 == x2 && y1 == y2) break;
 //	  e2 = 2 * err;
-//	  if (e2 >= dy) { err += dy; x1 += sx; } /* e_xy + e_x > 0 */
-//	  if (e2 <= dx) { err += dx; y1 += sy; } /* e_xy + e_y < 0 */
+//	  if (e2 >= dy) { err += dy; x1 += sx; } /* e_xy+e_x > 0 */
+//	  if (e2 <= dx) { err += dx; y1 += sy; } /* e_xy+e_y < 0 */
 //	}
+//	while(1){
+//		UB_VGA_SetPixel(x_thick1,y_thick1,col);
+//		  e2 = 2 * err;
+//		  if (e2 >= dy) { err += dy; x_thick1 += sx; } /* e_xy+e_x > 0 */
+//		  if (e2 <= dx) { err += dx; y_thick1 += sy; } /* e_xy+e_y < 0 */
+//
+//		if (x_thick1 == x_thick2 && y_thick1 == y_thick2){
+//			dikke++;
+//			x_thick1= (rc/dikke)*x_rc; // casten misschien?
+//			y_thick1= (rc/dikke)*y_rc;
+//			x_thick2= x_thick1+dx;
+//			y_thick2= y_thick1+dy;
+//			if(dikke==thickness)break;
+//		}
+//
+//	}
+	int dx =  abs (x2 - x1), sx = x1 < x2 ? 1 :  - 1;
+	int dy =  - abs (y2 - y1), sy = y1 < y2 ? 1 :  - 1;
+	int err = dx + dy, e2; /* error value e_xy */
+
+	while(1){  /* loop */
+		UB_VGA_SetPixel(x1, y1, col);
+	  if (x1 == x2 && y1 == y2) break;
+	  e2 = 2 * err;
+	  if (e2 >= dy) { err += dy; x1 += sx; } /* e_xy + e_x > 0 */
+	  if (e2 <= dx) { err += dx; y1 += sy; } /* e_xy + e_y < 0 */
+	}
 	return 1;
 };
 
@@ -274,16 +275,27 @@ uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char fon
 
 	for (x = 0; x < size; x++) { // Horizontal, x-- results into flipping
 		for (y = 0; y < size; y++) { // Vertical
-			if (strcmp(font, "greek") == 0)
+			if (strcmp(font, "greek") == 0) {
 				set = font8x8_greek[chr][x] & 1 << y;
-			else if (strcmp(font, "cursief") == 0)
+				if (set)
+					UB_VGA_SetPixel(x1 + y, y1 + x, col);
+			}
+			else if (strcmp(font, "cursief") == 0) {
 				set = arial8x8_italic[chr][x] & 1 << y;
-			else if (strcmp(font, "vet") == 0)
+				if (set)
+					UB_VGA_SetPixel(x1 + x, y1 + y, col);
+			}
+			else if (strcmp(font, "vet") == 0) {
 				set = arial8x8_black[chr][x] & 1 << y;
-			else // Normal font
+				if (set)
+					UB_VGA_SetPixel(x1 + x, y1 + y, col);
+			}
+			else { // Normal font
 				set = arial8x8_regular[chr][x] & 1 << y;
-			if (set)
-				UB_VGA_SetPixel(x1 + y, y1 + x, col);
+//				set = Verdana8x8[chr][x] & 1 << y;
+				if (set)
+					UB_VGA_SetPixel(x1 + x, y1 + y, col);
+			}
 		}
 	}
 

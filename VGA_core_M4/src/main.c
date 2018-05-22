@@ -30,10 +30,26 @@ int main(void)
 	DELAY_init();
 	UB_VGA_Screen_Init(); // Init VGA-Screen
 
+
+	// LCD Write
+	LCD_clear();
+	LCD_puts("TEET-VESOFTON-16");
+	LCD_XY(0, 1);
+	LCD_puts(version);
+	LCD_cursor_off();
+
 	// LEDs
-	LED_put(0xFF);
-	DELAY_ms(500);
+	int led = 0x00;
+	for (int i = 0; i < 8; i++) {
+		led = ((led + 1) << 1) - 1;
+		LED_put(led);
+		DELAY_ms(25);
+	}
 	LED_put(0x00);
+
+	// UART
+	UART_puts(version);
+	UART_puts("\n\r");
 
 	// Screen
 	UB_VGA_FillScreen(VGA_COL_LIGHT_GREEN);
@@ -50,24 +66,13 @@ int main(void)
 	print_text(0, 80, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "blauw", "norm");
 	print_text(0, 90, "abcdefghijklmnopqrstuvwxyz", "groen", "cursief");
 	print_text(0, 100, "~`!@#$%^&*()-_=+{}[]:;',.<>/?|", "cyaan", "vet");
-	print_text(0, 110, "1234567890", "rood", "niks");
+	print_text(0, 110, "1234567890", "rood", "norm");
 	print_text(0, 120, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "paars", "niks");
 	// Greek
 	print_text(0, 140, "*!+'30", "zwart", "greek");
 	print_char(56, 140, 37, "zwart", "greek");
 	print_text(62, 140, "1!", "zwart", "greek");
 //	print_text(0, 150, "1234567890!#$&*()-+',.>", "zwart", "greek");
-
-	// LCD Write
-	LCD_clear();
-	LCD_puts("TEET-VESOFTON-16");
-	LCD_XY(0, 1);
-	LCD_puts(version);
-	LCD_cursor_off();
-
-	// UART
-	UART_puts(version);
-	UART_puts("\n\r");
 
 	while(1)
 	{
