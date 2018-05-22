@@ -29,17 +29,20 @@
 #define  VGA_COL_PINK			0xEF
 #define  VGA_COL_PURPLE			0x82
 
-typedef unsigned char uint8_t;
-//typedef unsigned int uint16_t;
+#include "stdint.h"
 
-
-int change_col(char color[16]);
-uint8_t line(uint8_t x1,uint8_t y1,uint8_t x2,uint8_t y2,uint8_t thickness,char color[16]);
-uint8_t arrow(uint8_t x1,uint8_t y1,uint8_t x2,uint8_t y2,uint8_t thickness,char color[16]);
-uint8_t ellipse(uint8_t x1,uint8_t y1,uint8_t xradius,uint8_t yradius,char color[16]);
-uint8_t rectangular(uint8_t x1,uint8_t y1,uint8_t xlength,uint8_t ylength,char color[16]); //als er 6argumenten worden gegeven word de dikte meegerekend
-uint8_t triangle(uint8_t x1,uint8_t y1,uint8_t x2,uint8_t y2,uint8_t x3,uint8_t y3,char color[16]);
-uint8_t text(uint8_t x1,uint8_t y1,char str[255],char color[16],char font[16]);
-uint8_t bitmap(uint8_t bitmap,uint8_t x1,uint8_t y1);
-//uint8_t delay_ms(uint16_t time);
+uint8_t change_col(char color[16]);
+uint8_t line(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t thickness, char color[16]);
+uint8_t arrow(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t thickness, char color[16]);
+uint8_t ellipse(int16_t x1, int16_t y1, int16_t xradius, int16_t yradius, char color[16]);
+uint8_t ellipse_filled(int16_t x1, int16_t y1, int16_t xradius, int16_t yradius, char color[16]);
+uint8_t rectangular(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, char color[16]);
+uint8_t rectangular_thick(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, uint8_t tx, uint8_t ty, char color[16]);
+uint8_t rectangular_filled(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, char color[16]);
+uint8_t triangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int16_t y3, char color[16]);
+uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char font[16]);
+uint8_t print_text(int16_t x1, int16_t y1, char str[], char color[16], char font[16]);
+uint8_t bitmap(uint8_t bitmap, int16_t x1, int16_t y1, uint8_t trans);
+uint8_t DELAY(uint16_t time);
 uint8_t fill_screen(char color[16]);
+void dikkelijn(int16_t x1, int16_t y1, int16_t x2, int16_t y2, char color[16]);

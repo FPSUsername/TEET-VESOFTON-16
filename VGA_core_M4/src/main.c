@@ -16,7 +16,7 @@
 #include <math.h>
 #include "draw_API.h"
 
-char *version = "API v0.4";
+char *version = "API v0.42";
 
 int main(void)
 {
@@ -37,10 +37,31 @@ int main(void)
 
 	// Screen
 	UB_VGA_FillScreen(VGA_COL_BLACK);
-	ellipse(100, 100, 50, 50, "rood");
-	line(80,80,120,120,1,"zwart"); //x1 y1 x2 y2
-	line(120,80,80,120,1,"zwart");
-
+	bitmap(0, 10, 10, 1);
+	bitmap(1, 116, 10, 0);
+	bitmap(2, 222, 10, 0);
+//	ellipse_filled(42, 190, 10, 30, "rood");
+//	ellipse(70,40,40,30,"lichtrood");
+	line(80,80,120,60,20,"wit"); //x1 y1 x2 y2
+//	line(80,80,65,94,1,"wit"); //x1 y1 x2 y2
+	line(200,120,160,80,30,"groen");
+//	line(126,120,166,80,30,"wit"); //x1 y1 x2 y2
+//	line(169,80,129,120,9,"groen");
+//	line(80,80,120,120,30,"wit"); //x1 y1 x2 y2
+//	line(120,80,80,120,9,"groen");
+//	rectangular(75,160,50,75,"blauw");
+//	rectangular_thick(150,160,75,50,5,5,"groen");
+//	rectangular_filled(230,160,75,75,"geel");
+//	print_text(0, 80, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "blauw", "norm");
+//	print_text(0, 90, "abcdefghijklmnopqrstuvwxyz", "groen", "cursief");
+//	print_text(0, 100, "~`!@#$%^&*()-_=+{}[]:;',.<>/?|", "cyaan", "vet");
+//	print_text(0, 110, "1234567890", "rood", "niks");
+//	print_text(0, 120, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "paars", "niks");
+//	// Greek
+//	print_text(0, 140, "*!+'30", "zwart", "greek");
+//	print_char(56, 140, 37, "zwart", "greek");
+//	print_text(62, 140, "1!", "zwart", "greek");
+//	print_text(0, 150, "1234567890!#$&*()-+',.>", "zwart", "greek");
 
 	// LCD Write
 	LCD_clear();
@@ -55,16 +76,7 @@ int main(void)
 
 	while(1)
 	{
-		// How to call UART_tokens
 		char **arguments = UART_tokens();
-
-		// Iterate through the arguments and print them (Example code)
-//		for(unsigned char i = 0; arguments[i] != NULL; i++)
-//		{
-//			UART_puts(arguments[i]);
-//			UART_puts("\n");
-//		}
-
 		UART_control(arguments);
 
 		// ALWAYS clear AFTER you are done with your arguments to prevent memory leaks!
