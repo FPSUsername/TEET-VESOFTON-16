@@ -266,36 +266,37 @@ uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char fon
 	uint8_t col = change_col(color);
 	uint8_t set;
 	uint8_t size = 8; // font size (h and v)
-	uint16_t x, y;
+	uint16_t x, x_p, y, y_p;
 
 	// Offscreen
 	if (x1 < 0 || x1 > (VGA_DISPLAY_X - size)) return 81;
 	if (y1 < 0 || y1 > (VGA_DISPLAY_Y - size)) return 82;
-	y = 0;
 
 	for (x = 0; x < size; x++) { // Horizontal, x-- results into flipping
 		for (y = 0; y < size; y++) { // Vertical
 			if (strcmp(font, "greek") == 0) {
 				set = font8x8_greek[chr][x] & 1 << y;
-				if (set)
-					UB_VGA_SetPixel(x1 + y, y1 + x, col);
+				x_p = x1 + y;
+				y_p = y1 + x;
 			}
 			else if (strcmp(font, "cursief") == 0) {
 				set = arial8x8_italic[chr][x] & 1 << y;
-				if (set)
-					UB_VGA_SetPixel(x1 + x, y1 + y, col);
+				x_p = x1 + x;
+				y_p = y1 + y;
 			}
 			else if (strcmp(font, "vet") == 0) {
 				set = arial8x8_black[chr][x] & 1 << y;
-				if (set)
-					UB_VGA_SetPixel(x1 + x, y1 + y, col);
+				x_p = x1 + x;
+				y_p = y1 + y;
 			}
 			else { // Normal font
 				set = arial8x8_regular[chr][x] & 1 << y;
 //				set = Verdana8x8[chr][x] & 1 << y;
-				if (set)
-					UB_VGA_SetPixel(x1 + x, y1 + y, col);
+				x_p = x1 + x;
+				y_p = y1 + y;
 			}
+			if (set)
+				UB_VGA_SetPixel(x_p, y_p, col);
 		}
 	}
 
@@ -320,12 +321,11 @@ uint8_t print_text(int16_t x1, int16_t y1, char str[], char color[16], char font
 	char *p = str;
 	unsigned char current_char;
 
-	if (x1 < margin) x1 = margin;
-	if (y1 < margin) y1 = margin;
-
 	// Offscreen
-	if (x1 > (VGA_DISPLAY_X - 8 - margin)) return 91;
-	if (y1 > (VGA_DISPLAY_Y - 8 - margin)) return 92;
+	if (x1 < margin) x1 = margin;
+	else if (x1 > (VGA_DISPLAY_X - 8 - margin)) x1 = VGA_DISPLAY_X - 8 - margin;
+	if (y1 < margin) y1 = margin;
+	else if (y1 > (VGA_DISPLAY_Y - 8 - margin)) x1 = VGA_DISPLAY_Y - 8 - margin;
 
 	while (*p) {
 		current_char = *p++; // Take current char and increment it for the next char
@@ -349,14 +349,8 @@ uint8_t bitmap(uint8_t bitmap, int16_t x1, int16_t y1, uint8_t trans)
 {
 	#ifdef DEBUG
 	UART_puts("\nBitmap\nNr\tX1\tY1\tTransparency\n");
-	UART_putint(bitmap);
-	UART_puts("\t");
-	UART_putint(x1);
-	UART_puts("\t");
-	UART_putint(y1);
-	UART_puts("\t");
-	UART_putint(trans);
-	UART_puts("\n");
+	len = sizeof(x1) + sizeof(y1) + 1 + 1;
+	UART_printf(len + 4, "\n%d\t%d\t%d\t%d", bitmap, x1, y1, trans);
 	#endif
 	// This version can only print bitmaps that are squared
 	uint16_t x, y;
