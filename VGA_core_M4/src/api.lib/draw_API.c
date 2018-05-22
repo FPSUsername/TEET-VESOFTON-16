@@ -92,13 +92,13 @@ uint8_t line(int16_t xi, int16_t yi, int16_t xii, int16_t yii, uint8_t thickness
 		int yy= (i/rc)*y_rc+yi;
 		int x02=  (xx-xi) + xii;
 		int y02= (yy-yi)+ yii;
-		dikkelijn(xx,yy,x02,y02,color);
+		lijn(xx,yy,x02,y02,color);
 	}
 
 	return 1;
 };
 
-void dikkelijn(int16_t x1, int16_t y1, int16_t x2, int16_t y2, char color[16]){
+void lijn(int16_t x1, int16_t y1, int16_t x2, int16_t y2, char color[16]){
 	uint8_t col = change_col(color);
 	char beffer[20];
 	UART_puts("\nX1: ");	itoa(x1,beffer,10);	UART_puts(beffer);
@@ -258,9 +258,36 @@ uint8_t rectangular_filled(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t 
 
 uint8_t triangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int16_t y3, char color[16])
 {
-//	int8_t col = change_col(color);
-
+	lijn(x1,y1,x2,y2,color);
+	lijn(x2,y2,x3,y3,color);
+	lijn(x3,y3,x1,y1,color);
 	return 7;
+};
+
+uint8_t triangle_filled(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int16_t y3, char color[16])
+{
+	char beffer[20];
+	float x_r = x2-x1;
+	UART_puts("\nXr: ");	itoa(x_r,beffer,10);	UART_puts(beffer);
+	float y_r = y2-y1;
+
+	UART_puts("\nyr: ");	itoa(y_r,beffer,10);	UART_puts(beffer);
+	float rc = (y_r/x_r);
+
+	UART_puts("ik ben errrr ");
+	int rcc = rc*10;
+	UART_puts("\nRC: ");	itoa(rcc,beffer,10);	UART_puts(beffer);
+
+	for(float i=0; i<= x_r; i++){
+
+		float yy= ((i/10)*rc)+y1; // casten misschien?
+		UART_puts("\nX: ");	itoa(i,beffer,10);	UART_puts(beffer);
+		UART_puts("\nY: ");	itoa(yy,beffer,10);	UART_puts(beffer);
+		//UART_puts("\nx: ");	itoa(x_rc,beffer,10);	UART_puts(beffer);
+		//UART_puts("\ny: ");	itoa(y_rc,beffer,10);	UART_puts(beffer);
+		lijn((i/10),yy,x3,y3,color);
+	}
+	return 13;
 };
 
 uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char font[16])
