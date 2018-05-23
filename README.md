@@ -12,7 +12,7 @@ VGA output API
   - Rectangular _(line/filled)_
   - ~~Triangle~~
   - Single character
-  - Text _(Latin and Greek)_
+  - Text _(Latin with styles and Greek)_
   - Bitmaps
 - Clearscreen
 - Delay
@@ -33,4 +33,4 @@ lijn, 1, 1, 100, 100, rood
 - [ ] Line
 - [ ] Arrow
 - [ ] Triangle
-- [ ] Font styles
+- [x] Font styles
