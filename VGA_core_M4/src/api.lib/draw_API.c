@@ -264,16 +264,54 @@ uint8_t triangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int
 	return 7;
 };
 
-uint8_t triangle_filled(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int16_t y3, char color[16])
+uint8_t triangle_filled(int16_t X1, int16_t Y1, int16_t X2, int16_t Y2, int16_t X3, int16_t Y3, char color[16])
 {
+
 	char beffer[20];
+	int x01 = abs(X2-X1);
+	int x02 = abs(X3-X2);
+	int x03 = abs(X1-X3);
+	int x1,y1,x2,y2,x3,y3;
+
+   if(((x01<x02)&&(x02<x03)) || ((x01>x02)&&(x02<x03)))
+	{
+		x1 = X2;
+		y1 = Y2;
+		x2 = X3;
+		y2 = Y3;
+		x3 = X1;
+		y3 = Y1;
+	}
+	if(((x02<x01)&&(x01>x03)) || ((x01>x02)&&(x01<x03)))
+	{
+		x1 = X1;
+		y1 = Y1;
+		x2 = X2;
+		y2 = Y2;
+		x3 = X3;
+		y3 = Y3;
+	}
+	if(((x03<x01)&&(x03>x02)) || ((x03>x01)&&(x03<x02)))
+	{
+		x1 = X3;
+		y1 = Y3;
+		x2 = X1;
+		y2 = Y1;
+		x3 = X2;
+		y3 = Y2;
+	}
+	UART_puts("\nXr1: ");	itoa(x01,beffer,10);	UART_puts(beffer);
+	UART_puts("\nXr2: ");	itoa(x02,beffer,10);	UART_puts(beffer);
+	UART_puts("\nXr3: ");	itoa(x03,beffer,10);	UART_puts(beffer);
+
+
+
+
 	float x_r = x2-x1;
-	UART_puts("\nXr: ");	itoa(x_r,beffer,10);	UART_puts(beffer);
+//	UART_puts("\nXr: ");	itoa(x_r,beffer,10);	UART_puts(beffer);
 	float y_r = y2-y1;
-
-	UART_puts("\nyr: ");	itoa(y_r,beffer,10);	UART_puts(beffer);
+//	UART_puts("\nyr: ");	itoa(y_r,beffer,10);	UART_puts(beffer);
 	float rc = (y_r/x_r);
-
  	int rcc = rc*10;
 	UART_puts("\nRC: ");	itoa(rcc,beffer,10);	UART_puts(beffer);
 	if(x_r<0){
