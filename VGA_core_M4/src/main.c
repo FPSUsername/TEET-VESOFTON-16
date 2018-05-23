@@ -39,13 +39,20 @@ int main(void)
 	UB_VGA_FillScreen(VGA_COL_BLACK);
 	bitmap(0, 10, 10, 1);
 	bitmap(1, 116, 10, 0);
-	bitmap(2, 222, 10, 0);
-//	ellipse_filled(42, 190, 10, 30, "rood");
+	bitmap(2, 222, 80, 0);
+	ellipse_filled(40, 190, 15, 15, "rood");
+	ellipse_filled(80, 190, 15, 15, "rood");
+	ellipse_filled(120, 190, 15, 15, "rood");
+	ellipse_filled(160, 190, 15, 15, "rood");
+
 //	ellipse(70,40,40,30,"lichtrood");
-//	line(80,80,120,60,20,"wit"); //x1 y1 x2 y2
+	line(100,140,200,120,20,"bruin"); //x1 y1 x2 y2
 //	line(80,80,65,94,1,"wit"); //x1 y1 x2 y2
 //	line(200,120,160,80,30,"groen");
-	triangle_filled(120,140,80,160,160,190,"wit");
+//	triangle(120,140,80,160,160,190,"wit");
+//	triangle_filled(120,140,80,160,160,190,"wit");
+//	triangle_filled(80,160,160,190,120,140,"wit");
+	triangle_filled(180,180,100,140,30,180,"groen");
 //	line(126,120,166,80,30,"wit"); //x1 y1 x2 y2
 //	line(169,80,129,120,9,"groen");
 //	line(80,80,120,120,30,"wit"); //x1 y1 x2 y2

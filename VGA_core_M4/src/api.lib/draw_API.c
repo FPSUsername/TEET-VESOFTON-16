@@ -274,19 +274,31 @@ uint8_t triangle_filled(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t 
 	UART_puts("\nyr: ");	itoa(y_r,beffer,10);	UART_puts(beffer);
 	float rc = (y_r/x_r);
 
-	UART_puts("ik ben errrr ");
-	int rcc = rc*10;
+ 	int rcc = rc*10;
 	UART_puts("\nRC: ");	itoa(rcc,beffer,10);	UART_puts(beffer);
+	if(x_r<0){
+		for(int i=(x_r*10); i< 0; i++){
 
-	for(float i=0; i<= x_r; i++){
-
-		float yy= ((i/10)*rc)+y1; // casten misschien?
-		UART_puts("\nX: ");	itoa(i,beffer,10);	UART_puts(beffer);
-		UART_puts("\nY: ");	itoa(yy,beffer,10);	UART_puts(beffer);
-		//UART_puts("\nx: ");	itoa(x_rc,beffer,10);	UART_puts(beffer);
-		//UART_puts("\ny: ");	itoa(y_rc,beffer,10);	UART_puts(beffer);
-		lijn((i/10),yy,x3,y3,color);
+			float yy= ((i/10)*rc)+y1; // casten misschien?
+			UART_puts("\nX: ");	itoa(i,beffer,10);	UART_puts(beffer);
+			UART_puts("\nY: ");	itoa(yy,beffer,10);	UART_puts(beffer);
+			//UART_puts("\nx: ");	itoa(x_rc,beffer,10);	UART_puts(beffer);
+			//UART_puts("\ny: ");	itoa(y_rc,beffer,10);	UART_puts(beffer);
+			lijn(((i/10)+x1),yy,x3,y3,color);
+		}
 	}
+	if(x_r>0){
+		for(int i=0; i<(x_r*10); i++){
+
+			float yy= ((i/10)*rc)+y1; // casten misschien?
+			UART_puts("\nX: ");	itoa(i,beffer,10);	UART_puts(beffer);
+			UART_puts("\nY: ");	itoa(yy,beffer,10);	UART_puts(beffer);
+			//UART_puts("\nx: ");	itoa(x_rc,beffer,10);	UART_puts(beffer);
+			//UART_puts("\ny: ");	itoa(y_rc,beffer,10);	UART_puts(beffer);
+			lijn(((i/10)+x1),yy,x3,y3,color);
+		}
+	}
+
 	return 13;
 };
 
