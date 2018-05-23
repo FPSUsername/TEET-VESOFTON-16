@@ -15,14 +15,12 @@
 #include "stm32_ub_vga_screen.h"
 #include <math.h>
 #include "draw_API.h"
-#include "error.h"
 
 char *version = "API v0.42";
 
 int main(void)
 {
-//	  uint32_t n;
-	uint8_t error;
+	//  uint32_t n;
 
 	// Inits
 	SystemInit(); // System speed to 168MHz
@@ -55,19 +53,10 @@ int main(void)
 
 	// Screen
 	UB_VGA_FillScreen(VGA_COL_LIGHT_GREEN);
-	bitmap(0, 10, 10, 1, &error);
-	if (error)
-    {
-   		UART_puts("\n\r0:error=");
- 		UART_putint(error);
- 		STRERR(error);
-   		UART_puts("\n\r");
-    }else{
-
-    }
+	bitmap(0, 10, 10, 1);
 	bitmap(1, 116, 10, 0);
 	bitmap(2, 222, 10, 0);
-	ellipse_filled(42, 190, 10, 30, "rood", &error);
+	ellipse_filled(42, 190, 10, 30, "rood");
 //	ellipse(70,40,40,30,"lichtrood");
 //	line(80,80,120,120,30,"wit"); //x1 y1 x2 y2
 //	line(120,80,80,120,9,"groen");
