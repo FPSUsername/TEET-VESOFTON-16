@@ -7,8 +7,8 @@
 
 #include "ui.h"
 #include "include.h"
-#include "draw_API.h"
-#include <ctype.h>
+//#include "draw_API.h"
+//#include "error.h"
 
 extern uint8_t error;
 
@@ -68,7 +68,7 @@ void UART_tokens_clear(char **array)
 /* UART control
  * This function will call the functions
  */
-void UART_control(char **array)
+void UART_control(char **array, uint8_t *perr)
 {
 
 	if 		(strcmp(array[0], "lijn") == 0)				line(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), atoi(array[5]), array[6], &error);

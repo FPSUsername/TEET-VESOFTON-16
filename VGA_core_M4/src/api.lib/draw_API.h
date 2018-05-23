@@ -5,6 +5,8 @@
 // Green (3bit) -> Bit4-Bit2
 // Blue  (2bit) -> Bit1-Bit0
 //--------------------------------------------------------------
+#include "stdint.h"
+
 #define  VGA_COL_WHITE          0xFF
 #define  VGA_COL_GRAY			0xBF
 #define  VGA_COL_BLACK          0x00
@@ -28,8 +30,6 @@
 #define  VGA_COL_YELLOW         0xFC
 #define  VGA_COL_PINK			0xEF
 #define  VGA_COL_PURPLE			0x82
-
-#include "stdint.h"
 
 uint8_t change_col(char color[16], uint8_t *perr);
 uint8_t lijn(int16_t x1, int16_t y1, int16_t x2, int16_t y2, char color[16]);

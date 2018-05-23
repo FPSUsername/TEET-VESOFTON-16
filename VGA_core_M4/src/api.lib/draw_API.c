@@ -5,10 +5,10 @@
  *      Author: Bas
  */
 
-#include <draw_API.h>
-#include "stm32_ub_vga_screen.h"
 #include "include.h"
-#include "error.h"
+//#include <draw_API.h>
+//#include "stm32_ub_vga_screen.h"
+//#include "error.h"
 
 // Bitmaps
 #include "bitmap_1.h"
@@ -24,6 +24,9 @@
 extern uint8_t error;
 uint8_t err;
 
+/* Change Col
+ * This function "translates" the input string to the defined hex color values
+ */
 uint8_t change_col(char color[16], uint8_t *perr){
 	uint8_t col;
 	err = 0;
@@ -53,6 +56,9 @@ uint8_t change_col(char color[16], uint8_t *perr){
 	return col;
 };
 
+/* Lijn
+ * Function to plot a line
+ */
 uint8_t lijn(int16_t x1, int16_t y1, int16_t x2, int16_t y2, char color[16]){
 	uint8_t col = change_col(color, &error);
 	if (err)
@@ -73,6 +79,9 @@ uint8_t lijn(int16_t x1, int16_t y1, int16_t x2, int16_t y2, char color[16]){
 	return 0;
 }
 
+/* Line
+ * Function to plot a line with thickness and color as a parameter
+ */
 uint8_t line(int16_t xi, int16_t yi, int16_t xii, int16_t yii, uint8_t thickness, char color[16], uint8_t *perr)
 {
 
@@ -123,6 +132,9 @@ uint8_t line(int16_t xi, int16_t yi, int16_t xii, int16_t yii, uint8_t thickness
 	return 0;
 };
 
+/* Arrow
+ * Function that plots an arrow, not implemented
+ */
 uint8_t arrow(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t thickness, char color[16], uint8_t *perr)
 {
 	#ifdef DEBUG
@@ -135,12 +147,15 @@ uint8_t arrow(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t thickness,
 //	if (err)
 //		return 1;
 
-	if(bound(x1, y1, &error)) // Out of bound check
+	if(bound(x1, y1, &error) || bound(x2, y2, &error)) // Out of bound check
 		return 1;
 
 	return 0;
 };
 
+/* Ellipse
+ * Function to plot an ellipse outline
+ */
 uint8_t ellipse(int16_t xc, int16_t yc, int16_t rx, int16_t ry, char color[16], uint8_t *perr)
 {
 	#ifdef DEBUG
@@ -206,6 +221,9 @@ uint8_t ellipse(int16_t xc, int16_t yc, int16_t rx, int16_t ry, char color[16], 
 	return 0;
 };
 
+/* Ellipse Filled
+ * Function to plot a filled ellipse
+ */
 uint8_t ellipse_filled(int16_t x1, int16_t y1, int16_t xradius, int16_t yradius, char color[16], uint8_t *perr)
 {
 	#ifdef DEBUG
@@ -233,6 +251,9 @@ uint8_t ellipse_filled(int16_t x1, int16_t y1, int16_t xradius, int16_t yradius,
 	return 0;
 };
 
+/* Rectangular
+ * Function to plot a rectangular
+ */
 uint8_t rectangular(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, char color[16], uint8_t *perr)
 {
 	#ifdef DEBUG
@@ -267,6 +288,9 @@ uint8_t rectangular(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength
 	return 0;
 };
 
+/* Rectangular Thick
+ * Function to plot a rectangular with thickness as an extra parameter
+ */
 uint8_t rectangular_thick(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, uint8_t tx, uint8_t ty, char color[16], uint8_t *perr)
 {
 	#ifdef DEBUG
@@ -308,6 +332,9 @@ uint8_t rectangular_thick(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t y
 	return 0;
 };
 
+/* Rectangular Filled
+ * Function to plot a filled rectangular
+ */
 uint8_t rectangular_filled(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, char color[16], uint8_t *perr)
 {
 	#ifdef DEBUG
@@ -338,6 +365,9 @@ uint8_t rectangular_filled(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t 
 	return 0;
 };
 
+/* Triangle
+ * Function to plot a triangle by using three points on the screen
+ */
 uint8_t triangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int16_t y3, char color[16])
 {
 	if(bound(x1, y1, &error) || bound(x2, y2, &error) || bound(x3, y3, &error)) // Out of bound check
@@ -349,6 +379,9 @@ uint8_t triangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int
 	return 0;
 };
 
+/* Triangle Filled
+ * Function to plot a filled triangle by using three points on the screen
+ */
 uint8_t triangle_filled(int16_t X1, int16_t Y1, int16_t X2, int16_t Y2, int16_t X3, int16_t Y3, char color[16])
 {
 	if(bound(X1, Y1, &error) || bound(X2, Y2, &error) || bound(X3, Y3, &error)) // Out of bound check
@@ -407,6 +440,14 @@ uint8_t triangle_filled(int16_t X1, int16_t Y1, int16_t X2, int16_t Y2, int16_t 
 	return 0;
 };
 
+/* Print Char
+ * Function to print one character on the screen
+ * Currently allows for these styles:
+ * Greek (difficult to use since the characters are not equal to the characters of your keyboard)
+ * Italic
+ * Bold
+ * Regular
+ */
 uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char font[16], uint8_t *perr)
 {
 	#ifdef DEBUG
@@ -457,6 +498,12 @@ uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char fon
 	return 0;
 };
 
+/* Print Text
+ * Function to print strings on the screen
+ * Features:
+ * Build in OUT_OF_BOUND error workaround (The error still exists in the same form, but you have to interpret that as a warning)
+ * Automatic next line with left alignment (fills till the end of the screen)
+ */
 uint8_t print_text(int16_t x1, int16_t y1, char str[], char color[16], char font[16], uint8_t *perr)
 {
 	#ifdef DEBUG
@@ -502,6 +549,10 @@ uint8_t print_text(int16_t x1, int16_t y1, char str[], char color[16], char font
 	return 0;
 };
 
+/* Bitmap
+ * Function to print bitmaps
+ * Only works with square bitmaps @256 colors
+ */
 uint8_t bitmap(uint8_t bitmap, int16_t x1, int16_t y1, uint8_t trans, uint8_t *perr)
 {
 	// This version can only print bitmaps that are squared
@@ -533,6 +584,9 @@ uint8_t bitmap(uint8_t bitmap, int16_t x1, int16_t y1, uint8_t trans, uint8_t *p
 	return 0;
 };
 
+/* Delay
+ * Freeze the system for XXXX time in milliseconds
+ */
 uint8_t DELAY(uint16_t time, uint8_t *perr)
 {
 	#ifdef DEBUG
@@ -545,6 +599,9 @@ uint8_t DELAY(uint16_t time, uint8_t *perr)
 	return 0;
 };
 
+/* Fillscreen
+ * Function to fill the screen with one color
+ */
 uint8_t fill_screen(char color[16], uint8_t *perr)
 {
 	#ifdef DEBUG

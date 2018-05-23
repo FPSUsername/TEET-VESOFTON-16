@@ -12,13 +12,14 @@
 
 #include "main.h"
 #include "include.h"
-#include "stm32_ub_vga_screen.h"
-#include <math.h>
-#include "draw_API.h"
-#include "error.h"
+//#include "stm32_ub_vga_screen.h"
+//#include <math.h>
+//#include "draw_API.h"
+//#include "error.h"
 
 char *version = "API v0.5";
-uint8_t error = 0;
+
+uint8_t error;
 
 int main(void)
 {
@@ -93,7 +94,7 @@ int main(void)
 	while(1)
 	{
 		char **arguments = UART_tokens();
-		UART_control(arguments);
+		UART_control(arguments, &error);
 
 		// ALWAYS clear AFTER you are done with your arguments to prevent memory leaks!
 		UART_tokens_clear(arguments);
