@@ -6,11 +6,11 @@ VGA output API
 
 ## **Features:**
 ### *Draw:*
-  - ~~Line~~
+  - Line
   - ~~Arrow~~
   - Ellipse _(filled)_
   - Rectangular _(line/filled)_
-  - ~~Triangle~~
+  - Triangle _(line/filled)_
   - Single character
   - Text _(Latin with styles and Greek)_
   - Bitmaps
@@ -30,7 +30,7 @@ lijn, 1, 1, 100, 100, rood
 ```
 
 ## **Todo:**
-- [ ] Line
+- [x] Line
 - [ ] Arrow
-- [ ] Triangle
+- [x] Triangle
 - [x] Font styles

@@ -17,7 +17,7 @@ void pError(uint8_t errnum)
 		   break;
 
 		case 3  :
-			UART_puts("\nPlease stay within screen boundaries!\n");
+			UART_puts("\nThis function does not exist!\n");
 			break;
 
 		case 4  :
@@ -32,7 +32,7 @@ void pError(uint8_t errnum)
 
 uint8_t bound(uint16_t x, uint16_t y, uint8_t *perr) {
 	if (x < 0 || y < 0 || x > VGA_DISPLAY_X || y > VGA_DISPLAY_Y) {
-		*perr = ERR_OUT_OF_BOUND;
+		*perr = ERR_INPUT_INVALID;
 		pError(*perr);
 		return 1;
 	} else {

@@ -443,10 +443,11 @@ uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char fon
 				y_p = y1 + y;
 			}
 			else { // Normal font
-				set = arial8x8_regular[chr][x] & 1 << y;
+//				set = arial8x8_regular[chr][x] & 1 << y;
 //				set = Verdana8x8[chr][x] & 1 << y;
-				x_p = x1 + x;
-				y_p = y1 + y;
+				set = font8x8_basic[chr][x] & 1 << y;
+				x_p = x1 + y;
+				y_p = y1 + x;
 			}
 			if (set)
 				UB_VGA_SetPixel(x_p, y_p, col);

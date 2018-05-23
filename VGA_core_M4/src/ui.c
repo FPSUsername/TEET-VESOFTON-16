@@ -88,7 +88,10 @@ void UART_control(char **array)
 	}
 	else if (strcmp(array[0], "wacht") == 0)			DELAY(atoi(array[1]), &error);
 	else if (strcmp(array[0], "clearscherm") == 0)		fill_screen(array[1], &error);
-	else UART_puts("Invalid command!\n");
+	else {
+		*perr = ERR_INPUT_INVALID;
+		pError(*perr);
+	}
 
 	if (error){
 		UART_puts("\Error code: ");
