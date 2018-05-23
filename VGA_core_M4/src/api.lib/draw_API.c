@@ -8,15 +8,25 @@
 #include <draw_API.h>
 #include "stm32_ub_vga_screen.h"
 #include "include.h"
+#include "error.h"
+
+// Bitmaps
 #include "bitmap_1.h"
+
+// Fonts
 #include "font8x8_basic.h"
 #include "font8x8_greek.h"
 #include "arial8x8_black.h"
 #include "arial8x8_italic.h"
 #include "arial8x8_regular.h"
+#include "verdana8x8_basic.h"
 
-uint8_t change_col(char color[16]){
+extern uint8_t error;
+uint8_t err;
+
+uint8_t change_col(char color[16], uint8_t *perr){
 	uint8_t col;
+	err = 0;
 	if 		(strcmp(color, "wit") == 0) 			col = VGA_COL_WHITE;
 	else if (strcmp(color, "grijs") == 0)			col = VGA_COL_GRAY;
 	else if (strcmp(color, "zwart") == 0)			col = VGA_COL_BLACK;
@@ -34,13 +44,36 @@ uint8_t change_col(char color[16]){
 	else if (strcmp(color, "geel") == 0)			col = VGA_COL_YELLOW;
 	else if (strcmp(color, "roze") == 0)			col = VGA_COL_PINK;
 	else if (strcmp(color, "paars") == 0)			col = VGA_COL_PURPLE;
-	else 											col = VGA_COL_WHITE; // Error?
-	//enum
-
+	else {
+		col = VGA_COL_WHITE;
+		*perr = ERR_COLOR;
+		pError(*perr);
+		err = 1;
+	}
 	return col;
 };
 
-uint8_t line(int16_t xi, int16_t yi, int16_t xii, int16_t yii, uint8_t thickness, char color[16])
+uint8_t lijn(int16_t x1, int16_t y1, int16_t x2, int16_t y2, char color[16]){
+	uint8_t col = change_col(color, &error);
+	if (err)
+		return 1;
+
+	int dx =  abs (x2 - x1), sx = x1 < x2 ? 1 :  - 1;
+	int dy =  - abs (y2 - y1), sy = y1 < y2 ? 1 :  - 1;
+	int err = dx + dy, e2; /* error value e_xy */
+
+	while(1){  /* loop */
+	  UB_VGA_SetPixel(x1, y1, col);
+	  UB_VGA_SetPixel(x1, y1+1, col);
+	  if (x1 == x2 && y1 == y2) break;
+	  e2 = 2 * err;
+	  if (e2 >= dy) { err += dy; x1 += sx; } /* e_xy + e_x > 0 */
+	  if (e2 <= dx) { err += dx; y1 += sy; } /* e_xy + e_y < 0 */
+	}
+	return 0;
+}
+
+uint8_t line(int16_t xi, int16_t yi, int16_t xii, int16_t yii, uint8_t thickness, char color[16], uint8_t *perr)
 {
 
 	#ifdef DEBUG
@@ -50,12 +83,15 @@ uint8_t line(int16_t xi, int16_t yi, int16_t xii, int16_t yii, uint8_t thickness
 	UART_printf(len + 6, "\n%d\t%d\t%d\t%d\t%d\t%s", x1, y1, x2, y2, thickness, color);
 	#endif
 
+	if(bound(xi, yi, &error) || bound(xii, yii, &error)) // Out of bound check
+		return 1;
+
 	int16_t x1,x2,y1,y2;
 	x1 = xi;
 	y1 = yi;
 	x2 = xii;
 	y2 = yii;
-	uint8_t col = change_col(color);
+	uint8_t col = change_col(color, &error);
 	int dx =  abs (x2 - x1), sx = x1 < x2 ? 1 : -1;
 	int dy =  ((-1) * abs (y2 - y1)), sy = y1 < y2 ? 1 : -1;
 	int err = dx + dy, e2; /* error value e_xy */
@@ -84,26 +120,10 @@ uint8_t line(int16_t xi, int16_t yi, int16_t xii, int16_t yii, uint8_t thickness
 		lijn(xx,yy,x02,y02,color);
 	}
 
-	return 1;
+	return 0;
 };
 
-void lijn(int16_t x1, int16_t y1, int16_t x2, int16_t y2, char color[16]){
-	uint8_t col = change_col(color);
-	int dx =  abs (x2 - x1), sx = x1 < x2 ? 1 :  - 1;
-	int dy =  - abs (y2 - y1), sy = y1 < y2 ? 1 :  - 1;
-	int err = dx + dy, e2; /* error value e_xy */
-
-	while(1){  /* loop */
-	  UB_VGA_SetPixel(x1, y1, col);
-	  UB_VGA_SetPixel(x1, y1+1, col);
-	  if (x1 == x2 && y1 == y2) break;
-	  e2 = 2 * err;
-	  if (e2 >= dy) { err += dy; x1 += sx; } /* e_xy + e_x > 0 */
-	  if (e2 <= dx) { err += dx; y1 += sy; } /* e_xy + e_y < 0 */
-	}
-}
-
-uint8_t arrow(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t thickness, char color[16])
+uint8_t arrow(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t thickness, char color[16], uint8_t *perr)
 {
 	#ifdef DEBUG
 	size_t len;
@@ -111,12 +131,17 @@ uint8_t arrow(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t thickness,
 	len = sizeof(x1) + sizeof(y1) + sizeof(x2) + sizeof(y2) + sizeof(thickness) + strlen(color) + 1;
 	UART_printf(len + 6, "\n%d\t%d\t%d\t%d\t%d\t%s", x1, y1, x2, y2, thickness, color);
 	#endif
-//	uint8_t col = change_col(color);
+//	uint8_t col = change_col(color, &error);
+//	if (err)
+//		return 1;
 
-	return 2;
+	if(bound(x1, y1, &error)) // Out of bound check
+		return 1;
+
+	return 0;
 };
 
-uint8_t ellipse(int16_t xc, int16_t yc, int16_t rx, int16_t ry, char color[16])
+uint8_t ellipse(int16_t xc, int16_t yc, int16_t rx, int16_t ry, char color[16], uint8_t *perr)
 {
 	#ifdef DEBUG
 	size_t len;
@@ -125,7 +150,12 @@ uint8_t ellipse(int16_t xc, int16_t yc, int16_t rx, int16_t ry, char color[16])
 	UART_printf(len + 5, "\n%d\t%d\t%d\t%d\t%s", x1, y1, xRadius, yRadius, color);
 	#endif
 
-	uint8_t col = change_col(color);
+	if(bound(xc, yc, &error)) // Out of bound check
+		return 1;
+
+	uint8_t col = change_col(color, &error);
+	if (err)
+		return 1;
 
    int x, y, p;
    x=0;
@@ -173,10 +203,10 @@ uint8_t ellipse(int16_t xc, int16_t yc, int16_t rx, int16_t ry, char color[16])
 		}
 	 }
 
-	return 3;
+	return 0;
 };
 
-uint8_t ellipse_filled(int16_t x1, int16_t y1, int16_t xradius, int16_t yradius, char color[16])
+uint8_t ellipse_filled(int16_t x1, int16_t y1, int16_t xradius, int16_t yradius, char color[16], uint8_t *perr)
 {
 	#ifdef DEBUG
 	size_t len;
@@ -185,7 +215,12 @@ uint8_t ellipse_filled(int16_t x1, int16_t y1, int16_t xradius, int16_t yradius,
 	UART_printf(len + 5, "\n%d\t%d\t%d\t%d\t%s", x1, y1, xRadius, yRadius, color);
 	#endif
 
-	uint8_t col = change_col(color);
+	if(bound(x1, y1, &error)) // Out of bound check
+		return 1;
+
+	uint8_t col = change_col(color, &error);
+	if (err)
+		return 1;
 
 	for(int y= -yradius; y<=yradius; y++) {
 	    for(int x= -xradius; x<=xradius; x++) {
@@ -195,10 +230,10 @@ uint8_t ellipse_filled(int16_t x1, int16_t y1, int16_t xradius, int16_t yradius,
 	        	UB_VGA_SetPixel(x + x1, y + y1, col);
 	    }
 	}
-	return 4;
+	return 0;
 };
 
-uint8_t rectangular(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, char color[16])
+uint8_t rectangular(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, char color[16], uint8_t *perr)
 {
 	#ifdef DEBUG
 	size_t len;
@@ -207,7 +242,13 @@ uint8_t rectangular(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength
 	UART_printf(len + 5, "\n%d\t%d\t%d\t%d\t%s", x1, y1, xlength, ylength, color);
 	#endif
 
-	uint8_t col = change_col(color);
+	if(bound(x1, y1, &error)) // Out of bound check
+		return 1;
+
+	uint8_t col = change_col(color, &error);
+	if (err)
+		return 1;
+
 	uint16_t i;
 
 	// Out of screen
@@ -223,10 +264,10 @@ uint8_t rectangular(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength
 		UB_VGA_SetPixel(x1 + xlength - 1, i, col);
 	}
 
-	return 5;
+	return 0;
 };
 
-uint8_t rectangular_thick(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, uint8_t tx, uint8_t ty, char color[16])
+uint8_t rectangular_thick(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, uint8_t tx, uint8_t ty, char color[16], uint8_t *perr)
 {
 	#ifdef DEBUG
 	size_t len;
@@ -235,7 +276,13 @@ uint8_t rectangular_thick(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t y
 	UART_printf(len + 7, "\n%d\t%d\t%d\t%d\t%d\t%d\t%s", x1, y1, xlength, ylength, tx, ty, color);
 	#endif
 
-	uint8_t col = change_col(color);
+	if(bound(x1, y1, &error)) // Out of bound check
+		return 1;
+
+	uint8_t col = change_col(color, &error);
+	if (err)
+		return 1;
+
     uint16_t i, t;
 
 	// Out of screen
@@ -258,10 +305,10 @@ uint8_t rectangular_thick(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t y
 		}
 	}
 
-	return 5;
+	return 0;
 };
 
-uint8_t rectangular_filled(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, char color[16])
+uint8_t rectangular_filled(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, char color[16], uint8_t *perr)
 {
 	#ifdef DEBUG
 	size_t len;
@@ -270,7 +317,12 @@ uint8_t rectangular_filled(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t 
 	UART_printf(len + 5, "\n%d\t%d\t%d\t%d\t%s", x1, y1, xlength, ylength, color);
 	#endif
 
-	uint8_t col = change_col(color);
+	if(bound(x1, y1, &error)) // Out of bound check
+		return 1;
+
+	uint8_t col = change_col(color, &error);
+	if (err)
+		return 1;
 
 	// Out of screen
 	if (x1 + xlength > VGA_DISPLAY_X)	xlength = -x1 - VGA_DISPLAY_X;
@@ -283,25 +335,36 @@ uint8_t rectangular_filled(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t 
 		}
 	}
 
-	return 6;
+	return 0;
 };
 
 uint8_t triangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int16_t y3, char color[16])
 {
+	if(bound(x1, y1, &error) || bound(x2, y2, &error) || bound(x3, y3, &error)) // Out of bound check
+		return 1;
+
 	lijn(x1,y1,x2,y2,color);
 	lijn(x2,y2,x3,y3,color);
 	lijn(x3,y3,x1,y1,color);
-	return 7;
+	return 0;
 };
 
 uint8_t triangle_filled(int16_t X1, int16_t Y1, int16_t X2, int16_t Y2, int16_t X3, int16_t Y3, char color[16])
 {
+	if(bound(X1, Y1, &error) || bound(X2, Y2, &error) || bound(X3, Y3, &error)) // Out of bound check
+		return 1;
+
 	int x01 = abs(X2-X1);
 	int x02 = abs(X3-X2);
 	int x03 = abs(X1-X3);
 	int x1,y1,x2,y2,x3,y3;
+	char beffer[20];
+	UART_puts("\nx01: "); itoa(x01,beffer,10); UART_puts(beffer);
+	UART_puts("\nx02: "); itoa(x02,beffer,10); UART_puts(beffer);
+	UART_puts("\nx03: "); itoa(x03,beffer,10); UART_puts(beffer);
 
-   if(((x01<x02)&&(x02<x03)) || ((x01>x02)&&(x02<x03)))
+
+   if(((x01<x02)&&(x02<x03)) || ((x01>x02)&&(x02<x03)) || X1==X2)
 	{
 		x1 = X2;
 		y1 = Y2;
@@ -310,7 +373,7 @@ uint8_t triangle_filled(int16_t X1, int16_t Y1, int16_t X2, int16_t Y2, int16_t 
 		x3 = X1;
 		y3 = Y1;
 	}
-	if(((x02<x01)&&(x01>x03)) || ((x01>x02)&&(x01<x03)))
+	if(((x02<x01)&&(x01>x03)) || ((x01>x02)&&(x01<x03)) || X2==X3)
 	{
 		x1 = X1;
 		y1 = Y1;
@@ -319,7 +382,7 @@ uint8_t triangle_filled(int16_t X1, int16_t Y1, int16_t X2, int16_t Y2, int16_t 
 		x3 = X3;
 		y3 = Y3;
 	}
-	if(((x03<x01)&&(x03>x02)) || ((x03>x01)&&(x03<x02)))
+	if(((x03<x01)&&(x03>x02)) || ((x03>x01)&&(x03<x02)) || X3==X1)
 	{
 		x1 = X3;
 		y1 = Y3;
@@ -332,6 +395,11 @@ uint8_t triangle_filled(int16_t X1, int16_t Y1, int16_t X2, int16_t Y2, int16_t 
 	float x_r = x2-x1;
 	float y_r = y2-y1;
 	float rc = (y_r/x_r);
+	int rcc = rc*10;
+	UART_puts("\nRC"); itoa(rcc,beffer,10); UART_puts(beffer);
+	UART_puts("\nXrrr"); itoa(x_r,beffer,10); UART_puts(beffer);
+	UART_puts("\nYrrr"); itoa(y_r,beffer,10); UART_puts(beffer);
+
 	if(x_r<0){
 		for(int i=(x_r*10); i< 0; i++){
 
@@ -346,10 +414,10 @@ uint8_t triangle_filled(int16_t X1, int16_t Y1, int16_t X2, int16_t Y2, int16_t 
 		}
 	}
 
-	return 13;
+	return 0;
 };
 
-uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char font[16])
+uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char font[16], uint8_t *perr)
 {
 	#ifdef DEBUG
 	size_t len;
@@ -357,35 +425,48 @@ uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char fon
 	len = sizeof(x1) + sizeof(y1) + 1 + strlen(color) + strlen(font) + 1;
 	UART_printf(len + 5, "\n%d\t%d\t%c\t%s\t%s", x1, y1, chr, color, font);
 	#endif
-	uint8_t col = change_col(color);
+	uint8_t col = change_col(color, &error);
+	if (err)
+		return 1;
 	uint8_t set;
 	uint8_t size = 8; // font size (h and v)
-	uint16_t x, y;
+	uint16_t x, x_p, y, y_p;
 
-	// Offscreen
-	if (x1 < 0 || x1 > (VGA_DISPLAY_X - size)) return 81;
-	if (y1 < 0 || y1 > (VGA_DISPLAY_Y - size)) return 82;
-	y = 0;
+	if(bound(x1, y1, &error)) // Out of bound check
+		return 1;
 
 	for (x = 0; x < size; x++) { // Horizontal, x-- results into flipping
 		for (y = 0; y < size; y++) { // Vertical
-			if (strcmp(font, "greek") == 0)
+			if (strcmp(font, "greek") == 0) {
 				set = font8x8_greek[chr][x] & 1 << y;
-			else if (strcmp(font, "cursief") == 0)
+				x_p = x1 + y;
+				y_p = y1 + x;
+			}
+			else if (strcmp(font, "cursief") == 0) {
 				set = arial8x8_italic[chr][x] & 1 << y;
-			else if (strcmp(font, "vet") == 0)
+				x_p = x1 + x;
+				y_p = y1 + y;
+			}
+			else if (strcmp(font, "vet") == 0) {
 				set = arial8x8_black[chr][x] & 1 << y;
-			else // Normal font
+				x_p = x1 + x;
+				y_p = y1 + y;
+			}
+			else { // Normal font
 				set = arial8x8_regular[chr][x] & 1 << y;
+//				set = Verdana8x8[chr][x] & 1 << y;
+				x_p = x1 + x;
+				y_p = y1 + y;
+			}
 			if (set)
-				UB_VGA_SetPixel(x1 + y, y1 + x, col);
+				UB_VGA_SetPixel(x_p, y_p, col);
 		}
 	}
 
-	return 8;
+	return 0;
 };
 
-uint8_t print_text(int16_t x1, int16_t y1, char str[], char color[16], char font[16])
+uint8_t print_text(int16_t x1, int16_t y1, char str[], char color[16], char font[16], uint8_t *perr)
 {
 	#ifdef DEBUG
 	size_t len;
@@ -397,22 +478,24 @@ uint8_t print_text(int16_t x1, int16_t y1, char str[], char color[16], char font
 	UART_printf(len + 2, "\n%s\t%s", color, font);
 	#endif
 
+	if(bound(x1, y1, &error)) // Out of bound check
+		return 1;
+
 	uint8_t margin = 8; // Display margin
 	uint16_t x = 0;
 	uint16_t y = 0;
 	char *p = str;
 	unsigned char current_char;
 
-	if (x1 < margin) x1 = margin;
-	if (y1 < margin) y1 = margin;
-
 	// Offscreen
-	if (x1 > (VGA_DISPLAY_X - 8 - margin)) return 91;
-	if (y1 > (VGA_DISPLAY_Y - 8 - margin)) return 92;
+	if (x1 < margin) x1 = margin;
+	else if (x1 > (VGA_DISPLAY_X - 8 - margin)) x1 = VGA_DISPLAY_X - 8 - margin;
+	if (y1 < margin) y1 = margin;
+	else if (y1 > (VGA_DISPLAY_Y - 8 - margin)) x1 = VGA_DISPLAY_Y - 8 - margin;
 
 	while (*p) {
 		current_char = *p++; // Take current char and increment it for the next char
-		print_char(x1 + x, y1 + y, current_char, color, font);
+		print_char(x1 + x, y1 + y, current_char, color, font, &error);
 
 		// Next character and next line
 		if ((x + x1) < (VGA_DISPLAY_X - 8 - margin)) // 8 because the font size is 8 wide
@@ -425,23 +508,21 @@ uint8_t print_text(int16_t x1, int16_t y1, char str[], char color[16], char font
 				y = 0; // Error, off screen!
 		}
 	}
-	return 9;
+	return 0;
 };
 
-uint8_t bitmap(uint8_t bitmap, int16_t x1, int16_t y1, uint8_t trans)
+uint8_t bitmap(uint8_t bitmap, int16_t x1, int16_t y1, uint8_t trans, uint8_t *perr)
 {
+	// This version can only print bitmaps that are squared
 	#ifdef DEBUG
 	UART_puts("\nBitmap\nNr\tX1\tY1\tTransparency\n");
-	UART_putint(bitmap);
-	UART_puts("\t");
-	UART_putint(x1);
-	UART_puts("\t");
-	UART_putint(y1);
-	UART_puts("\t");
-	UART_putint(trans);
-	UART_puts("\n");
+	len = sizeof(x1) + sizeof(y1) + 1 + 1;
+	UART_printf(len + 4, "\n%d\t%d\t%d\t%d", bitmap, x1, y1, trans);
 	#endif
-	// This version can only print bitmaps that are squared
+
+	if(bound(x1, y1, &error)) // Out of bound check
+		return 1;
+
 	uint16_t x, y;
 	uint16_t size = sizeof(bitmaps[bitmap]) / sizeof(bitmaps[bitmap][0]); // Amount of pixels
 	uint16_t x_p = sqrt(size); // Amount of pixels on the x-axis
@@ -458,11 +539,10 @@ uint8_t bitmap(uint8_t bitmap, int16_t x1, int16_t y1, uint8_t trans)
 			size--;
 		}
 	}
-
-	return 10;
+	return 0;
 };
 
-uint8_t DELAY(uint16_t time)
+uint8_t DELAY(uint16_t time, uint8_t *perr)
 {
 	#ifdef DEBUG
 	UART_puts("\nDelay\nMilliseconds: ");
@@ -471,10 +551,10 @@ uint8_t DELAY(uint16_t time)
 	#endif
 
 	DELAY_ms(time);
-	return 11;
+	return 0;
 };
 
-uint8_t fill_screen(char color[16])
+uint8_t fill_screen(char color[16], uint8_t *perr)
 {
 	#ifdef DEBUG
 	UART_puts("\nFill_screen\nColor: ");
@@ -482,8 +562,10 @@ uint8_t fill_screen(char color[16])
 	UART_puts("\n");
 	#endif
 
-	uint8_t col = change_col(color);
+	uint8_t col = change_col(color, &error);
+	if (err)
+		return 1;
 
 	UB_VGA_FillScreen(col);
-	return 12;
+	return 0;
 };

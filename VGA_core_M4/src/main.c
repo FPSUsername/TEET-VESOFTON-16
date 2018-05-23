@@ -15,8 +15,10 @@
 #include "stm32_ub_vga_screen.h"
 #include <math.h>
 #include "draw_API.h"
+#include "error.h"
 
-char *version = "API v0.42";
+char *version = "API v0.5";
+uint8_t error = 0;
 
 int main(void)
 {
@@ -30,48 +32,6 @@ int main(void)
 	DELAY_init();
 	UB_VGA_Screen_Init(); // Init VGA-Screen
 
-	// LEDs
-	LED_put(0xFF);
-	DELAY_ms(500);
-	LED_put(0x00);
-
-	// Screen
-	UB_VGA_FillScreen(VGA_COL_BLACK);
-	bitmap(0, 10, 10, 1);
-	bitmap(1, 116, 10, 0);
-	bitmap(2, 222, 80, 0);
-
-
-	ellipse_filled(80, 190, 15, 15, "rood");
-	ellipse_filled(120, 190, 15, 15, "rood");
-	ellipse_filled(160, 190, 15, 15, "rood");
-	line(100,140,200,120,20,"bruin"); //x1 y1 x2 y2
-	triangle_filled(180,180,100,140,30,180,"groen");
-	ellipse(40, 190, 15, 15, "rood");
-//	ellipse(70,40,40,30,"lichtrood");
-//	line(80,80,65,94,1,"wit"); //x1 y1 x2 y2
-//	line(200,120,160,80,30,"groen");
-//	triangle(120,140,80,160,160,190,"wit");
-//	triangle_filled(120,140,80,160,160,190,"wit");
-	triangle_filled(240,239,319,239,339,200,"wit");
-//	triangle_filled(200,230,270,150,260,230,"wit");
-//	line(126,120,166,80,30,"wit"); //x1 y1 x2 y2
-//	line(169,80,129,120,9,"groen");
-//	line(80,80,120,120,30,"wit"); //x1 y1 x2 y2
-//	line(120,80,80,120,9,"groen");
-//	rectangular(75,160,50,75,"blauw");
-//	rectangular_thick(150,160,75,50,5,5,"groen");
-//	rectangular_filled(230,160,75,75,"geel");
-//	print_text(0, 80, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "blauw", "norm");
-//	print_text(0, 90, "abcdefghijklmnopqrstuvwxyz", "groen", "cursief");
-//	print_text(0, 100, "~`!@#$%^&*()-_=+{}[]:;',.<>/?|", "cyaan", "vet");
-//	print_text(0, 110, "1234567890", "rood", "niks");
-//	print_text(0, 120, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "paars", "niks");
-//	// Greek
-//	print_text(0, 140, "*!+'30", "zwart", "greek");
-//	print_char(56, 140, 37, "zwart", "greek");
-//	print_text(62, 140, "1!", "zwart", "greek");
-//	print_text(0, 150, "1234567890!#$&*()-+',.>", "zwart", "greek");
 
 	// LCD Write
 	LCD_clear();
@@ -80,9 +40,35 @@ int main(void)
 	LCD_puts(version);
 	LCD_cursor_off();
 
+	// LEDs
+	int led = 0x00;
+	for (int i = 0; i < 8; i++) {
+		led = ((led + 1) << 1) - 1;
+		LED_put(led);
+		DELAY_ms(25);
+	}
+	LED_put(0x00);
+
 	// UART
 	UART_puts(version);
 	UART_puts("\n\r");
+
+	// Screen
+	UB_VGA_FillScreen(VGA_COL_PINK);
+
+	// Bitmap
+//	bitmap(0, 10, 10, 1, &error);
+//	bitmap(3, 116, 10, 0, &error);
+//	bitmap(2, 222, 10, 0, &error);
+//
+//	// Lines
+//	line(90,10,90,70,5,"wit", &error); //x1 y1 x2 y2
+//	line(210,10,210,70,2,"groen", &error);
+
+
+	// Triangle
+	triangle(200, 160, 260, 230, 200, 230, "paars");
+	triangle_filled(270, 230, 270, 150, 200, 150, "rood");
 
 	while(1)
 	{

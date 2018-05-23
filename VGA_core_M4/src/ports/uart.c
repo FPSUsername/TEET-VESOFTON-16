@@ -240,7 +240,8 @@ void UART_gets(char *s, int echo)
 	{
 	 	*s = UART_get();
 
-	 	if (*s==-1)             // check for data available
+//	 	if (*s==-1)             // check for data available
+	 	if (!*s)
 	 		continue;
 
 	 	if (*s==0xff || *s==LF) // if no data or LF, continue
