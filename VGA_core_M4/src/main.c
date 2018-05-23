@@ -41,19 +41,19 @@ int main(void)
 	bitmap(1, 116, 10, 0);
 	bitmap(2, 222, 80, 0);
 
-//	ellipse_filled(40, 190, 15, 15, "rood");
-//	ellipse_filled(80, 190, 15, 15, "rood");
-//	ellipse_filled(120, 190, 15, 15, "rood");
-//	ellipse_filled(160, 190, 15, 15, "rood");
-//	line(100,140,200,120,20,"bruin"); //x1 y1 x2 y2
-//	triangle_filled(180,180,100,140,30,180,"groen");
+	ellipse_filled(40, 190, 15, 15, "rood");
+	ellipse_filled(80, 190, 15, 15, "rood");
+	ellipse_filled(120, 190, 15, 15, "rood");
+	ellipse_filled(160, 190, 15, 15, "rood");
+	line(100,140,200,120,20,"bruin"); //x1 y1 x2 y2
+	triangle_filled(180,180,100,140,30,180,"groen");
 
 //	ellipse(70,40,40,30,"lichtrood");
 //	line(80,80,65,94,1,"wit"); //x1 y1 x2 y2
 //	line(200,120,160,80,30,"groen");
 //	triangle(120,140,80,160,160,190,"wit");
 //	triangle_filled(120,140,80,160,160,190,"wit");
-	triangle_filled(270,150,260,230,200,230,"wit");
+	triangle_filled(240,239,319,239,339,200,"wit");
 //	triangle_filled(200,230,270,150,260,230,"wit");
 //	line(126,120,166,80,30,"wit"); //x1 y1 x2 y2
 //	line(169,80,129,120,9,"groen");

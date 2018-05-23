@@ -43,7 +43,6 @@ uint8_t change_col(char color[16]){
 uint8_t line(int16_t xi, int16_t yi, int16_t xii, int16_t yii, uint8_t thickness, char color[16])
 {
 
-
 	#ifdef DEBUG
 	size_t len;
 	UART_puts("\nLine\nX1\tY1\tX2\tY2\tThick\tColor");
@@ -61,23 +60,13 @@ uint8_t line(int16_t xi, int16_t yi, int16_t xii, int16_t yii, uint8_t thickness
 	int dy =  ((-1) * abs (y2 - y1)), sy = y1 < y2 ? 1 : -1;
 	int err = dx + dy, e2; /* error value e_xy */
 	float rc, x_rc, y_rc;
-	float x_thick1, y_thick1, x_r, y_r;
-
+	float  x_r, y_r;
 
 	x_r = x2-x1;
 	y_r = y2-y1;
 	x_rc = y_r *-1; //door onderstaande berekening ontstaat er een lijn die 90graden op de te tekenen lijn achterloopt
 	y_rc = x_r;
 	rc= sqrt((x_rc*x_rc)+(y_rc*y_rc));
-	x_thick1= (thickness/rc)*x_rc+x1; // casten misschien?
-	y_thick1= (thickness/rc)*y_rc+y1;
-	char beffer[20];
-
-	UART_puts("\nrc: ");	UART_putint(rc);
-	UART_puts("\nx: ");	itoa(x_rc,beffer,10);	UART_puts(beffer);
-	UART_puts("\ny: ");	itoa(y_rc,beffer,10);	UART_puts(beffer);
-	UART_puts("\nthickX: ");	itoa(x_thick1,beffer,10);	UART_puts(beffer);
-	UART_puts("\nthickY: ");	itoa(y_thick1,beffer,10);	UART_puts(beffer);
 
 	while(1){  /* loop */
 		UB_VGA_SetPixel(x1,y1,col);
@@ -100,11 +89,6 @@ uint8_t line(int16_t xi, int16_t yi, int16_t xii, int16_t yii, uint8_t thickness
 
 void lijn(int16_t x1, int16_t y1, int16_t x2, int16_t y2, char color[16]){
 	uint8_t col = change_col(color);
-	char beffer[20];
-	UART_puts("\nX1: ");	itoa(x1,beffer,10);	UART_puts(beffer);
-	UART_puts("\nY1: ");	itoa(y1,beffer,10);	UART_puts(beffer);
-	UART_puts("\nX2: ");	itoa(x2,beffer,10);	UART_puts(beffer);
-	UART_puts("\nY2: ");	itoa(y2,beffer,10);	UART_puts(beffer);
 	int dx =  abs (x2 - x1), sx = x1 < x2 ? 1 :  - 1;
 	int dy =  - abs (y2 - y1), sy = y1 < y2 ? 1 :  - 1;
 	int err = dx + dy, e2; /* error value e_xy */
@@ -266,8 +250,6 @@ uint8_t triangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int
 
 uint8_t triangle_filled(int16_t X1, int16_t Y1, int16_t X2, int16_t Y2, int16_t X3, int16_t Y3, char color[16])
 {
-
-	char beffer[20];
 	int x01 = abs(X2-X1);
 	int x02 = abs(X3-X2);
 	int x03 = abs(X1-X3);
@@ -300,39 +282,20 @@ uint8_t triangle_filled(int16_t X1, int16_t Y1, int16_t X2, int16_t Y2, int16_t 
 		x3 = X2;
 		y3 = Y2;
 	}
-	UART_puts("\nXr1: ");	itoa(x01,beffer,10);	UART_puts(beffer);
-	UART_puts("\nXr2: ");	itoa(x02,beffer,10);	UART_puts(beffer);
-	UART_puts("\nXr3: ");	itoa(x03,beffer,10);	UART_puts(beffer);
-
-
-
 
 	float x_r = x2-x1;
-//	UART_puts("\nXr: ");	itoa(x_r,beffer,10);	UART_puts(beffer);
 	float y_r = y2-y1;
-//	UART_puts("\nyr: ");	itoa(y_r,beffer,10);	UART_puts(beffer);
 	float rc = (y_r/x_r);
- 	int rcc = rc*10;
-	UART_puts("\nRC: ");	itoa(rcc,beffer,10);	UART_puts(beffer);
 	if(x_r<0){
 		for(int i=(x_r*10); i< 0; i++){
 
 			float yy= ((i/10)*rc)+y1; // casten misschien?
-			UART_puts("\nX: ");	itoa(i,beffer,10);	UART_puts(beffer);
-			UART_puts("\nY: ");	itoa(yy,beffer,10);	UART_puts(beffer);
-			//UART_puts("\nx: ");	itoa(x_rc,beffer,10);	UART_puts(beffer);
-			//UART_puts("\ny: ");	itoa(y_rc,beffer,10);	UART_puts(beffer);
 			lijn(((i/10)+x1),yy,x3,y3,color);
 		}
 	}
 	if(x_r>0){
 		for(int i=0; i<(x_r*10); i++){
-
 			float yy= ((i/10)*rc)+y1; // casten misschien?
-			UART_puts("\nX: ");	itoa(i,beffer,10);	UART_puts(beffer);
-			UART_puts("\nY: ");	itoa(yy,beffer,10);	UART_puts(beffer);
-			//UART_puts("\nx: ");	itoa(x_rc,beffer,10);	UART_puts(beffer);
-			//UART_puts("\ny: ");	itoa(y_rc,beffer,10);	UART_puts(beffer);
 			lijn(((i/10)+x1),yy,x3,y3,color);
 		}
 	}
