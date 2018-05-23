@@ -15,8 +15,10 @@
 #include "stm32_ub_vga_screen.h"
 #include <math.h>
 #include "draw_API.h"
+#include "error.h"
 
-char *version = "API v0.42";
+char *version = "API v0.5";
+uint8_t error = 0;
 
 int main(void)
 {
@@ -55,38 +57,38 @@ int main(void)
 	UB_VGA_FillScreen(VGA_COL_LIGHT_GREEN);
 
 	// Bitmap
-	bitmap(0, 10, 10, 1);
-	bitmap(3, 116, 10, 0);
-	bitmap(2, 222, 10, 0);
+	bitmap(0, 10, 10, 1, &error);
+	bitmap(3, 116, 10, 0, &error);
+	bitmap(2, 222, 10, 0, &error);
 
 	// Lines
-	line(90,10,90,70,5,"wit"); //x1 y1 x2 y2
-	line(210,10,210,70,2,"groen");
+//	line(90,10,90,70,5,"wit", &error); //x1 y1 x2 y2
+//	line(210,10,210,70,2,"groen", &error);
 
 	// Text
-	print_text(0, 80, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "blauw", "norm");
-	print_text(0, 90, "abcdefghijklmnopqrstuvwxyz", "groen", "cursief");
-	print_text(0, 100, "~`!@#$%^&*()-_=+{}[]:;',.<>/?|", "cyaan", "vet");
-	print_text(0, 110, "1234567890", "rood", "norm");
-	print_text(0, 120, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "paars", "norm");
+	print_text(0, 80, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "blauw", "norm", &error);
+	print_text(0, 90, "abcdefghijklmnopqrstuvwxyz", "groen", "cursief", &error);
+	print_text(0, 100, "~`!@#$%^&*()-_=+{}[]:;',.<>/?|", "cyaan", "vet", &error);
+	print_text(0, 110, "1234567890", "rood", "norm", &error);
+	print_text(0, 120, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "paars", "norm", &error);
 	// Greek
-	print_text(0, 140, "*!+'30", "zwart", "greek");
-	print_char(56, 140, 37, "zwart", "greek");
-	print_text(62, 140, "1!", "zwart", "greek");
+	print_text(0, 140, "*!+'30", "zwart", "greek", &error);
+	print_char(56, 140, 37, "zwart", "greek", &error);
+	print_text(62, 140, "1!", "zwart", "greek", &error);
 //	print_text(0, 150, "1234567890!#$&*()-+',.>", "zwart", "greek");
 
 	// Ellipse
-	ellipse_filled(42, 190, 10, 30, "rood");
-	ellipse(70,40,40,30,"lichtrood");
+	ellipse_filled(42, 190, 10, 30, "rood", &error);
+	ellipse(70,40,40,30,"wit", &error);
 
 	// Rectangulars
-	rectangular(110,160,60,70,"blauw");
-	rectangular_thick(120,170,40,50,5,5,"groen");
-	rectangular_filled(130,180,20,30,"geel");
+	rectangular(110,160,60,70,"blauw", &error);
+	rectangular_thick(120,170,40,50,5,5,"groen", &error);
+	rectangular_filled(130,180,20,30,"geel", &error);
 
 	// Triangle
 	triangle(200, 160, 260, 230, 200, 230, "paars");
-	triangle_filled( 270, 230, 200, 150, 270, 150, "rood");
+	triangle_filled(270, 230, 269, 150, 200, 150, "rood");
 
 	while(1)
 	{

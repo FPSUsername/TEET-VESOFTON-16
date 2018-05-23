@@ -10,6 +10,7 @@
 #include "draw_API.h"
 #include <ctype.h>
 
+extern uint8_t error;
 
 /* Get input commands, split them and return them
  * Call UART_tokens_clear() after calling this function
@@ -69,29 +70,29 @@ void UART_tokens_clear(char **array)
  */
 void UART_control(char **array)
 {
-	uint8_t err = 0;
 
-	if 		(strcmp(array[0], "lijn") == 0)				err = line(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), atoi(array[5]), array[6]);
-	else if (strcmp(array[0], "arrow") == 0)			err = arrow(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), atoi(array[5]), array[6]);
-	else if (strcmp(array[0], "ellips") == 0)			err = ellipse_filled(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), array[5]);
-	else if (strcmp(array[0], "ellips_gevuld") == 0)	err = ellipse_filled(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), array[5]);
-	else if (strcmp(array[0], "rechthoek") == 0)		err = rectangular(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), array[5]);
-	else if (strcmp(array[0], "rechthoek_dik") == 0)	err = rectangular_thick(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), atoi(array[5]), atoi(array[6]), array[7]);
-	else if (strcmp(array[0], "rechthoek_gevuld") == 0)	err = rectangular_filled(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), array[5]);
-	else if (strcmp(array[0], "driehoek") == 0)			err = triangle(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), atoi(array[5]), atoi(array[6]), array[7]);
-	else if (strcmp(array[0], "letter") == 0)			err = print_char(atoi(array[1]), atoi(array[2]), atoi(array[3]), array[4], array[5]);
-	else if (strcmp(array[0], "tekst") == 0)			err = print_text(atoi(array[1]), atoi(array[2]), array[3], array[4], array[5]);
+	if 		(strcmp(array[0], "lijn") == 0)				line(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), atoi(array[5]), array[6], &error);
+	else if (strcmp(array[0], "arrow") == 0)			arrow(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), atoi(array[5]), array[6], &error);
+	else if (strcmp(array[0], "ellips") == 0)			ellipse(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), array[5], &error);
+	else if (strcmp(array[0], "ellips_gevuld") == 0)	ellipse_filled(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), array[5], &error);
+	else if (strcmp(array[0], "rechthoek") == 0)		rectangular(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), array[5], &error);
+	else if (strcmp(array[0], "rechthoek_dik") == 0)	rectangular_thick(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), atoi(array[5]), atoi(array[6]), array[7], &error);
+	else if (strcmp(array[0], "rechthoek_gevuld") == 0)	rectangular_filled(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), array[5], &error);
+	else if (strcmp(array[0], "driehoek") == 0)			triangle(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), atoi(array[5]), atoi(array[6]), array[7]);
+	else if (strcmp(array[0], "driehoek_gevuld") == 0)	triangle_filled(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), atoi(array[5]), atoi(array[6]), array[7]);
+	else if (strcmp(array[0], "letter") == 0)			print_char(atoi(array[1]), atoi(array[2]), atoi(array[3]), array[4], array[5], &error);
+	else if (strcmp(array[0], "tekst") == 0)			print_text(atoi(array[1]), atoi(array[2]), array[3], array[4], array[5], &error);
 	else if (strcmp(array[0], "bitmap") == 0) {
 		if (array[4] == NULL) array[4] = 0; // Disable transparency if not defined
-		err = bitmap(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]));
+		bitmap(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), &error);
 	}
-	else if (strcmp(array[0], "wacht") == 0)			err = DELAY(atoi(array[1]));
-	else if (strcmp(array[0], "clearscherm") == 0)		err = fill_screen(array[1]);
+	else if (strcmp(array[0], "wacht") == 0)			DELAY(atoi(array[1]), &error);
+	else if (strcmp(array[0], "clearscherm") == 0)		fill_screen(array[1], &error);
 	else UART_puts("Invalid command!\n");
 
-	if (err != 0){
-		UART_puts("\nReturn code: ");
-		UART_putint(err);
+	if (error){
+		UART_puts("\Error code: ");
+		UART_putint(error);
 		UART_puts("\n");
 	}
 }
