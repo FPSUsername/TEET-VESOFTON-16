@@ -116,7 +116,7 @@ uint8_t arrow(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t thickness,
 	return 2;
 };
 
-uint8_t ellipse(int16_t x1, int16_t y1, int16_t xradius, int16_t yradius, char color[16])
+uint8_t ellipse(int16_t xc, int16_t yc, int16_t rx, int16_t ry, char color[16])
 {
 	#ifdef DEBUG
 	size_t len;
@@ -125,7 +125,53 @@ uint8_t ellipse(int16_t x1, int16_t y1, int16_t xradius, int16_t yradius, char c
 	UART_printf(len + 5, "\n%d\t%d\t%d\t%d\t%s", x1, y1, xRadius, yRadius, color);
 	#endif
 
-//	uint8_t col = change_col(color);
+	uint8_t col = change_col(color);
+
+   int x, y, p;
+   x=0;
+   y=ry;
+   p=(ry*ry)-(rx*rx*ry)+((rx*rx)/4);
+   while((2*x*ry*ry)<(2*y*rx*rx))
+   {
+		 UB_VGA_SetPixel(xc+x,yc-y,col);
+		 UB_VGA_SetPixel(xc-x,yc+y,col);
+		 UB_VGA_SetPixel(xc+x,yc+y,col);
+		 UB_VGA_SetPixel(xc-x,yc-y,col);
+
+		if(p<0)
+		{
+	 x=x+1;
+	 p=p+(2*ry*ry*x)+(ry*ry);
+		}
+		else
+		{
+	 x=x+1;
+	 y=y-1;
+	 p=p+(2*ry*ry*x+ry*ry)-(2*rx*rx*y);
+		}
+   }
+   p=((float)x+0.5)*((float)x+0.5)*ry*ry+(y-1)*(y-1)*rx*rx-rx*rx*ry*ry;
+
+		 while(y>=0)
+   {
+		 UB_VGA_SetPixel(xc+x,yc-y,col);
+		 UB_VGA_SetPixel(xc-x,yc+y,col);
+		 UB_VGA_SetPixel(xc+x,yc+y,col);
+		 UB_VGA_SetPixel(xc-x,yc-y,col);
+
+		if(p>0)
+		{
+			 y=y-1;
+			 p=p-(2*rx*rx*y)+(rx*rx);
+
+		}
+		else
+		{
+			 y=y-1;
+			 x=x+1;
+			 p=p+(2*ry*ry*x)-(2*rx*rx*y)-(rx*rx);
+		}
+	 }
 
 	return 3;
 };
