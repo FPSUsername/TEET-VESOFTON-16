@@ -17,7 +17,7 @@ void pError(uint8_t errnum)
 		   break;
 
 		case 3  :
-			UART_puts("\nPlease stay within screen boundaries!\n");
+			UART_puts("\nThis function does not exist!\n");
 			break;
 
 		case 4  :

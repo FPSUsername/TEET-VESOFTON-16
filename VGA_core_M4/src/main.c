@@ -12,13 +12,14 @@
 
 #include "main.h"
 #include "include.h"
-#include "stm32_ub_vga_screen.h"
-#include <math.h>
-#include "draw_API.h"
-#include "error.h"
+//#include "stm32_ub_vga_screen.h"
+//#include <math.h>
+//#include "draw_API.h"
+//#include "error.h"
 
 char *version = "API v0.5";
-uint8_t error = 0;
+
+uint8_t error;
 
 int main(void)
 {
@@ -54,26 +55,38 @@ int main(void)
 	UART_puts("\n\r");
 
 	// Screen
-	UB_VGA_FillScreen(VGA_COL_PINK);
+	UB_VGA_FillScreen(VGA_COL_WHITE);
 
 	// Bitmap
-//	bitmap(0, 10, 10, 1, &error);
-//	bitmap(3, 116, 10, 0, &error);
-//	bitmap(2, 222, 10, 0, &error);
-//
-//	// Lines
+	bitmap(0, 10, 10, 1, &error);
+	bitmap(3, 116, 10, 0, &error);
+	bitmap(2, 222, 10, 0, &error);
+
+	// Lines
 //	line(90,10,90,70,5,"wit", &error); //x1 y1 x2 y2
 //	line(210,10,210,70,2,"groen", &error);
 
-
-	// Triangle
-	triangle(200, 160, 260, 230, 200, 230, "paars");
-	triangle_filled(270, 230, 270, 150, 200, 150, "rood");
+//	line(1,1,100,100,4,"rood", &error);
+	line(200,35,400,35,4,"zwart", &error);
+//	ellipse(200,200,30,40,"blauw", &error);
+	ellipse(300,300,100,100,"lichtrood", &error);
+//	fill_screen("wit", &error);
+//	rectangular(10,10,300,200,"zwart", &error);
+//	rectangular(10,10,30,20,"lichtblauw", &error);
+//	rectangular(100,100,130,120,"geel", &error);
+//	fill_screen("zwart", &error);
+	triangle_filled(10,10,130,120,240,200,"lichtmagenta");
+	triangle_filled(100,100,30,20,250,250,"cyaan");
+	triangle_filled(130,130,17,12,333,133,"lichtgroen");
+//	fill_screen("zwart", &error);
+//	print_text(10,10,"the quick brown fox jumps over the lazy dog","wit","norm", &error);
+//	print_text(10,100,"the quick brown fox jumps over the lazy dog","magenta","vet", &error);
+//	print_text(10,200,"the quick brown fox jumps over the lazy dog","lichtcyaan","cursief", &error);
 
 	while(1)
 	{
 		char **arguments = UART_tokens();
-		UART_control(arguments);
+		UART_control(arguments, &error);
 
 		// ALWAYS clear AFTER you are done with your arguments to prevent memory leaks!
 		UART_tokens_clear(arguments);
