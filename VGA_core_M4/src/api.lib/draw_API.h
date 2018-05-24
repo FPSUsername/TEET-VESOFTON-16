@@ -45,5 +45,5 @@ uint8_t triangle_filled(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t 
 uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char font[16], uint8_t *perr);
 uint8_t print_text(int16_t x1, int16_t y1, char str[], char color[16], char font[16], uint8_t *perr);
 uint8_t bitmap(uint8_t bitmap, int16_t x1, int16_t y1, uint8_t trans, uint8_t *perr);
-uint8_t DELAY(uint16_t time, uint8_t *perr);
+uint8_t DELAY(uint16_t time);
 uint8_t fill_screen(char color[16], uint8_t *perr);

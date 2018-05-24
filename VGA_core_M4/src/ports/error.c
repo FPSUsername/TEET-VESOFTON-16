@@ -32,7 +32,7 @@ void pError(uint8_t errnum)
 
 uint8_t bound(uint16_t x, uint16_t y, uint8_t *perr) {
 	if (x < 0 || y < 0 || x > VGA_DISPLAY_X || y > VGA_DISPLAY_Y) {
-		*perr = ERR_INPUT_INVALID;
+		*perr = ERR_OUT_OF_BOUND;
 		pError(*perr);
 		return 1;
 	} else {

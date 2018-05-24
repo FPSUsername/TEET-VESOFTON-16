@@ -17,7 +17,7 @@
 //#include "draw_API.h"
 //#include "error.h"
 
-char *version = "API v0.5";
+char *version = "API v0.51";
 
 uint8_t error;
 
@@ -63,8 +63,8 @@ int main(void)
 	bitmap(2, 222, 10, 0, &error);
 
 	// Lines
-//	line(90,10,90,70,5,"wit", &error); //x1 y1 x2 y2
-//	line(210,10,210,70,2,"groen", &error);
+	line(70,10,100,70,5,"wit", &error); //x1 y1 x2 y2
+	line(10,190,300,190,2,"lichtblauw", &error);
 
 	// Text
 	print_text(0, 80, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "blauw", "norm", &error);
@@ -79,8 +79,8 @@ int main(void)
 //	print_text(0, 150, "1234567890!#$&*()-+',.>", "zwart", "greek");
 
 	// Ellipse
-	ellipse_filled(42, 190, 10, 30, "rood", &error);
-	ellipse(70,40,40,30,"wit", &error);
+	ellipse_filled(55, 190, 10, 30, "rood", &error);
+	ellipse(55,190,40,30,"wit", &error);
 
 	// Rectangulars
 	rectangular(110,160,60,70,"blauw", &error);
