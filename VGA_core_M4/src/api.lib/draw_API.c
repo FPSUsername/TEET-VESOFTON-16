@@ -29,7 +29,7 @@ uint8_t err;
  */
 uint8_t change_col(char color[16], uint8_t *perr){
 	uint8_t col;
-	err = 0;
+	err = 0; // Reset error
 	if 		(strcmp(color, "wit") == 0) 			col = VGA_COL_WHITE;
 	else if (strcmp(color, "grijs") == 0)			col = VGA_COL_GRAY;
 	else if (strcmp(color, "zwart") == 0)			col = VGA_COL_BLACK;
@@ -47,8 +47,8 @@ uint8_t change_col(char color[16], uint8_t *perr){
 	else if (strcmp(color, "geel") == 0)			col = VGA_COL_YELLOW;
 	else if (strcmp(color, "roze") == 0)			col = VGA_COL_PINK;
 	else if (strcmp(color, "paars") == 0)			col = VGA_COL_PURPLE;
-	else {
-		col = VGA_COL_WHITE;
+	else { // Error, color does not exist
+		col = VGA_COL_WHITE; // Must return a valid replacement
 		*perr = ERR_COLOR;
 		pError(*perr);
 		err = 1;
@@ -449,11 +449,11 @@ uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char fon
 
 	if(bound(x1, y1, &error)); // Out of bound check
 
-	for (x = 0; x < size; x++) { // Horizontal, x-- results into flipping
+	for (x = 0; x < size; x++) { // Horizontal
 		for (y = 0; y < size; y++) { // Vertical
 			if (strcmp(font, "greek") == 0) {
 				set = font8x8_greek[chr][x] & 1 << y;
-				x_p = x1 + y;
+				x_p = x1 + y; // Rotate character
 				y_p = y1 + x;
 			}
 			else if (strcmp(font, "cursief") == 0) {
@@ -470,7 +470,7 @@ uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char fon
 //				set = arial8x8_regular[chr][x] & 1 << y;
 //				set = Verdana8x8[chr][x] & 1 << y;
 				set = font8x8_basic[chr][x] & 1 << y;
-				x_p = x1 + y;
+				x_p = x1 + y; // Rotate character
 				y_p = y1 + x;
 			}
 			if (set)

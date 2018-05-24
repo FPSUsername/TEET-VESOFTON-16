@@ -1,9 +1,9 @@
 //--------------------------------------------------------------
 // File     : main.c
-// Datum    : 11.05.2018
-// Version  : 0.3
+// Datum    : 24.05.2018
+// Version  : 0.51
 // Author   : UB
-// mods by	: J.F. van der Bent, P. Kavvathas
+// mods by	: J.F. van der Bent, P. Kavvathas, B. Rabenort, N. Koetsveld
 // CPU      : STM32F4
 // IDE      : Atollic TrueSTUDIO
 // Module   : CMSIS_BOOT, M4_CMSIS_CORE
@@ -57,6 +57,8 @@ int main(void)
 	// Screen
 	UB_VGA_FillScreen(VGA_COL_LIGHT_GREEN);
 
+	/* Initial setup */
+
 	// Bitmap
 	bitmap(0, 10, 10, 1, &error);
 	bitmap(3, 116, 10, 0, &error);
@@ -90,6 +92,8 @@ int main(void)
 	// Triangle
 	triangle(200, 160, 260, 230, 200, 230, "paars");
 	triangle_filled(270, 230, 269, 150, 200, 150, "rood");
+
+	/* Initial setup end */
 
 	while(1)
 	{
