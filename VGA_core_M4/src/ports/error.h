@@ -22,6 +22,14 @@
 #define ERR_COLOR						2u
 #define ERR_INPUT_INVALID				3u
 #define ERR_SIZE						4u
+#define ERR_OVERFLOW					5u
+
+/*
+*********************************************************************************************************
+*                                             ERROR CODES
+*********************************************************************************************************
+*/
+#define WAR_TIMEDELAY					50u
 
 
 void pError(uint8_t errnum);

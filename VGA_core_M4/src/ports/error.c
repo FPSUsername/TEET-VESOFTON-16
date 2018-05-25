@@ -1,3 +1,15 @@
+//--------------------------------------------------------------
+// File     : error.c
+// Datum    : 24.05.2018
+// Version  : 0.1
+// Author   : N. Koetsveld
+// mods by	: P. Kavvathas, B. Rabenort, N. Koetsveld
+// CPU      : STM32F4
+// IDE      : Atollic TrueSTUDIO
+// Module   : CMSIS_BOOT, M4_CMSIS_CORE
+// Function : Error code output, with boundary check
+//--------------------------------------------------------------
+
 #include "include.h"
 #include "error.h"
 #include "stm32_ub_vga_screen.h"
@@ -22,6 +34,14 @@ void pError(uint8_t errnum)
 
 		case 4  :
 			UART_puts("\nPlease stay within screen boundaries!\n");
+			break;
+
+		case 5 	:
+			UART_puts("\nPlease check value's to prevent this overflow!\n");
+			break;
+
+		case 50	:
+			UART_puts("\nPlease be aware of large time delay.");
 			break;
 
 		default:

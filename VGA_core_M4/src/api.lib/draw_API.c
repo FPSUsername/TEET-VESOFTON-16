@@ -2,13 +2,14 @@
  * draw.c
  *
  *  Created on: 3 mei 2018
- *      Author: Bas
+ *      Author	: Bas
+ *      mods by	: N. Koetsveld
  */
 
 #include "include.h"
 //#include <draw_API.h>
 //#include "stm32_ub_vga_screen.h"
-//#include "error.h"
+#include "error.h"
 
 // Bitmaps
 #include "bitmap_1.h"
@@ -568,7 +569,7 @@ uint8_t bitmap(uint8_t bitmap, int16_t x1, int16_t y1, uint8_t trans, uint8_t *p
 /* Delay
  * Freeze the system for XXXX time in milliseconds
  */
-uint8_t DELAY(uint16_t time)
+uint8_t DELAY(uint16_t time, uint8_t *perr)
 {
 	#ifdef DEBUG
 	UART_puts("\nDelay\nMilliseconds: ");
@@ -576,6 +577,14 @@ uint8_t DELAY(uint16_t time)
 	UART_puts("\n");
 	#endif
 
+	if(time > 65535){
+		*perr = ERR_OVERFLOW;
+		pError(*perr);
+		return 1;
+	}else if(time > 20000){
+		*perr = WAR_TIMEDELAY;
+		pError(*perr);
+	}
 	DELAY_ms(time);
 	return 0;
 };
