@@ -26,3 +26,4 @@
 #include "ui.h"
 #include "draw_API.h"
 #include "error.h"
+#include "startup.h"

@@ -18,7 +18,6 @@ After that you can use DELAY_s(number of seconds to wait);
 */
 
 #include "include.h"
-#include "error.h"
 
 uint32_t G_CLK;
 uint32_t D_uS; // Global variable (us)
