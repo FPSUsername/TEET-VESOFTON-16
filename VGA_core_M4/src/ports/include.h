@@ -23,6 +23,7 @@
 #include "delay.h"
 #include "lcd.h"
 #include "leds.h"
-#include "ui.h"
+#include "front_layer.h"
+#include "logic_layer.h"
 #include "draw_API.h"
 #include "error.h"
