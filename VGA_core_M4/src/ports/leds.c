@@ -39,7 +39,7 @@ void LED_init(void)
     GPIO_ResetBits(P_LED_SCK, LED_SCK);
     GPIO_SetBits(P_LED_RCK, LED_RCK);
 
-    LED_put(0); // all leds off
+    LED_put(0x00); // all leds off
 }
 
 // Zet de meegegeven waarde op de LED's
