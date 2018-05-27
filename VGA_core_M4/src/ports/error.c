@@ -1,19 +1,22 @@
-//--------------------------------------------------------------
-// File     : error.c
-// Datum    : 24.05.2018
-// Version  : 0.1
-// Author   : N. Koetsveld
-// mods by	: P. Kavvathas, B. Rabenort, N. Koetsveld
-// CPU      : STM32F4
-// IDE      : Atollic TrueSTUDIO
-// Module   : CMSIS_BOOT, M4_CMSIS_CORE
-// Function : Error code output, with boundary check
-//--------------------------------------------------------------
+/**
+* File     : error.c
+* Datum    : 24.05.2018
+* Version  : 0.1
+* Author   : N. Koetsveld
+* mods by	: P. Kavvathas, B. Rabenort, N. Koetsveld
+* CPU      : STM32F4
+* IDE      : Atollic TrueSTUDIO
+* Module   : CMSIS_BOOT, M4_CMSIS_CORE
+* Function : Error code output, with boundary check
+*/
 
 #include "include.h"
 #include "error.h"
 #include "stm32_ub_vga_screen.h"
 
+/**
+ * Error pointer that returns a error code to the UART
+ */
 void pError(uint8_t errnum)
 {
 	UART_puts("\nValue of errno: ");
@@ -50,7 +53,7 @@ void pError(uint8_t errnum)
 	};
 }
 
-/* Out of bound function
+/** Out of bound function
  * Checks if coordinates are off screen
  */
 uint8_t bound(uint16_t x, uint16_t y, uint8_t *perr) {

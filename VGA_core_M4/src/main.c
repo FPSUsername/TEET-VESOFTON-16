@@ -10,6 +10,21 @@
 // Function : VGA_core DMA LIB 320x240, 8bit color
 //--------------------------------------------------------------
 
+/* \mainpage Software ontwikkeling groep 11 Petros, Bas & Nick
+ *
+ * \section intro_sec Groep info
+ *
+ * This is the introduction.
+ *
+ * \section install_sec Installation
+ *
+ * \subsection step1 Step 1: Opening the box
+ *
+ * etc...
+ */
+
+
+
 #include "main.h"
 #include "include.h"
 //#include "stm32_ub_vga_screen.h"
