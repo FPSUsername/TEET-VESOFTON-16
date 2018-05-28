@@ -17,13 +17,15 @@
 //#include "draw_API.h"
 //#include "error.h"
 
+
 char *version = "API v0.51";
 
 uint8_t error;
 
 int main(void)
 {
-	//  uint32_t n;
+//	  uint32_t n;
+	uint8_t error;
 
 	// Inits
 	SystemInit(); // System speed to 168MHz
@@ -74,6 +76,7 @@ int main(void)
 	print_text(0, 100, "~`!@#$%^&*()-_=+{}[]:;',.<>/?|", "cyaan", "vet", &error);
 	print_text(0, 110, "1234567890", "rood", "norm", &error);
 	print_text(0, 120, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "paars", "norm", &error);
+
 	// Greek
 	print_text(0, 140, "*!+'30", "zwart", "greek", &error);
 	print_char(56, 140, 37, "zwart", "greek", &error);
