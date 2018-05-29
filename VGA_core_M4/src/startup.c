@@ -1,7 +1,24 @@
+/**
+  *
+  *@file    	startup.c
+  * @author 	P. Kavvathas, B. Rabenort, N. Koetsveld
+  * @version	V0.5
+  * @date   	24-Mei-2018
+  * @brief  	Initializing the start screen
+  *
+  * \n \n Shows some of the functions including:
+  * - Three bitmaps
+  * - line
+  * - Printing text on screen
+  * - Filled and empty ellipse
+  * - Filled, thick and empty retangular
+  * - Filled and empty triangle
+  */
+
 #include "include.h"
 #include "main.c"
 
-/* Start-up
+/** Start-up
  * Function to make a start screen with LCD output and LED animation
  */
 void START_UP(void)

@@ -1,11 +1,18 @@
-/*
- * draw.c
- *
- *  Created on: 3 mei 2018
- *      Author	: Bas
- *      mods by	: N. Koetsveld
- */
 
+/**
+ *
+  *@file    	draw_API.c
+  * @author 	B. Rabenort
+  * @version	V0.1
+  * @date   	3-Mei-2018
+  * @brief  	Draw functions
+  *
+  * \n Commentaar!
+*/
+
+#include <arial8x8_black.h>
+#include <arial8x8_italic.h>
+#include <arial8x8_regular.h>
 #include "include.h"
 //#include <draw_API.h>
 //#include "stm32_ub_vga_screen.h"
@@ -17,9 +24,6 @@
 // Fonts
 #include "font8x8_basic.h"
 #include "font8x8_greek.h"
-#include "arial8x8_black.h"
-#include "arial8x8_italic.h"
-#include "arial8x8_regular.h"
 #include "verdana8x8_basic.h"
 
 extern uint8_t error;

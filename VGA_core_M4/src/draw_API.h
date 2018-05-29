@@ -1,10 +1,18 @@
-//--------------------------------------------------------------
-// color designation
-// 8bit color (R3G3B2)
-// Red   (3bit) -> Bit7-Bit5
-// Green (3bit) -> Bit4-Bit2
-// Blue  (2bit) -> Bit1-Bit0
-//--------------------------------------------------------------
+/**
+ *
+  *@file    	draw_API.h
+  * @author 	P. Kavvathas, B. Rabenort, N. Koetsveld
+  * @version	V0.1
+  * @date   	1-Mei-2018
+  * @brief  	Color define
+  *
+  * \n color designation
+  * 8bit color (R3G3B2)
+  * Red   (3bit) -> Bit7-Bit5
+  * Green (3bit) -> Bit4-Bit2
+  * Blue  (2bit) -> Bit1-Bit0
+*/
+
 #include "stdint.h"
 
 #define  VGA_COL_WHITE          0xFF

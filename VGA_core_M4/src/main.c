@@ -1,41 +1,40 @@
-//--------------------------------------------------------------
-// File     : main.c
-// Datum    : 24.05.2018
-// Version  : 0.51
-// Author   : UB
-// mods by	: J.F. van der Bent, P. Kavvathas, B. Rabenort, N. Koetsveld
-// CPU      : STM32F4
-// IDE      : Atollic TrueSTUDIO
-// Module   : CMSIS_BOOT, M4_CMSIS_CORE
-// Function : VGA_core DMA LIB 320x240, 8bit color
-//--------------------------------------------------------------
-
-/* \mainpage Software ontwikkeling groep 11 Petros, Bas & Nick
- *
- * \section intro_sec Groep info
- *
- * This is the introduction.
- *
- * \section install_sec Installation
- *
- * \subsection step1 Step 1: Opening the box
- *
- * etc...
- */
-
-
+/**
+  *
+  *@file    	main.c
+  * @author 	UB, J.F. van der Bent, P. Kavvathas, B. Rabenort, N. Koetsveld
+  * @version	V0.51
+  * @date   	24-Mei-2018
+  * @brief  	Main
+  *
+  * \n CPU      : STM32F4\n
+ 	IDE      : Atollic TrueSTUDIO\n
+	Module   : CMSIS_BOOT, M4_CMSIS_CORE\n
+	Function : VGA_core DMA LIB 320x240, 8bit color\n
+  *
+  */
 
 #include "main.h"
 #include "include.h"
+#include "Doxygen.c"
 //#include "stm32_ub_vga_screen.h"
 //#include <math.h>
 //#include "draw_API.h"
 //#include "error.h"
 
+/**
+ * Version number for displaying
+ */
 char *version = "API v0.51";
 
+/**
+ * Int for error codes
+ */
 uint8_t error;
 
+/** @brief	Main code
+ *
+ * Initialization and main loop for getting code from the UART
+ */
 int main(void)
 {
 	//  uint32_t n;
