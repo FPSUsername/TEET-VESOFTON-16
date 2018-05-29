@@ -103,8 +103,8 @@ int main(void)
 		char **arguments = UART_tokens();
 		UART_control(arguments, &error);
 
-		// ALWAYS clear AFTER you are done with your arguments to prevent memory leaks!
-		UART_tokens_clear(arguments);
+		/** ALWAYS clear AFTER you are done with your arguments to prevent memory leaks! */
+		UART_tokens_free(arguments);
 	}
 }
 

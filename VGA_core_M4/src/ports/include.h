@@ -1,7 +1,7 @@
-// Debugging
+/** Debugging */
 //#define DEBUG
 
-// Standard
+/** Standard */
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,14 +10,14 @@
 #include <math.h>
 #include <ctype.h>
 
-// OS
+/** OS */
 #include "misc.h"
 #include "stm32f4xx_rcc.h"
 #include "stm32f4xx_gpio.h"
 #include "stm32f4xx_usart.h"
 #include "stm32_ub_vga_screen.h"
 
-// Libs
+/** Libs */
 #include "stddef.h"
 #include "uart.h"
 #include "delay.h"
