@@ -4,7 +4,7 @@
   * @author 	P. Kavvathas
   * @version	V0.1
   * @date   	24-Mei-2018
-  * @brief  	Arial font regular.
+  * @brief  	Greek font.
   *
   * \n
   * 8x8 monochrome bitmap fonts for rendering
