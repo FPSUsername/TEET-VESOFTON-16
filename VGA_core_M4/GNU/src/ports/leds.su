@@ -1,2 +1,0 @@
-leds.c:20:6:LED_init	16	static
-leds.c:46:6:LED_put	24	static

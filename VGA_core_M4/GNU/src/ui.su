@@ -1,3 +1,0 @@
-ui.c:18:9:UART_tokens	32	static
-ui.c:60:6:UART_tokens_clear	24	static
-ui.c:71:6:UART_control	56	static
