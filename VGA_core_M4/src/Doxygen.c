@@ -1,6 +1,6 @@
 /**
  *
-  *@file    	Doxygen.c
+  * @file    	Doxygen.c
   * @author 	N. Koetsveld
   * @version	V0.1
   * @date   	29-Mei-2018
