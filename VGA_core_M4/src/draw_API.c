@@ -594,7 +594,7 @@ uint8_t bitmap(uint8_t bitmap, int16_t x1, int16_t y1, uint8_t trans, uint8_t *p
 	uint16_t x_p = sqrt(size); // Amount of pixels on the x-axis
 	uint16_t y_p = x_p; // Amount of pixels on the y-axis
 
-	if(x < 0 || y < 0 || x >= 320 || y <= 240) {	// Error out of screen
+	if(x1 < 0 || y1 < 0 || x1 >= 320 || y1 <= 240) {	// Error out of screen
 		*perr = ERR_OUT_OF_BOUND;
 		return 1;
 	}
