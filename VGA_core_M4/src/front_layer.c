@@ -1,9 +1,15 @@
 /**
- * File     : front_layer.c
- * Datum    : 24.05.2018
- * Version  : 0.4
- * Author   : P. Kavvathas
- */
+  *
+  *@file    	front_layer.c
+  * @author 	P. Kavvathas
+  * @version	V0.4
+  * @date   	24-Mei-2018
+  * @brief  	Front layer
+  *
+  * \n Separates the input strings into parts for the functions
+  *
+  */
+
 
 #include "include.h"
 

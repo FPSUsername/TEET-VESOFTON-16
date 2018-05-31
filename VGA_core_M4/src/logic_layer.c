@@ -1,9 +1,14 @@
 /**
- * File     : logic_layer.c
- * Datum    : 24.05.2018
- * Version  : 0.4
- * Author   : P. Kavvathas
- */
+  *
+  *@file    	logic_layer.c
+  * @author 	P. Kavvathas
+  * @version	V0.4
+  * @date   	24-Mei-2018
+  * @brief  	Logic layer
+  *
+  * \n Compares input string from the user with predefined functions
+  *
+  */
 
 #include "include.h"
 
@@ -34,7 +39,7 @@ void UART_control(char **array, uint8_t *perr)
 			array[4] = 0; /** Disable transparency if not defined */
 		bitmap(atoi(array[1]), atoi(array[2]), atoi(array[3]), atoi(array[4]), &error);
 	}
-	else if (strcmp(array[0], "wacht") == 0)			DELAY(atoi(array[1]));
+	else if (strcmp(array[0], "wacht") == 0)			DELAY(atoi(array[1]), &error);
 	else if (strcmp(array[0], "clearscherm") == 0)		fill_screen(array[1], &error);
 	else { /** Error, function does not exist */
 		*perr = ERR_INPUT_INVALID;

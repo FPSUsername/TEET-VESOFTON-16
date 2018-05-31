@@ -1,14 +1,22 @@
-/*
- * draw.c
- *
- *  Created on: 3 mei 2018
- *      Author: Bas
- */
 
+/**
+ *
+  *@file    	draw_API.c
+  * @author 	B. Rabenort
+  * @version	V0.1
+  * @date   	3-Mei-2018
+  * @brief  	Draw functions
+  *
+  * \n
+*/
+
+#include <arial8x8_black.h>
+#include <arial8x8_italic.h>
+#include <arial8x8_regular.h>
 #include "include.h"
 //#include <draw_API.h>
 //#include "stm32_ub_vga_screen.h"
-//#include "error.h"
+#include "error.h"
 
 // Bitmaps
 #include "bitmap_1.h"
@@ -16,9 +24,6 @@
 // Fonts
 #include "font8x8_basic.h"
 #include "font8x8_greek.h"
-#include "arial8x8_black.h"
-#include "arial8x8_italic.h"
-#include "arial8x8_regular.h"
 #include "verdana8x8_basic.h"
 
 extern uint8_t error;
@@ -26,6 +31,7 @@ uint8_t err;
 
 /**
  * @brief Change Col
+ *
  * This function "translates" the input string to the defined hex color values
  */
 uint8_t change_col(char color[16], uint8_t *perr){
@@ -589,7 +595,7 @@ uint8_t bitmap(uint8_t bitmap, int16_t x1, int16_t y1, uint8_t trans, uint8_t *p
 	uint16_t y_p = x_p; // Amount of pixels on the y-axis
 
 	if(x < 0 || y < 0 || x >= 320 || y <= 240) {	// Error out of screen
-		*perr = BIT_ERR_OUT_OF_BOUND;
+		*perr = ERR_OUT_OF_BOUND;
 		return 1;
 	}
 
@@ -612,7 +618,7 @@ uint8_t bitmap(uint8_t bitmap, int16_t x1, int16_t y1, uint8_t trans, uint8_t *p
  *
  * Freeze the system for XXXX time in milliseconds
  */
-uint8_t DELAY(uint16_t time)
+uint8_t DELAY(uint16_t time, uint8_t *perr)
 {
 	#ifdef DEBUG
 	UART_puts("\nDelay\nMilliseconds: ");
@@ -620,6 +626,14 @@ uint8_t DELAY(uint16_t time)
 	UART_puts("\n");
 	#endif
 
+	if(time > 65535){
+		*perr = ERR_OVERFLOW;
+		pError(*perr);
+		return 1;
+	}else if(time > 20000){
+		*perr = WAR_TIMEDELAY;
+		pError(*perr);
+	}
 	DELAY_ms(time);
 	return 0;
 };
