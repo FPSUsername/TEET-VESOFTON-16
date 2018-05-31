@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /**
   *
   *@file    	logic_layer.h
@@ -11,3 +12,6 @@
   */
 
 void UART_control(char **array, uint8_t *perr);
+=======
+void UART_control(char **array, uint8_t *perr);
+>>>>>>> master

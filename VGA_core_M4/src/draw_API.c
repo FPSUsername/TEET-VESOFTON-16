@@ -29,7 +29,8 @@
 extern uint8_t error;
 uint8_t err;
 
-/* Change Col
+/**
+ * @brief Change Col
  * This function "translates" the input string to the defined hex color values
  */
 uint8_t change_col(char color[16], uint8_t *perr){
@@ -61,8 +62,12 @@ uint8_t change_col(char color[16], uint8_t *perr){
 	return col;
 };
 
-/* Lijn
- * Function to plot a line
+/**
+ * @brief Lijn
+ *
+ * Function to plot a line, is used by multiple functions
+ * differs from function line() because it does not need a parameter thickness
+ * parameters are first and second coordinate and a color in string form
  */
 uint8_t lijn(int16_t x1, int16_t y1, int16_t x2, int16_t y2, char color[16]){
 	uint8_t col = change_col(color, &error);
@@ -75,19 +80,23 @@ uint8_t lijn(int16_t x1, int16_t y1, int16_t x2, int16_t y2, char color[16]){
 
 	while(1){  /* loop */
 	  if(x1<=VGA_DISPLAY_X || y1<=VGA_DISPLAY_Y){
+		  /*bit of cheating to correctly fill the figures, the pixel above written too*/
 		  UB_VGA_SetPixel(x1, y1, col);
 		  UB_VGA_SetPixel(x1, y1+1, col);
 	  }
 	  if (x1 == x2 && y1 == y2) break;
 	  e2 = 2 * err;
-	  if (e2 >= dy) { err += dy; x1 += sx; } /* e_xy + e_x > 0 */
-	  if (e2 <= dx) { err += dx; y1 += sy; } /* e_xy + e_y < 0 */
+	  if (e2 >= dy) { err += dy; x1 += sx; }
+	  if (e2 <= dx) { err += dx; y1 += sy; }
 	}
 	return 0;
 }
 
-/* Line
+/**
+ * @brief Line drawing function
+ *
  * Function to plot a line with thickness and color as a parameter
+ * thickness will add on one side -90degree out of phase.
  */
 uint8_t line(int16_t xi, int16_t yi, int16_t xii, int16_t yii, uint8_t thickness, char color[16], uint8_t *perr)
 {
@@ -111,14 +120,16 @@ uint8_t line(int16_t xi, int16_t yi, int16_t xii, int16_t yii, uint8_t thickness
 
 	x_r = x2-x1;
 	y_r = y2-y1;
-	x_rc = y_r *-1; //door onderstaande berekening ontstaat er een lijn die 90graden op de te tekenen lijn achterloopt
+	/* calculation below will convert the coordinates to a line that has -90degree phase shift */
+	x_rc = y_r *-1;
 	y_rc = x_r;
+	/*calculate length between coordinates to have a ratio to calculate x and y coordinates*/
 	rc= sqrt((x_rc*x_rc)+(y_rc*y_rc));
 
 	lijn(x1,y1,x2,y2,color);
 
 	for (int i=1; i<= thickness; i++) {
-		int xx= (i/rc)*x_rc+xi; // casten misschien?
+		int xx= (i/rc)*x_rc+xi;
 		int yy= (i/rc)*y_rc+yi;
 		int x02=  (xx-xi) + xii;
 		int y02= (yy-yi)+ yii;
@@ -128,7 +139,9 @@ uint8_t line(int16_t xi, int16_t yi, int16_t xii, int16_t yii, uint8_t thickness
 	return 0;
 };
 
-/* Arrow
+/**
+ * @brief Arrow
+ *
  * Function that plots an arrow, not implemented
  */
 uint8_t arrow(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t thickness, char color[16], uint8_t *perr)
@@ -148,8 +161,11 @@ uint8_t arrow(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t thickness,
 	return 0;
 };
 
-/* Ellipse
+/**
+ * @brief Ellipse
+ *
  * Function to plot an ellipse outline
+ * pixels inside of the ellipse are not rewritten
  */
 uint8_t ellipse(int16_t xc, int16_t yc, int16_t rx, int16_t ry, char color[16], uint8_t *perr)
 {
@@ -215,7 +231,9 @@ uint8_t ellipse(int16_t xc, int16_t yc, int16_t rx, int16_t ry, char color[16], 
 	return 0;
 };
 
-/* Ellipse Filled
+/**
+ * @brief Ellipse Filled
+ *
  * Function to plot a filled ellipse
  */
 uint8_t ellipse_filled(int16_t x1, int16_t y1, int16_t xradius, int16_t yradius, char color[16], uint8_t *perr)
@@ -245,8 +263,10 @@ uint8_t ellipse_filled(int16_t x1, int16_t y1, int16_t xradius, int16_t yradius,
 	return 0;
 };
 
-/* Rectangular
- * Function to plot a rectangular
+/**
+ * @brief Rectangular
+ *
+ * Function to plot a rectangular outline
  */
 uint8_t rectangular(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, char color[16], uint8_t *perr)
 {
@@ -281,7 +301,9 @@ uint8_t rectangular(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength
 	return 0;
 };
 
-/* Rectangular Thick
+/**
+ * @brief Rectangular Thick
+ *
  * Function to plot a rectangular with thickness as an extra parameter
  */
 uint8_t rectangular_thick(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, uint8_t tx, uint8_t ty, char color[16], uint8_t *perr)
@@ -324,7 +346,9 @@ uint8_t rectangular_thick(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t y
 	return 0;
 };
 
-/* Rectangular Filled
+/**
+ * @brief Rectangular Filled
+ *
  * Function to plot a filled rectangular
  */
 uint8_t rectangular_filled(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength, char color[16], uint8_t *perr)
@@ -356,7 +380,9 @@ uint8_t rectangular_filled(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t 
 	return 0;
 };
 
-/* Triangle
+/**
+ * @brief Triangle
+ *
  * Function to plot a triangle by using three points on the screen
  */
 uint8_t triangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int16_t y3, char color[16])
@@ -369,7 +395,9 @@ uint8_t triangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int
 	return 0;
 };
 
-/* Triangle Filled
+/**
+ * @brief Triangle Filled
+ *
  * Function to plot a filled triangle by using three points on the screen
  */
 uint8_t triangle_filled(int16_t X1, int16_t Y1, int16_t X2, int16_t Y2, int16_t X3, int16_t Y3, char color[16])
@@ -380,6 +408,9 @@ uint8_t triangle_filled(int16_t X1, int16_t Y1, int16_t X2, int16_t Y2, int16_t 
 	int x02 = abs(X3-X2);
 	int x03 = abs(X1-X3);
 	int x1,y1,x2,y2,x3,y3;
+	/* we have noticed when filling the triangle the best results happen if we use the meridian of the lines on the x-axis.
+	 * in the code below the coordinates are switched to achieve optimal results
+	 */
 
 	if(((x01<x02)&&(x02<x03)) || ((x01>x02)&&(x02<x03)) || X1==X2)
 	{
@@ -415,13 +446,13 @@ uint8_t triangle_filled(int16_t X1, int16_t Y1, int16_t X2, int16_t Y2, int16_t 
 	if(x_r<0){
 		for(int i=(x_r*10); i< 0; i++){
 
-			float yy= ((i/10)*rc)+y1; // casten misschien?
+			float yy= ((i/10)*rc)+y1;
 			lijn(((i/10)+x1),yy,x3,y3,color);
 		}
 	}
 	if(x_r>0){
 		for(int i=0; i<(x_r*10); i++){
-			float yy= ((i/10)*rc)+y1; // casten misschien?
+			float yy= ((i/10)*rc)+y1;
 			lijn(((i/10)+x1),yy,x3,y3,color);
 		}
 	}
@@ -429,7 +460,9 @@ uint8_t triangle_filled(int16_t X1, int16_t Y1, int16_t X2, int16_t Y2, int16_t 
 	return 0;
 };
 
-/* Print Char
+/**
+ * @brief Print Char
+ *
  * Function to print one character on the screen
  * Currently allows for these styles:
  * Greek (difficult to use since the characters are not equal to the characters of your keyboard)
@@ -486,7 +519,9 @@ uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char fon
 	return 0;
 };
 
-/* Print Text
+/**
+ * @brief Print Text
+ *
  * Function to print strings on the screen
  * Features:
  * Build in OUT_OF_BOUND error workaround (The error still exists in the same form, but you have to interpret that as a warning)
@@ -536,7 +571,9 @@ uint8_t print_text(int16_t x1, int16_t y1, char str[], char color[16], char font
 	return 0;
 };
 
-/* Bitmap
+/**
+ * @brief Bitmap
+ *
  * Function to print bitmaps
  * Only works with square bitmaps @256 colors
  */
@@ -556,6 +593,11 @@ uint8_t bitmap(uint8_t bitmap, int16_t x1, int16_t y1, uint8_t trans, uint8_t *p
 	uint16_t x_p = sqrt(size); // Amount of pixels on the x-axis
 	uint16_t y_p = x_p; // Amount of pixels on the y-axis
 
+	if(x < 0 || y < 0 || x >= 320 || y <= 240) {	// Error out of screen
+		*perr = BIT_ERR_OUT_OF_BOUND;
+		return 1;
+	}
+
 	for (x = 0; x < x_p; x++) {
 		for (y = 0; y < y_p; y++) {
 			if (trans == 1) {
@@ -570,7 +612,9 @@ uint8_t bitmap(uint8_t bitmap, int16_t x1, int16_t y1, uint8_t trans, uint8_t *p
 	return 0;
 };
 
-/* Delay
+/**
+ * @brief Delay
+ *
  * Freeze the system for XXXX time in milliseconds
  */
 uint8_t DELAY(uint16_t time, uint8_t *perr)
@@ -593,7 +637,9 @@ uint8_t DELAY(uint16_t time, uint8_t *perr)
 	return 0;
 };
 
-/* Fillscreen
+/**
+ * @brief Fillscreen
+ *
  * Function to fill the screen with one color
  */
 uint8_t fill_screen(char color[16], uint8_t *perr)

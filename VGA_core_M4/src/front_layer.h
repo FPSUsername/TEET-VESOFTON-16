@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /**
   *
   *@file    	front_layer.h
@@ -10,6 +11,8 @@
   *
   */
 
+=======
+>>>>>>> master
 #include "stdint.h"
 
 char ** UART_tokens();
