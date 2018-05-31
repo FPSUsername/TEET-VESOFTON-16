@@ -29,7 +29,7 @@ uint8_t err;
  */
 uint8_t change_col(char color[16], uint8_t *perr){
 	uint8_t col;
-	err = 0;
+	err = 0; // Reset error
 	if 		(strcmp(color, "wit") == 0) 			col = VGA_COL_WHITE;
 	else if (strcmp(color, "grijs") == 0)			col = VGA_COL_GRAY;
 	else if (strcmp(color, "zwart") == 0)			col = VGA_COL_BLACK;
@@ -41,14 +41,14 @@ uint8_t change_col(char color[16], uint8_t *perr){
 	else if (strcmp(color, "rood") == 0)			col = VGA_COL_RED;
 	else if (strcmp(color, "lichtrood") == 0)		col = VGA_COL_LIGHT_RED;
 	else if (strcmp(color, "cyaan") == 0)			col = VGA_COL_CYAN;
-	else if (strcmp(color, "lichtcyan") == 0)		col = VGA_COL_LIGHT_CYAN;
+	else if (strcmp(color, "lichtcyaan") == 0)		col = VGA_COL_LIGHT_CYAN;
 	else if (strcmp(color, "magenta") == 0)			col = VGA_COL_MAGENTA;
 	else if (strcmp(color, "lichtmagenta") == 0)	col = VGA_COL_LIGHT_MAGENTA;
 	else if (strcmp(color, "geel") == 0)			col = VGA_COL_YELLOW;
 	else if (strcmp(color, "roze") == 0)			col = VGA_COL_PINK;
 	else if (strcmp(color, "paars") == 0)			col = VGA_COL_PURPLE;
-	else {
-		col = VGA_COL_WHITE;
+	else { // Error, color does not exist
+		col = VGA_COL_WHITE; // Must return a valid replacement
 		*perr = ERR_COLOR;
 		pError(*perr);
 		err = 1;
@@ -95,7 +95,6 @@ uint8_t line(int16_t xi, int16_t yi, int16_t xii, int16_t yii, uint8_t thickness
 	#endif
 
 	if(bound(xi, yi, &error) || bound(xii, yii, &error)); // Out of bound check
-	//	return 1;
 
 	int16_t x1,x2,y1,y2;
 	x1 = xi;
@@ -139,8 +138,7 @@ uint8_t arrow(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t thickness,
 //	if (err)
 //		return 1;
 
-	if(bound(x1, y1, &error) || bound(x2, y2, &error)) // Out of bound check
-		return 1;
+	if(bound(x1, y1, &error) || bound(x2, y2, &error)); // Out of bound check
 
 	return 0;
 };
@@ -254,8 +252,7 @@ uint8_t rectangular(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t ylength
 	UART_printf(len + 5, "\n%d\t%d\t%d\t%d\t%s", x1, y1, xlength, ylength, color);
 	#endif
 
-	if(bound(x1, y1, &error)) // Out of bound check
-		return 1;
+	if(bound(x1, y1, &error)); // Out of bound check
 
 	uint8_t col = change_col(color, &error);
 	if (err)
@@ -291,8 +288,7 @@ uint8_t rectangular_thick(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t y
 	UART_printf(len + 7, "\n%d\t%d\t%d\t%d\t%d\t%d\t%s", x1, y1, xlength, ylength, tx, ty, color);
 	#endif
 
-	if(bound(x1, y1, &error)) // Out of bound check
-		return 1;
+	if(bound(x1, y1, &error)); // Out of bound check
 
 	uint8_t col = change_col(color, &error);
 	if (err)
@@ -335,8 +331,7 @@ uint8_t rectangular_filled(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t 
 	UART_printf(len + 5, "\n%d\t%d\t%d\t%d\t%s", x1, y1, xlength, ylength, color);
 	#endif
 
-	if(bound(x1, y1, &error)) // Out of bound check
-		return 1;
+	if(bound(x1, y1, &error)); // Out of bound check
 
 	uint8_t col = change_col(color, &error);
 	if (err)
@@ -361,8 +356,7 @@ uint8_t rectangular_filled(uint16_t x1, uint16_t y1, uint16_t xlength, uint16_t 
  */
 uint8_t triangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int16_t y3, char color[16])
 {
-	if(bound(x1, y1, &error) || bound(x2, y2, &error) || bound(x3, y3, &error)) // Out of bound check
-		return 1;
+	if(bound(x1, y1, &error) || bound(x2, y2, &error) || bound(x3, y3, &error)); // Out of bound check
 
 	lijn(x1,y1,x2,y2,color);
 	lijn(x2,y2,x3,y3,color);
@@ -376,7 +370,6 @@ uint8_t triangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int
 uint8_t triangle_filled(int16_t X1, int16_t Y1, int16_t X2, int16_t Y2, int16_t X3, int16_t Y3, char color[16])
 {
 	if(bound(X1, Y1, &error) || bound(X2, Y2, &error) || bound(X3, Y3, &error)); // Out of bound check
-	//	return 1;
 
 	int x01 = abs(X2-X1);
 	int x02 = abs(X3-X2);
@@ -454,14 +447,13 @@ uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char fon
 	uint8_t size = 8; // font size (h and v)
 	uint16_t x, x_p, y, y_p;
 
-	if(bound(x1, y1, &error)) // Out of bound check
-		return 1;
+	if(bound(x1, y1, &error)); // Out of bound check
 
-	for (x = 0; x < size; x++) { // Horizontal, x-- results into flipping
+	for (x = 0; x < size; x++) { // Horizontal
 		for (y = 0; y < size; y++) { // Vertical
 			if (strcmp(font, "greek") == 0) {
 				set = font8x8_greek[chr][x] & 1 << y;
-				x_p = x1 + y;
+				x_p = x1 + y; // Rotate character
 				y_p = y1 + x;
 			}
 			else if (strcmp(font, "cursief") == 0) {
@@ -478,7 +470,7 @@ uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char fon
 //				set = arial8x8_regular[chr][x] & 1 << y;
 //				set = Verdana8x8[chr][x] & 1 << y;
 				set = font8x8_basic[chr][x] & 1 << y;
-				x_p = x1 + y;
+				x_p = x1 + y; // Rotate character
 				y_p = y1 + x;
 			}
 			if (set)
@@ -507,8 +499,7 @@ uint8_t print_text(int16_t x1, int16_t y1, char str[], char color[16], char font
 	UART_printf(len + 2, "\n%s\t%s", color, font);
 	#endif
 
-	if(bound(x1, y1, &error)) // Out of bound check
-		return 1;
+	if(bound(x1, y1, &error)); // Out of bound check
 
 	uint8_t margin = 8; // Display margin
 	uint16_t x = 0;
@@ -553,8 +544,7 @@ uint8_t bitmap(uint8_t bitmap, int16_t x1, int16_t y1, uint8_t trans, uint8_t *p
 	UART_printf(len + 4, "\n%d\t%d\t%d\t%d", bitmap, x1, y1, trans);
 	#endif
 
-	if(bound(x1, y1, &error)) // Out of bound check
-		return 1;
+	if(bound(x1, y1, &error)); // Out of bound check
 
 	uint16_t x, y;
 	uint16_t size = sizeof(bitmaps[bitmap]) / sizeof(bitmaps[bitmap][0]); // Amount of pixels
@@ -578,7 +568,7 @@ uint8_t bitmap(uint8_t bitmap, int16_t x1, int16_t y1, uint8_t trans, uint8_t *p
 /* Delay
  * Freeze the system for XXXX time in milliseconds
  */
-uint8_t DELAY(uint16_t time, uint8_t *perr)
+uint8_t DELAY(uint16_t time)
 {
 	#ifdef DEBUG
 	UART_puts("\nDelay\nMilliseconds: ");
