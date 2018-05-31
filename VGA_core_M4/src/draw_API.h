@@ -1,10 +1,18 @@
-//--------------------------------------------------------------
-// color designation
-// 8bit color (R3G3B2)
-// Red   (3bit) -> Bit7-Bit5
-// Green (3bit) -> Bit4-Bit2
-// Blue  (2bit) -> Bit1-Bit0
-//--------------------------------------------------------------
+/**
+  *
+  *@file    	draw_API.h
+  * @author 	P. Kavvathas, B. Rabenort, N. Koetsveld
+  * @version	V0.1
+  * @date   	1-Mei-2018
+  * @brief  	Color define
+  *
+  * \n color designation
+  * 8bit color (R3G3B2)
+  * Red   (3bit) -> Bit7-Bit5
+  * Green (3bit) -> Bit4-Bit2
+  * Blue  (2bit) -> Bit1-Bit0
+*/
+
 #include "stdint.h"
 
 #define  VGA_COL_WHITE          0xFF
@@ -45,5 +53,5 @@ uint8_t triangle_filled(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t 
 uint8_t print_char(int16_t x1, int16_t y1, uint8_t chr, char color[16], char font[16], uint8_t *perr);
 uint8_t print_text(int16_t x1, int16_t y1, char str[], char color[16], char font[16], uint8_t *perr);
 uint8_t bitmap(uint8_t bitmap, int16_t x1, int16_t y1, uint8_t trans, uint8_t *perr);
-uint8_t DELAY(uint16_t time);
+uint8_t DELAY(uint16_t time, uint8_t *perr);
 uint8_t fill_screen(char color[16], uint8_t *perr);
