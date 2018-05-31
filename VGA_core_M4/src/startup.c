@@ -16,7 +16,10 @@
   */
 
 #include "include.h"
-#include "main.c"
+#include "main.h"
+
+extern uint8_t error;
+extern char *version;
 
 /** Start-up
  * Function to make a start screen with LCD output and LED animation
