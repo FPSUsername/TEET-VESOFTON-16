@@ -1,6 +1,6 @@
 /**
   *
-  *@file    	startup.c
+  * @file    	startup.c
   * @author 	P. Kavvathas, B. Rabenort, N. Koetsveld
   * @version	V0.5
   * @date   	24-Mei-2018

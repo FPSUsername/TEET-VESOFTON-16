@@ -1,5 +1,4 @@
 /**
-<<<<<<< HEAD:VGA_core_M4/src/logic_layer.c
   *
   *@file    	logic_layer.c
   * @author 	P. Kavvathas
@@ -10,13 +9,6 @@
   * \n
   *
   */
-=======
- * File     : logic_layer.c
- * Datum    : 24.05.2018
- * Version  : 0.4
- * Author   : P. Kavvathas
- */
->>>>>>> master:VGA_core_M4/src/logic_layer.c
 
 #include "include.h"
 

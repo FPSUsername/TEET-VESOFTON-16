@@ -7,7 +7,7 @@
   * @date   	3-Mei-2018
   * @brief  	Draw functions
   *
-  * \n Commentaar!
+  * \n
 */
 
 #include <arial8x8_black.h>
@@ -31,6 +31,7 @@ uint8_t err;
 
 /**
  * @brief Change Col
+ *
  * This function "translates" the input string to the defined hex color values
  */
 uint8_t change_col(char color[16], uint8_t *perr){

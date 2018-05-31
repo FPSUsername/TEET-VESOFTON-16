@@ -1,6 +1,6 @@
 /**
  *
-  *@file    	arial8x8_italic.h
+  * @file    	arial8x8_italic.h
   * @author 	P. Kavvathas
   * @version	V0.1
   * @date   	24-Mei-2018

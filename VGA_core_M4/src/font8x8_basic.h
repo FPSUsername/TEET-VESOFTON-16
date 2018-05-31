@@ -1,6 +1,6 @@
 /**
   *
-  *@file    	font8x8_basic.h
+  * @file    	font8x8_basic.h
   * @author 	P. Kavvathas
   * @version	V0.1
   * @date   	24-Mei-2018

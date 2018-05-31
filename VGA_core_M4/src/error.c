@@ -1,12 +1,12 @@
 /**
  *
-  * @file    	error.c
-  * @author  Nick Koetsveld
-  * @version V1.0.0
-  * @date    24-Mei-2018
-  * @brief   Gives the error code a sentence and checks if the coordinates of the asked figure are in the screen boundaries
-  *
-  *
+ * @file    	error.c
+ * @author  Nick Koetsveld
+ * @version V1.0.0
+ * @date    24-Mei-2018
+ * @brief   Gives the error code a sentence and checks if the coordinates of the asked figure are in the screen boundaries
+ *
+ *
 */
 
 #include "include.h"

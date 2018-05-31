@@ -1,5 +1,4 @@
 /**
-<<<<<<< HEAD
   *
   *@file    	front_layer.c
   * @author 	P. Kavvathas
@@ -14,18 +13,7 @@
 
 #include "include.h"
 
-/**
-=======
- * File     : front_layer.c
- * Datum    : 24.05.2018
- * Version  : 0.4
- * Author   : P. Kavvathas
- */
-
-#include "include.h"
-
 /** 
->>>>>>> master
  * \section UART tokens
  * Get input commands, split them and return them
  * Call UART_tokens_clear() after calling this function

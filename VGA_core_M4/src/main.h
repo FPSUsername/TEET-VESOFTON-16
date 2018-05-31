@@ -1,6 +1,6 @@
 /**
   *
-  *@file    	main.h
+  * @file    	main.h
   * @author 	P. Kavvathas, B. Rabenort, N. Koetsveld
   * @version	V1.0
   * @date   	1-Mei-2018
