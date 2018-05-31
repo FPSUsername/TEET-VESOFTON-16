@@ -23,13 +23,8 @@
 #include "delay.h"
 #include "lcd.h"
 #include "leds.h"
-<<<<<<< HEAD
 #include "logic_layer.h"
 #include "front_layer.h"
-=======
-#include "front_layer.h"
-#include "logic_layer.h"
->>>>>>> master
 #include "draw_API.h"
 #include "error.h"
 #include "startup.h"
