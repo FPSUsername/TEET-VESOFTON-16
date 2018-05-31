@@ -18,8 +18,8 @@
  <table>
 <caption id="multi_row">De studenten</caption>
 <tr><th>Naam                    		<th>Studentnummer
-<tr><td>Petros Kavvathas	<td>167
-<tr><td>Bas Rabenort		<td>168
+<tr><td>Petros Kavvathas	<td>1676089
+<tr><td>Bas Rabenort		<td>1677054
 <tr><td>Nick Koetsveld		<td>1682336
 </table>
 

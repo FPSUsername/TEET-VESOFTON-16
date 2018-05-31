@@ -6,7 +6,7 @@
   * @date   	24-Mei-2018
   * @brief  	Logic layer
   *
-  * \n
+  * \n Compares input string from the user with predefined functions
   *
   */
 

@@ -6,7 +6,7 @@
   * @date   	24-Mei-2018
   * @brief  	Front layer
   *
-  * \n
+  * \n Separates the input strings into parts for the functions
   *
   */
 
